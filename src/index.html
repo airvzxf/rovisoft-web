@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RoviSoft.net — No es un sitio web tradicional: es una terminal de comandos interactiva (TTY) que funciona como página de inicio personal.">
+  <meta name="color-scheme" content="dark">
+  <title>RoviSoft.net</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>">
+</head>
+<body>
+
+  <div class="terminal" id="terminal">
+    <div class="prompt-area" id="prompt-area">
+      <span class="prompt-line">
+        <span class="prompt-user" id="prompt-user">guest</span><!--
+     --><span class="prompt-at">@</span><!--
+     --><span class="prompt-host" id="prompt-host">rovisoft.net</span><!--
+     --><span class="prompt-colon">:</span><!--
+     --><span class="prompt-path" id="prompt-path">~</span><!--
+     --><span class="prompt-symbol" id="prompt-symbol">$</span><!--
+     --><span class="prompt-input-wrapper">
+          <span class="prompt-cmd-before" id="prompt-cmd-before"></span><!--
+       --><span class="cursor" id="cursor"></span><!--
+       --><span class="prompt-cmd-after" id="prompt-cmd-after"></span>
+        </span>
+      </span>
+      <input type="text" id="cmd-input" class="cmd-input" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Línea de comandos">
+    </div>
+    <div class="output-area" id="output-area">
+      <div class="output-line output-welcome"><!--
+      --><pre class="ascii-banner">
+8888888b.                   d8b  .d8888b.            .d888 888    
+888   Y88b                  Y8P d88P  Y88b          d88P"  888    
+888    888                      Y88b.               888    888    
+888   d88P .d88b.  888  888 888  "Y888b.    .d88b.  888888 888888 
+8888888P" d88""88b 888  888 888     "Y88b. d88""88b 888    888    
+888 T88b  888  888 Y88  88P 888       "888 888  888 888    888    
+888  T88b Y88..88P  Y8bd8P  888 Y88b  d88P Y88..88P 888    Y88b.  
+888   T88b "Y88P"    Y88P   888  "Y8888P"   "Y88P"  888     "Y888 <!--
+      --></pre><!--
+      --><p>Bienvenido a <strong>RoviSoft.net</strong> — Terminal interactiva (TTY).
+Este no es un sitio web tradicional: es una terminal de comandos interactiva que funciona como página de inicio personal.
+
+Escribe <span class="cmd">help</span> para ver los comandos disponibles.
+El mouse no sirve de mucho... mejor escribe.</p><!--
+    --></div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
