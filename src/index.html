@@ -8,9 +8,34 @@
   <title>RoviSoft.net</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rs_theme');
+        if (!t) t = sessionStorage.getItem('rs_theme');
+        if (t === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else if (t && t !== 'dark') {
+          var a = localStorage.getItem('rs_config_accepted');
+          var s = a === 'true' ? localStorage : sessionStorage;
+          var r = s.getItem('rs_custom_themes');
+          if (r) {
+            try {
+              var ct = JSON.parse(r);
+              if (ct[t]) {
+                var b = ct[t].base || 'dark';
+                document.documentElement.setAttribute('data-theme', b);
+                var v = ct[t].vars;
+                for (var k in v) document.documentElement.style.setProperty(k, v[k]);
+              }
+            } catch (e) { }
+          }
+        }
+      } catch (e) { }
+    })();
+  </script>
 </head>
 <body>
-
   <div class="terminal" id="terminal">
     <div class="prompt-area" id="prompt-area">
       <span class="prompt-line">

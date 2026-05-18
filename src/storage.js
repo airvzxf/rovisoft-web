@@ -13,7 +13,9 @@
     ACCEPTED: 'rs_config_accepted',
     STATE: 'rs_state',
     VERSION: 'rs_version',
-    FIRST_VISIT: 'rs_first_visit'
+    FIRST_VISIT: 'rs_first_visit',
+    THEME: 'rs_theme',
+    CUSTOM_THEMES: 'rs_custom_themes'
   };
 
   function isAccepted() {
@@ -29,7 +31,7 @@
   function accept() {
     localStorage.setItem(KEYS.ACCEPTED, 'true');
 
-    var keysToMigrate = [KEYS.STATE, KEYS.VERSION, KEYS.FIRST_VISIT];
+    var keysToMigrate = [KEYS.STATE, KEYS.VERSION, KEYS.FIRST_VISIT, KEYS.THEME, KEYS.CUSTOM_THEMES];
     for (var i = 0; i < keysToMigrate.length; i++) {
       var key = keysToMigrate[i];
       var val = sessionStorage.getItem(key);
@@ -47,6 +49,8 @@
     var storedFirstVisit = localStorage.getItem(KEYS.FIRST_VISIT);
 
     localStorage.removeItem(KEYS.STATE);
+    localStorage.removeItem(KEYS.THEME);
+    localStorage.removeItem(KEYS.CUSTOM_THEMES);
 
     if (storedVersion !== null) {
       localStorage.setItem(KEYS.VERSION, storedVersion);
@@ -126,9 +130,13 @@
     localStorage.removeItem(KEYS.ACCEPTED);
     localStorage.removeItem(KEYS.FIRST_VISIT);
     localStorage.removeItem(KEYS.VERSION);
+    localStorage.removeItem(KEYS.THEME);
+    localStorage.removeItem(KEYS.CUSTOM_THEMES);
     sessionStorage.removeItem(KEYS.STATE);
     sessionStorage.removeItem(KEYS.FIRST_VISIT);
     sessionStorage.removeItem(KEYS.VERSION);
+    sessionStorage.removeItem(KEYS.THEME);
+    sessionStorage.removeItem(KEYS.CUSTOM_THEMES);
   }
 
   function getStatus() {
@@ -166,6 +174,45 @@
     };
   }
 
+  function saveTheme(name) {
+    var store = getStore();
+    store.setItem(KEYS.THEME, name);
+  }
+
+  function loadTheme() {
+    var store = getStore();
+    var val = store.getItem(KEYS.THEME);
+    if (!val) {
+      val = localStorage.getItem(KEYS.THEME);
+    }
+    return val;
+  }
+
+  function saveCustomThemes(themes) {
+    var store = getStore();
+    try {
+      store.setItem(KEYS.CUSTOM_THEMES, JSON.stringify(themes));
+    } catch (e) {
+      // silent fail
+    }
+  }
+
+  function loadCustomThemes() {
+    var store = getStore();
+    var raw = store.getItem(KEYS.CUSTOM_THEMES);
+    if (!raw) {
+      raw = localStorage.getItem(KEYS.CUSTOM_THEMES);
+    }
+    if (!raw) return {};
+    try {
+      var parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) return parsed;
+      return {};
+    } catch (e) {
+      return {};
+    }
+  }
+
   window.Storage = {
     isAccepted: isAccepted,
     accept: accept,
@@ -178,7 +225,11 @@
     loadFirstVisit: loadFirstVisit,
     reset: reset,
     getStatus: getStatus,
-    getStorageInfo: getStorageInfo
+    getStorageInfo: getStorageInfo,
+    saveTheme: saveTheme,
+    loadTheme: loadTheme,
+    saveCustomThemes: saveCustomThemes,
+    loadCustomThemes: loadCustomThemes
   };
 
 })();

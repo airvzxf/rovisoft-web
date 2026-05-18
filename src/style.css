@@ -62,6 +62,22 @@
   --prompt-height: 55px;
 }
 
+[data-theme="light"] {
+  --bg:            #f6f8fa;
+  --bg-prompt:     #ffffff;
+  --text:          #1f2328;
+  --text-dim:      #656d76;
+  --green:         #1a7f37;
+  --green-bright:  #238636;
+  --red:           #cf222e;
+  --cyan:          #0969da;
+  --cyan-bright:   #0550ae;
+  --yellow:        #9a6700;
+  --magenta:       #8250df;
+  --border:        #d0d7de;
+  --scrollbar:     #afb8c1;
+}
+
 *, *::before, *::after {
   margin: 0;
   padding: 0;

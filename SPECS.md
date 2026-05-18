@@ -214,8 +214,6 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Temas de color (light/dark) con un comando `theme`. Se guarda en el Storage la seleccion.
-- Crear `themes` personalizados sobrescribiéndolos con JavaScript los estilos. Estos se almacenan en el Storage.
 - Soporte multilenguaje (`lang es`, `lang en`).
 - Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos.
 - Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo.  A nivel obviamente JavaScript y datos en las cookies de su dispositivo.

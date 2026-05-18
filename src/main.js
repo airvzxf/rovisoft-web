@@ -22,10 +22,59 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = '1.3.1';
+  const VERSION = '1.4.0';
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
+
+  const THEMEABLE_VARS = [
+    '--bg', '--bg-prompt', '--text', '--text-dim',
+    '--green', '--green-bright', '--red',
+    '--cyan', '--cyan-bright', '--yellow', '--magenta',
+    '--border', '--scrollbar'
+  ];
+
+  const BUILTIN_THEMES = {
+    dark: {
+      name: 'Dark',
+      vars: {
+        '--bg': '#0d1117',
+        '--bg-prompt': '#0d1117',
+        '--text': '#c9d1d9',
+        '--text-dim': '#8b949e',
+        '--green': '#3fb950',
+        '--green-bright': '#56d364',
+        '--red': '#f85149',
+        '--cyan': '#58a6ff',
+        '--cyan-bright': '#79c0ff',
+        '--yellow': '#d2991d',
+        '--magenta': '#bc8cff',
+        '--border': '#21262d',
+        '--scrollbar': '#30363d'
+      }
+    },
+    light: {
+      name: 'Light',
+      vars: {
+        '--bg': '#f6f8fa',
+        '--bg-prompt': '#ffffff',
+        '--text': '#1f2328',
+        '--text-dim': '#656d76',
+        '--green': '#1a7f37',
+        '--green-bright': '#238636',
+        '--red': '#cf222e',
+        '--cyan': '#0969da',
+        '--cyan-bright': '#0550ae',
+        '--yellow': '#9a6700',
+        '--magenta': '#8250df',
+        '--border': '#d0d7de',
+        '--scrollbar': '#afb8c1'
+      }
+    }
+  };
+
+  let currentTheme = 'dark';
+  let customThemes = {};
 
   const state = {
     user: 'guest',
@@ -242,10 +291,44 @@
     return parts.join(' ') || '0s';
   }
 
-  function formatStorageSize(bytes) {
+function formatStorageSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KiB';
     return (bytes / 1048576).toFixed(2) + ' MiB';
+  }
+
+  function applyTheme(themeName) {
+    if (BUILTIN_THEMES[themeName]) {
+      for (var i = 0; i < THEMEABLE_VARS.length; i++) {
+        document.documentElement.style.removeProperty(THEMEABLE_VARS[i]);
+      }
+      document.documentElement.setAttribute('data-theme', themeName);
+      var base = themeName === 'light' ? 'light' : 'dark';
+      var meta = document.querySelector('meta[name="color-scheme"]');
+      if (meta) meta.content = base;
+      currentTheme = themeName;
+      Storage.saveTheme(themeName);
+      return true;
+    }
+    if (customThemes[themeName]) {
+      var custom = customThemes[themeName];
+      var baseName = custom.base || 'dark';
+      document.documentElement.setAttribute('data-theme', baseName);
+      var baseVars = BUILTIN_THEMES[baseName].vars;
+      for (var i = 0; i < THEMEABLE_VARS.length; i++) {
+        document.documentElement.style.removeProperty(THEMEABLE_VARS[i]);
+      }
+      var varKeys = Object.keys(custom.vars);
+      for (var i = 0; i < varKeys.length; i++) {
+        document.documentElement.style.setProperty(varKeys[i], custom.vars[varKeys[i]]);
+      }
+      var meta = document.querySelector('meta[name="color-scheme"]');
+      if (meta) meta.content = baseName === 'light' ? 'light' : 'dark';
+      currentTheme = themeName;
+      Storage.saveTheme(themeName);
+      return true;
+    }
+    return false;
   }
 
   // ─── Commands ─────────────────────────────────────────────
@@ -265,6 +348,7 @@
         '  <span class="cmd">echo &lt;texto&gt;</span>    Repite el texto',
         '  <span class="cmd">alias</span>           Gestiona alias de comandos',
         '  <span class="cmd">unalias</span>         Elimina un alias',
+        '  <span class="cmd">theme</span>           Gestiona temas de color',
         '  <span class="cmd">config</span>          Gestiona el almacenamiento local',
         '  <span class="cmd">reboot</span>          Reinicia la terminal (borra datos)',
         '  <span class="cmd">version</span>         Muestra la versión',
@@ -396,6 +480,7 @@
         `<span class="nf-label">Kernel:</span>    HTML5/CSS3/ES6+`,
         `<span class="nf-label">Shell:</span>     ${escapeHtml(u.shell)}`,
         `<span class="nf-label">User:</span>      ${escapeHtml(state.user)}`,
+        `<span class="nf-label">Theme:</span>     ${escapeHtml(currentTheme)}`,
         `<span class="nf-label">Uptime:</span>    ${uptime}`,
         `<span class="nf-label">Config:</span>    ${configLabel}`,
         `<span class="nf-label">Storage:</span>   ${ram}`,
@@ -445,6 +530,193 @@
         const n = String(i + 1).padStart(4, ' ');
         return `<span class="text-dim">${n}</span>  ${escapeHtml(cmd)}`;
       }).join('\n');
+    },
+
+    theme(args) {
+      if (!args.length) {
+        return [
+          '<span class="text-yellow text-bold">Temas de color</span>',
+          `  Tema actual: <span class="text-cyan">${escapeHtml(currentTheme)}</span>`,
+          '',
+          '  <span class="cmd">theme list</span>                   Lista los temas disponibles',
+          '  <span class="cmd">theme &lt;nombre&gt;</span>               Cambia al tema especificado',
+          '  <span class="cmd">theme create &lt;nombre&gt; [--base=dark|light] [--var=valor]</span>',
+          '                               Crea un tema personalizado',
+          '  <span class="cmd">theme edit &lt;nombre&gt; [--base=dark|light] [--var=valor]</span>',
+          '                               Edita un tema personalizado',
+          '  <span class="cmd">theme delete &lt;nombre&gt;</span>        Elimina un tema personalizado',
+          '  <span class="cmd">theme export [&lt;nombre&gt;]</span>      Exporta las variables del tema',
+          ''
+        ].join('\n');
+      }
+
+      var sub = args[0].toLowerCase();
+
+      if (sub === 'list') {
+        var lines = ['<span class="text-yellow text-bold">Temas integrados:</span>'];
+        var builtinKeys = Object.keys(BUILTIN_THEMES);
+        for (var i = 0; i < builtinKeys.length; i++) {
+          var k = builtinKeys[i];
+          var marker = k === currentTheme ? ' <span class="text-dim">(actual)</span>' : '';
+          lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   ${escapeHtml(BUILTIN_THEMES[k].name)}${marker}`);
+        }
+        var customKeys = Object.keys(customThemes);
+        if (customKeys.length) {
+          lines.push('');
+          lines.push('<span class="text-yellow text-bold">Temas personalizados:</span>');
+          for (var i = 0; i < customKeys.length; i++) {
+            var k = customKeys[i];
+            var marker = k === currentTheme ? ' <span class="text-dim">(actual)</span>' : '';
+            lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   base: ${escapeHtml(customThemes[k].base || 'dark')}${marker}`);
+          }
+        }
+        lines.push('');
+        return lines.join('\n');
+      }
+
+      if (sub === 'create') {
+        if (args.length < 2) {
+          return '<span class="text-red">theme create: se requiere un nombre.</span>\nUsa <span class="cmd">theme create &lt;nombre&gt; [--base=dark|light] [--var=valor]...</span>';
+        }
+        var name = args[1].toLowerCase();
+        if (!/^[a-z][a-z0-9_-]{0,19}$/.test(name)) {
+          return '<span class="text-red">theme create: nombre inválido. Solo letras minúsculas, números, guiones y guiones bajos. Debe iniciar con letra, máx 20 caracteres.</span>';
+        }
+        if (BUILTIN_THEMES[name]) {
+          return `<span class="text-red">theme create: '${escapeHtml(name)}' es un tema integrado y no puede sobreescribirse.</span>`;
+        }
+        var base = 'dark';
+        var vars = {};
+        for (var i = 2; i < args.length; i++) {
+          var arg = args[i];
+          if (arg.indexOf('=') === -1) continue;
+          var eqIdx = arg.indexOf('=');
+          var key = arg.slice(0, eqIdx);
+          var value = arg.slice(eqIdx + 1);
+          if (key === '--base') {
+            if (value === 'dark' || value === 'light') {
+              base = value;
+            } else {
+              return `<span class="text-red">theme create: base inválida '${escapeHtml(value)}'. Valores: dark, light.</span>`;
+            }
+          } else {
+            var varName = key.startsWith('--') ? key : '--' + key;
+            if (THEMEABLE_VARS.indexOf(varName) === -1) {
+              return `<span class="text-red">theme create: variable desconocida '${escapeHtml(varName)}'. Variables disponibles: ${THEMEABLE_VARS.join(', ')}</span>`;
+            }
+            vars[varName] = value;
+          }
+        }
+        if (Object.keys(vars).length === 0) {
+          return '<span class="text-red">theme create: se requiere al menos una variable de color.</span>\nUsa <span class="cmd">theme export</span> para ver las variables disponibles.';
+        }
+        customThemes[name] = { base: base, vars: vars };
+        Storage.saveCustomThemes(customThemes);
+        var varCount = Object.keys(vars).length;
+        return [
+          `<span class="text-green">Tema '${escapeHtml(name)}' creado</span> (base: ${escapeHtml(base)}, ${varCount} variable${varCount > 1 ? 's' : ''}).`,
+          `Usa <span class="cmd">theme ${escapeHtml(name)}</span> para activarlo.`
+        ].join('\n');
+      }
+
+      if (sub === 'edit') {
+        if (args.length < 2) {
+          return '<span class="text-red">theme edit: se requiere un nombre.</span>\nUsa <span class="cmd">theme edit &lt;nombre&gt; [--base=dark|light] [--var=valor]...</span>';
+        }
+        var name = args[1].toLowerCase();
+        if (BUILTIN_THEMES[name]) {
+          return `<span class="text-red">theme edit: no se puede editar el tema integrado '${escapeHtml(name)}'.</span>`;
+        }
+        if (!customThemes[name]) {
+          return `<span class="text-red">theme edit: el tema '${escapeHtml(name)}' no existe.</span>\nUsa <span class="cmd">theme create ${escapeHtml(name)}</span> para crearlo primero.`;
+        }
+        var changes = {};
+        var newBase = null;
+        for (var i = 2; i < args.length; i++) {
+          var arg = args[i];
+          if (arg.indexOf('=') === -1) continue;
+          var eqIdx = arg.indexOf('=');
+          var key = arg.slice(0, eqIdx);
+          var value = arg.slice(eqIdx + 1);
+          if (key === '--base') {
+            if (value === 'dark' || value === 'light') {
+              newBase = value;
+            } else {
+              return `<span class="text-red">theme edit: base inválida '${escapeHtml(value)}'. Valores: dark, light.</span>`;
+            }
+          } else {
+            var varName = key.startsWith('--') ? key : '--' + key;
+            if (THEMEABLE_VARS.indexOf(varName) === -1) {
+              return `<span class="text-red">theme edit: variable desconocida '${escapeHtml(varName)}'. Variables disponibles: ${THEMEABLE_VARS.join(', ')}</span>`;
+            }
+            changes[varName] = value;
+          }
+        }
+        if (Object.keys(changes).length === 0 && newBase === null) {
+          return '<span class="text-red">theme edit: se requiere al menos una variable o --base para editar.</span>';
+        }
+        if (newBase !== null) {
+          customThemes[name].base = newBase;
+        }
+        for (var k in changes) {
+          customThemes[name].vars[k] = changes[k];
+        }
+        Storage.saveCustomThemes(customThemes);
+        if (currentTheme === name) {
+          applyTheme(name);
+        }
+        var editInfo = [];
+        if (newBase) editInfo.push('base: ' + escapeHtml(newBase));
+        var changedCount = Object.keys(changes).length;
+        if (changedCount > 0) editInfo.push(changedCount + ' variable' + (changedCount > 1 ? 's' : ''));
+        return `<span class="text-green">Tema '${escapeHtml(name)}' editado</span> (${editInfo.join(', ')}).`;
+      }
+
+      if (sub === 'delete') {
+        if (args.length < 2) {
+          return '<span class="text-red">theme delete: se requiere un nombre de tema personalizado.</span>';
+        }
+        var name = args[1].toLowerCase();
+        if (BUILTIN_THEMES[name]) {
+          return `<span class="text-red">theme delete: no se puede eliminar el tema integrado '${escapeHtml(name)}'.</span>`;
+        }
+        if (!customThemes[name]) {
+          return `<span class="text-red">theme delete: el tema '${escapeHtml(name)}' no existe.</span>`;
+        }
+        if (currentTheme === name) {
+          applyTheme('dark');
+        }
+        delete customThemes[name];
+        Storage.saveCustomThemes(customThemes);
+        return `<span class="text-green">Tema '${escapeHtml(name)}' eliminado.</span>`;
+      }
+
+      if (sub === 'export') {
+        var themeName = args[1] ? args[1].toLowerCase() : currentTheme;
+        var varsToExport;
+        if (BUILTIN_THEMES[themeName]) {
+          varsToExport = BUILTIN_THEMES[themeName].vars;
+        } else if (customThemes[themeName]) {
+          var base = customThemes[themeName].base || 'dark';
+          varsToExport = Object.assign({}, BUILTIN_THEMES[base].vars, customThemes[themeName].vars);
+        } else {
+          return `<span class="text-red">theme export: el tema '${escapeHtml(themeName)}' no existe.</span>`;
+        }
+        var lines = ['<span class="text-yellow text-bold">Tema: ' + escapeHtml(themeName) + '</span>'];
+        var keys = Object.keys(varsToExport);
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          lines.push(`  <span class="text-cyan">${escapeHtml(k)}</span>=${escapeHtml(varsToExport[k])}`);
+        }
+        lines.push('');
+        return lines.join('\n');
+      }
+
+      var themeName = sub;
+      if (!applyTheme(themeName)) {
+        return `<span class="text-red">theme: '${escapeHtml(themeName)}' no existe.</span>\nUsa <span class="cmd">theme list</span> para ver los temas disponibles.`;
+      }
+      return `<span class="text-green">Tema cambiado a '${escapeHtml(themeName)}'.</span>`;
     },
 
     alias(args) {
@@ -996,6 +1268,12 @@
   Storage.saveVersion(VERSION);
   if (previousVersion && previousVersion !== VERSION) {
     appendOutput('<span class="text-green">v' + previousVersion + ' → v' + VERSION + ' instalada.</span>');
+  }
+
+  customThemes = Storage.loadCustomThemes();
+  var savedTheme = Storage.loadTheme();
+  if (savedTheme) {
+    applyTheme(savedTheme);
   }
 
   if (!Storage.loadFirstVisit()) {
