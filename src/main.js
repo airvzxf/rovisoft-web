@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = '1.3.0';
+  const VERSION = '1.3.1';
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -33,7 +33,8 @@
     cwd: '~',
     history: [],
     historyIndex: -1,
-    tempInput: ''
+    tempInput: '',
+    aliases: {}
   };
 
   // ─── Users ────────────────────────────────────────────────
@@ -262,6 +263,8 @@
         '  <span class="cmd">neofetch</span>        Información del sistema',
         '  <span class="cmd">date</span>            Fecha y hora actual',
         '  <span class="cmd">echo &lt;texto&gt;</span>    Repite el texto',
+        '  <span class="cmd">alias</span>           Gestiona alias de comandos',
+        '  <span class="cmd">unalias</span>         Elimina un alias',
         '  <span class="cmd">config</span>          Gestiona el almacenamiento local',
         '  <span class="cmd">reboot</span>          Reinicia la terminal (borra datos)',
         '  <span class="cmd">version</span>         Muestra la versión',
@@ -283,7 +286,7 @@
 
       base.push(
         '',
-        '<span class="text-dim">Atajos: ↑/↓ (historial) | Tab (autocompletar) | Ctrl+L (clear)</span>',
+        '<span class="text-dim">Atajos: ↑/↓ (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicomando)</span>',
         ''
       );
       return base.join('\n');
@@ -442,6 +445,59 @@
         const n = String(i + 1).padStart(4, ' ');
         return `<span class="text-dim">${n}</span>  ${escapeHtml(cmd)}`;
       }).join('\n');
+    },
+
+    alias(args) {
+      if (!args.length) {
+        const keys = Object.keys(state.aliases);
+        return [
+          '<span class="text-yellow text-bold">alias</span> — Define atajos para comandos',
+          '  <span class="cmd">alias</span>                     Muestra los alias definidos',
+          '  <span class="cmd">alias nombre</span>              Muestra el valor de un alias',
+          '  <span class="cmd">alias nombre=&#39;comando&#39;</span>    Define un nuevo alias',
+          '',
+          '  <span class="text-dim">Los alias se conservan entre sesiones.</span>',
+          '  <span class="text-dim">No se puede crear un alias con el nombre de un comando existente.</span>',
+          keys.length ? ' ' : '',
+          keys.map(k => `<span class="cmd">alias</span> ${escapeHtml(k)}=${escapeHtml(state.aliases[k])}`)
+        ].join('\n');
+      }
+      const rawArgs = args.join(' ');
+      const eqIdx = rawArgs.indexOf('=');
+      if (eqIdx === -1) {
+        const name = args[0];
+        if (state.aliases[name]) {
+          return `<span class="cmd">alias</span> ${escapeHtml(name)}=${escapeHtml(state.aliases[name])}`;
+        }
+        return `<span class="text-red">alias: ${escapeHtml(name)}: no definido.</span>`;
+      }
+      const name = rawArgs.slice(0, eqIdx).trim();
+      let value = rawArgs.slice(eqIdx + 1).trim();
+      if ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))) {
+        value = value.slice(1, -1);
+      }
+      if (!name) return '<span class="text-red">alias: nombre vacío.</span>';
+      if (!value) return '<span class="text-red">alias: valor vacío.</span>';
+      if (name in commands) return `<span class="text-red">alias: '${escapeHtml(name)}' es un comando existente.</span>`;
+      state.aliases[name] = value;
+      return '';
+    },
+
+    unalias(args) {
+      if (!args.length) {
+        return [
+          '<span class="text-yellow text-bold">unalias</span> — Elimina un alias definido',
+          '',
+          '  <span class="cmd">unalias nombre</span>   Elimina el alias especificado',
+          '',
+          '  <span class="text-dim">Usa</span> <span class="cmd">alias</span> <span class="text-dim">para ver los alias definidos.</span>',
+          ''
+        ].join('\n');
+      }
+      const name = args[0];
+      if (!(name in state.aliases)) return `<span class="text-red">unalias: ${escapeHtml(name)}: no definido.</span>`;
+      delete state.aliases[name];
+      return '';
     },
 
     // ─── File system commands (airvzxf only) ──────────────
@@ -726,7 +782,71 @@
     }
   };
 
+  // ─── History Expansion ──────────────────────────────────────
+
+  function expandHistory(input) {
+    if (input === '!!') {
+      if (state.history.length === 0) return { error: '!!: event not found' };
+      return { cmd: state.history[state.history.length - 1] };
+    }
+    const m = input.match(/^!(\d+)$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n < 1 || n > state.history.length) return { error: `!${n}: event not found` };
+      return { cmd: state.history[n - 1] };
+    }
+    return null;
+  }
+
   // ─── Execute Command ──────────────────────────────────────
+
+  function runSingle(cmdStr) {
+    let trimmed = cmdStr.trim();
+    let isExpansion = false;
+
+    if (!trimmed) {
+      appendOutput('');
+      return;
+    }
+
+    const expansion = expandHistory(trimmed);
+    if (expansion) {
+      appendCommandLine(trimmed);
+      if (expansion.error) {
+        appendOutput(`<span class="text-red">${escapeHtml(expansion.error)}</span>`);
+        return;
+      }
+      appendOutput(escapeHtml(expansion.cmd));
+      trimmed = expansion.cmd;
+      isExpansion = true;
+    }
+
+    if (!isExpansion) {
+      appendCommandLine(trimmed);
+    }
+
+    const parts = trimmed.split(/\s+/);
+    let cmdName = parts[0].toLowerCase();
+    let args = parts.slice(1);
+
+    if (state.aliases[cmdName]) {
+      const expanded = state.aliases[cmdName] + (args.length ? ' ' + args.join(' ') : '');
+      appendOutput(`<span class="text-dim">→ ${escapeHtml(expanded)}</span>`);
+      const expandedParts = expanded.split(/\s+/);
+      cmdName = expandedParts[0].toLowerCase();
+      args = expandedParts.slice(1);
+    }
+
+    const cmdFn = commands[cmdName];
+    if (cmdFn) {
+      const result = cmdFn(args, trimmed);
+      if (result !== undefined && result !== null) {
+        appendOutput(result);
+      }
+    } else {
+      appendOutput(`<span class="text-red">comando no encontrado: ${escapeHtml(cmdName)}</span>`);
+    }
+  }
 
   function execute(cmdStr) {
     const trimmed = cmdStr.trim();
@@ -744,20 +864,9 @@
     }
     state.historyIndex = state.history.length;
 
-    appendCommandLine(trimmed);
-
-    const parts = trimmed.split(/\s+/);
-    const cmdName = parts[0].toLowerCase();
-    const args = parts.slice(1);
-
-    const cmdFn = commands[cmdName];
-    if (cmdFn) {
-      const result = cmdFn(args, trimmed);
-      if (result !== undefined && result !== null) {
-        appendOutput(result);
-      }
-    } else {
-      appendOutput(`<span class="text-red">comando no encontrado: ${escapeHtml(cmdName)}</span>`);
+    const segments = trimmed.split(';').map(s => s.trim()).filter(s => s);
+    for (const seg of segments) {
+      runSingle(seg);
     }
 
     Storage.save(state);
@@ -840,7 +949,7 @@
       const val = cmdInput.value.trim().split(/\s+/);
       if (val.length === 1 && val[0] !== '') {
         const prefix = val[0].toLowerCase();
-        const available = Object.keys(commands);
+        const available = Object.keys(commands).concat(Object.keys(state.aliases));
         const matches = available.filter(c => c.startsWith(prefix));
         if (matches.length === 1) {
           cmdInput.value = matches[0] + ' ';
@@ -877,6 +986,9 @@
         state.history = state.history.slice(-MAX_HISTORY);
       }
       state.historyIndex = state.history.length;
+    }
+    if (savedState.aliases && typeof savedState.aliases === 'object') {
+      state.aliases = savedState.aliases;
     }
   }
 

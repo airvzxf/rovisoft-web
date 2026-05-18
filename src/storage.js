@@ -63,7 +63,8 @@
     var data = {
       user: state.user,
       cwd: state.cwd,
-      history: state.history
+      history: state.history,
+      aliases: state.aliases
     };
     try {
       store.setItem(KEYS.STATE, JSON.stringify(data));

@@ -214,13 +214,12 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- En el history, igual que en Linux, si pongo en el prompt signo de admiración y el número de la historia, debería ejecutar el comando.
-- Multicomandos en una linea. Si pongo un comando, luego punto y coma, luego otro comando, punto y coma, o uso doble ampersand, debería ejecutarme todos los comandos uno por uno.
-- `alias` y `unalias` para alias de comandos. Que se puedan guarden en el archivo `~/bashrc`.
-- Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos.
-- Temas de color (light/dark) con un comando `theme`.
+- Temas de color (light/dark) con un comando `theme`. Se guarda en el Storage la seleccion.
+- Crear `themes` personalizados sobrescribiéndolos con JavaScript los estilos. Estos se almacenan en el Storage.
 - Soporte multilenguaje (`lang es`, `lang en`).
+- Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos.
 - Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo.  A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
+- Una buena implementación es que si pones en la URL argumentos o parámetros los puede ejecutar. Un ejemplo, quiero hacerlo de Google SEO para el posicionamiento y quiero hacer un mapa. Entonces quiero mostrar el texto y enlace de acerca de nosotros; podría poner en la URL parámetros como: `/?cmd=clear;su%20airvzxf;airvzxf%20about;airvzxf%20contact;airvzxf%20social;` o `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about&cmd=airvzxf%20contact&cmd=airvzxf%20social`.
 - Easter eggs ocultos (comandos secretos).
 
 ## 10. Informacion personal
