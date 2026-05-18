@@ -214,21 +214,14 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Cookies para personalizar la terminal visual y funcionalmente. Agregar un comando que se llame `cookies` en el cual se puede aceptar o rechazar. Actualizar la bienvenida para que hable acerca de esto de las cookies, que por default están habilitadas las cookies y que uso se les va a dar. Obviamente si las rechaza el usuario no se debe de guardar las cookies; si las acepta podemos guardar las cookies con todo lo que se desee personalizar para el usuario. Tengo una idea que esta en vez de ser un sitio web use PWA (Progressive Web Application) y ahí también podemos almacenar los datos esto vendría a reemplazar las cookies.
-- El agrega el comando `upgrade`. La versión actual en todo momento, sea con las cookies o PWA; este comando descargue la página web de nuevo y verifique la nueva versión si hay una nueva versión va a decir "se actualizó exitosamente de la versión 1.2 a la 1.3" y si no hay actualización mandaría el mensaje normal que no sea de error que diga "no hay actualizaciones disponibles".
-- Temas de color (light/dark) con un comando `theme`.
-- `alias` y `unalias` para alias de comandos.
-- Soporte multilenguaje (`lang es`, `lang en`).
-- Easter eggs ocultos (comandos secretos).
-- Sistema de archivos virtual (`ls`, `cd`, `cat archivo.txt`).
-- `mkdir`, `rm` y `rm -R`.
-- `curl` simulado que haga fetch real a APIs.
-- Proyectos que muestra la información general y los enlaces normalmente a GitHub.
-- Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo.  A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
-- Con cookies, en comando `neofetch` mostrar el uptime desde que se cargo la pagina.
 - En el history, igual que en Linux, si pongo en el prompt signo de admiración y el número de la historia, debería ejecutar el comando.
-- Si pongo un comando, luego punto y coma, luego otro comando, punto y coma, o uso doble ampersand, debería ejecutarme todos los comandos uno por uno.
-- Crear el comando `reboot` el cual va a restaurar todo por default, las cookies básicamente y los estados de JavaScript. O sea, puede borrar las cookies y refrescar el navegador (refresh).
+- Multicomandos en una linea. Si pongo un comando, luego punto y coma, luego otro comando, punto y coma, o uso doble ampersand, debería ejecutarme todos los comandos uno por uno.
+- `alias` y `unalias` para alias de comandos. Que se puedan guarden en el archivo `~/bashrc`.
+- Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos.
+- Temas de color (light/dark) con un comando `theme`.
+- Soporte multilenguaje (`lang es`, `lang en`).
+- Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo.  A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
+- Easter eggs ocultos (comandos secretos).
 
 ## 10. Informacion personal
 

@@ -1,5 +1,5 @@
 /* =====================================================
-   RoviSoft.net — Terminal CSS v1.2.0
+   RoviSoft.net — Terminal CSS
    GNU AGPL v3 — https://github.com/airvzxf/rovisoft-web
    ===================================================== */
 
@@ -305,6 +305,13 @@ body {
 
 .perm-denied {
   color: var(--red);
+}
+
+/* ─── Reboot overlay ──────────────────────────────────────── */
+
+.terminal-rebooting {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 /* ─── Responsive ──────────────────────────────────────────── */

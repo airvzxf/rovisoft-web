@@ -1,5 +1,5 @@
 /* =====================================================
-   RoviSoft.net — Terminal JavaScript v1.2.0
+   RoviSoft.net — Terminal JavaScript
    GNU AGPL v3 — https://github.com/airvzxf/rovisoft-web
    ===================================================== */
 
@@ -21,6 +21,11 @@
   const terminal     = document.getElementById('terminal');
 
   // ─── State ────────────────────────────────────────────────
+
+  const VERSION = '1.3.0';
+  const MAX_HISTORY = 1000;
+
+  let sessionStartTime = Date.now();
 
   const state = {
     user: 'guest',
@@ -224,6 +229,24 @@
     ].join('\n');
   }
 
+  function formatUptime(seconds) {
+    const d = Math.floor(seconds / 86400);
+    const h = Math.floor((seconds % 86400) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    const parts = [];
+    if (d) { parts.push(d + 'd'); parts.push(h + 'h'); parts.push(m + 'm'); }
+    else if (h) { parts.push(h + 'h'); parts.push(m + 'm'); parts.push(s + 's'); }
+    else { parts.push(m + 'm'); parts.push(s + 's'); }
+    return parts.join(' ') || '0s';
+  }
+
+  function formatStorageSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KiB';
+    return (bytes / 1048576).toFixed(2) + ' MiB';
+  }
+
   // ─── Commands ─────────────────────────────────────────────
 
   const commands = {
@@ -239,6 +262,8 @@
         '  <span class="cmd">neofetch</span>        Información del sistema',
         '  <span class="cmd">date</span>            Fecha y hora actual',
         '  <span class="cmd">echo &lt;texto&gt;</span>    Repite el texto',
+        '  <span class="cmd">config</span>          Gestiona el almacenamiento local',
+        '  <span class="cmd">reboot</span>          Reinicia la terminal (borra datos)',
         '  <span class="cmd">version</span>         Muestra la versión',
         '  <span class="cmd">license</span>         Muestra la licencia',
         '  <span class="cmd">history</span>         Historial de comandos',
@@ -309,9 +334,9 @@
 
     version() {
       return [
-        '<span class="text-dim">Versión:</span>     v1.2.0',
-        '<span class="text-dim">Build:</span>       AGPL v3 — vanilla HTML5/CSS3/ES6+',
-        '<span class="text-dim">Repositorio:</span>  ' + link('https://github.com/airvzxf/rovisoft-web'),
+        '<span class="text-dim">Versión:</span>       v' + VERSION,
+        '<span class="text-dim">Build:</span>         AGPL v3 — vanilla HTML5/CSS3/ES6+',
+        '<span class="text-dim">Repositorio:</span>   ' + link('https://github.com/airvzxf/rovisoft-web'),
         ''
       ].join('\n');
     },
@@ -341,16 +366,36 @@
 
     neofetch() {
       const u = USERS[state.user];
-      const uptime = Math.floor(Math.random() * 30) + 1;
-      const ram = (Math.random() * 200 + 100).toFixed(0);
+      const status = Storage.getStatus();
+
+      let uptime;
+      if (status.accepted && status.firstVisit) {
+        const uptimeSec = Math.floor((Date.now() - status.firstVisit) / 1000);
+        uptime = formatUptime(uptimeSec);
+      } else {
+        const uptimeSec = Math.floor((Date.now() - sessionStartTime) / 1000);
+        uptime = formatUptime(uptimeSec) + ' (session)';
+      }
+
+      let ram;
+      if (status.accepted) {
+        const usedBytes = Storage.getStorageInfo().totalBytes;
+        ram = formatStorageSize(usedBytes) + ' / 5.0 MiB';
+      } else {
+        const fakeRam = (Math.random() * 200 + 100).toFixed(0);
+        ram = fakeRam + ' MiB / 1024 MiB';
+      }
+
+      const configLabel = status.accepted === true ? 'aceptado' : status.accepted === false ? 'rechazado' : 'sin decidir';
       const lines = [
-        `<span class="nf-label">OS:</span>      RoviSoft Terminal v1.2.0`,
-        `<span class="nf-label">Host:</span>    ${escapeHtml(state.host)}`,
-        `<span class="nf-label">Kernel:</span>  HTML5/CSS3/ES6+`,
-        `<span class="nf-label">Shell:</span>   ${escapeHtml(u.shell)}`,
-        `<span class="nf-label">User:</span>    ${escapeHtml(state.user)}`,
-        `<span class="nf-label">Uptime:</span>  ${uptime} days`,
-        `<span class="nf-label">RAM:</span>     ${ram} MiB / 1024 MiB`,
+        `<span class="nf-label">OS:</span>        RoviSoft Terminal v${VERSION}`,
+        `<span class="nf-label">Host:</span>      ${escapeHtml(state.host)}`,
+        `<span class="nf-label">Kernel:</span>    HTML5/CSS3/ES6+`,
+        `<span class="nf-label">Shell:</span>     ${escapeHtml(u.shell)}`,
+        `<span class="nf-label">User:</span>      ${escapeHtml(state.user)}`,
+        `<span class="nf-label">Uptime:</span>    ${uptime}`,
+        `<span class="nf-label">Config:</span>    ${configLabel}`,
+        `<span class="nf-label">Storage:</span>   ${ram}`,
       ];
       return '<div class="neofetch-block">' + lines.join('\n') + '</div>';
     },
@@ -528,6 +573,108 @@
       const lines = content.split('\n');
       const tailLines = lines.slice(-10);
       return textOut(tailLines);
+    },
+
+    config(args) {
+      if (!args.length) {
+        const status = Storage.getStatus();
+        const acceptedLabel = status.accepted === true ? '<span class="text-green">aceptado</span>' : status.accepted === false ? '<span class="text-red">rechazado</span>' : '<span class="text-yellow">sin decidir</span>';
+        const storeLabel = status.accepted === true ? 'localStorage' : 'sessionStorage (volátil)';
+        return [
+          '<span class="text-yellow text-bold">Almacenamiento local</span>',
+          `  Estado:     ${acceptedLabel}`,
+          `  Mecanismo:  ${storeLabel}`,
+          '',
+          '  <span class="text-dim">Se almacenarían:</span>',
+          '  <span class="text-dim">  — Sesión de usuario</span>',
+          '  <span class="text-dim">  — Historial de comandos</span>',
+          '  <span class="text-dim">  — Preferencias</span>',
+          '  <span class="text-dim">  — Versión</span>',
+          '',
+          '  <span class="cmd">config accept</span>   Aceptar almacenamiento persistente',
+          '  <span class="cmd">config reject</span>   Rechazar (datos volátiles, se pierden al cerrar)',
+          '  <span class="cmd">config status</span>   Detalle técnico del almacenamiento',
+          '  <span class="cmd">config show</span>     Mostrar datos almacenados',
+          ''
+        ].join('\n');
+      }
+
+      const sub = args[0].toLowerCase();
+
+      if (sub === 'accept') {
+        Storage.accept();
+        Storage.save(state);
+        return '<span class="text-green">Almacenamiento persistente aceptado.</span>\nTus datos se guardarán entre sesiones.';
+      }
+
+      if (sub === 'reject') {
+        Storage.reject();
+        return '<span class="text-yellow">Almacenamiento persistente rechazado.</span>\nLos datos se perderán al cerrar la pestaña.\nUsa <span class="cmd">config accept</span> para revertir.';
+      }
+
+      if (sub === 'status') {
+        const s = Storage.getStatus();
+        const acceptedLabel = s.accepted === true ? '<span class="text-green">aceptado</span>' : s.accepted === false ? '<span class="text-red">rechazado</span>' : '<span class="text-yellow">sin decidir</span>';
+        const uptimeStr = s.firstVisit ? formatUptime(Math.floor((Date.now() - s.firstVisit) / 1000)) : 'N/A';
+        const versionStr = s.versionStored ? 'v' + s.versionStored : 'N/A';
+        const info = Storage.getStorageInfo();
+        const sizeStr = formatStorageSize(info.totalBytes);
+        return [
+          `  <span class="nf-label">Modo:</span>        ${acceptedLabel}`,
+          `  <span class="nf-label">Almacén:</span>     ${s.storeName}`,
+          `  <span class="nf-label">Versión:</span>     ${versionStr} (código: v${VERSION})`,
+          `  <span class="nf-label">Uptime:</span>      ${uptimeStr}`,
+          `  <span class="nf-label">Datos:</span>       ${sizeStr} en ${info.keysCount} llaves`,
+          ''
+        ].join('\n');
+      }
+
+      if (sub === 'show') {
+        const info = Storage.getStorageInfo();
+        const store = Storage.isAccepted() ? localStorage : sessionStorage;
+        const keys = info.keys;
+        const lines = [];
+
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const rawVal = store.getItem(key);
+          if (key === 'rs_state' && rawVal) {
+            try {
+              const parsed = JSON.parse(rawVal);
+              const displayParsed = { ...parsed, history: ['…'] };
+              const formatted = JSON.stringify(displayParsed, null, 2);
+              const escaped = escapeHtml(formatted);
+              const indented = escaped.split('\n').map(function (line, idx) {
+                return idx === 0 ? '  <span class="text-cyan">' + key + '</span> = ' + line : '              ' + line;
+              }).join('\n');
+              lines.push(indented);
+            } catch (e) {
+              lines.push('  <span class="text-cyan">' + escapeHtml(key) + '</span> = ' + escapeHtml(rawVal));
+            }
+          } else {
+            lines.push('  <span class="text-cyan">' + escapeHtml(key) + '</span> = ' + escapeHtml(rawVal || 'null'));
+          }
+        }
+
+        lines.push('');
+        lines.push('  <span class="text-dim">' + info.keysCount + ' llaves, ' + formatStorageSize(info.totalBytes) + ' en ' + (Storage.isAccepted() ? 'localStorage' : 'sessionStorage') + '</span>');
+        lines.push('');
+        return lines.join('\n');
+      }
+
+      return `<span class="text-red">config: subcomando desconocido '${escapeHtml(sub)}'</span>\nUsa <span class="cmd">config</span> para ver las opciones disponibles.`;
+    },
+
+    reboot() {
+      cmdInput.disabled = true;
+      cmdInput.blur();
+      terminal.classList.add('terminal-rebooting');
+      appendOutput('<span class="text-yellow">Reiniciando terminal...</span>');
+      setTimeout(function () {
+        Storage.reset();
+        location.reload();
+      }, 2500);
+      return undefined;
     }
   };
 
@@ -551,7 +698,7 @@
     contact() {
       const u = USERS.airvzxf;
       return [
-        `<span class="text-dim">Email:</span>    ${escapeHtml(u.email)}`,
+        `<span class="text-dim">Email:</span>     ${escapeHtml(u.email)}`,
         ''
       ].join('\n');
     },
@@ -591,6 +738,9 @@
 
     if (state.history.length === 0 || state.history[state.history.length - 1] !== trimmed) {
       state.history.push(trimmed);
+      if (state.history.length > MAX_HISTORY) {
+        state.history = state.history.slice(-MAX_HISTORY);
+      }
     }
     state.historyIndex = state.history.length;
 
@@ -603,12 +753,14 @@
     const cmdFn = commands[cmdName];
     if (cmdFn) {
       const result = cmdFn(args, trimmed);
-      if (result !== undefined) {
+      if (result !== undefined && result !== null) {
         appendOutput(result);
       }
     } else {
       appendOutput(`<span class="text-red">comando no encontrado: ${escapeHtml(cmdName)}</span>`);
     }
+
+    Storage.save(state);
   }
 
   // ─── Event: Click anywhere in terminal focuses input ─────
@@ -710,6 +862,33 @@
   });
 
   // ─── Init ─────────────────────────────────────────────────
+
+  const savedState = Storage.load();
+  if (savedState) {
+    if (savedState.user && USERS[savedState.user]) {
+      state.user = savedState.user;
+    }
+    if (savedState.cwd) {
+      state.cwd = savedState.cwd;
+    }
+    if (savedState.history && Array.isArray(savedState.history)) {
+      state.history = savedState.history;
+      if (state.history.length > MAX_HISTORY) {
+        state.history = state.history.slice(-MAX_HISTORY);
+      }
+      state.historyIndex = state.history.length;
+    }
+  }
+
+  const previousVersion = Storage.loadVersion();
+  Storage.saveVersion(VERSION);
+  if (previousVersion && previousVersion !== VERSION) {
+    appendOutput('<span class="text-green">v' + previousVersion + ' → v' + VERSION + ' instalada.</span>');
+  }
+
+  if (!Storage.loadFirstVisit()) {
+    Storage.saveFirstVisit(Date.now());
+  }
 
   updatePrompt();
   updateCursorPos();
