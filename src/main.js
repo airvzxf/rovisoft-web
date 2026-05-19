@@ -18,11 +18,13 @@
   const promptHost = document.getElementById("prompt-host");
   const promptPath = document.getElementById("prompt-path");
   const promptSymbol = document.getElementById("prompt-symbol");
+  const promptAt = document.getElementById("prompt-at");
+  const promptColon = document.getElementById("prompt-colon");
   const terminal = document.getElementById("terminal");
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.7.0";
+  const VERSION = "1.8.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -94,6 +96,7 @@
     tempInput: "",
     aliases: {},
     lang: "es",
+    suTarget: null,
   };
 
   // ─── Internationalization ──────────────────────────────────
@@ -135,11 +138,14 @@
       "help.urlParams":
         'Par\u00e1metros URL: <span class="cmd">?cmd=clear;su%20airvzxf</span> (\u00f3 &cmd= repetidos)',
 
+      "users.rootDesc": "Superusuario",
       "users.airvzxfDesc": "Administrador / Propietario",
       "users.guestDesc": "Invitado (sesi\u00f3n actual por defecto)",
 
       "su.usage": "Uso: su &lt;user&gt;",
       "su.authSuccess": "Autenticaci\u00f3n exitosa.",
+      "su.authFailed": "su: Autenticaci\u00f3n fallida.",
+      "su.password": "Contrase\u00f1a:",
       "su.welcomeUser": "Bienvenido, {0}",
       "su.guestRestored": "Sesi\u00f3n de invitado restaurada.",
       "su.unknownUser": "su: usuario '{0}' no existe.",
@@ -445,11 +451,14 @@
       "help.urlParams":
         'URL parameters: <span class="cmd">?cmd=clear;su%20airvzxf</span> (or repeated &cmd=)',
 
+      "users.rootDesc": "Superuser",
       "users.airvzxfDesc": "Administrator / Owner",
       "users.guestDesc": "Guest (default session)",
 
       "su.usage": "Usage: su &lt;user&gt;",
       "su.authSuccess": "Authentication successful.",
+      "su.authFailed": "su: Authentication failure.",
+      "su.password": "Password:",
       "su.welcomeUser": "Welcome, {0}",
       "su.guestRestored": "Guest session restored.",
       "su.unknownUser": "su: user '{0}' does not exist.",
@@ -744,6 +753,11 @@
       shell: "/bin/bash",
       location: "Desconocida",
     },
+    root: {
+      name: "root",
+      shell: "/bin/bash",
+      location: "RoviSoft.net",
+    },
     airvzxf: {
       name: "Israel Alberto Roldan Vega",
       email: "israel.alberto.rv@gmail.com",
@@ -814,15 +828,26 @@
   // ─── Update Prompt ────────────────────────────────────────
 
   function updatePrompt() {
-    promptUser.textContent = state.user;
-    promptHost.textContent = state.host;
-    promptPath.textContent = state.cwd;
-    if (state.user === "root") {
-      promptSymbol.textContent = "#";
-      promptSymbol.className = "prompt-symbol symbol-hash";
+    if (state.suTarget) {
+      promptUser.textContent = t("su.password");
+      promptAt.textContent = "";
+      promptHost.textContent = "";
+      promptColon.textContent = "";
+      promptPath.textContent = "";
+      promptSymbol.textContent = "";
     } else {
-      promptSymbol.textContent = "$";
-      promptSymbol.className = "prompt-symbol";
+      promptUser.textContent = state.user;
+      promptAt.textContent = "@";
+      promptHost.textContent = state.host;
+      promptColon.textContent = ":";
+      promptPath.textContent = state.cwd;
+      if (state.user === "root") {
+        promptSymbol.textContent = "#";
+        promptSymbol.className = "prompt-symbol symbol-hash";
+      } else {
+        promptSymbol.textContent = "$";
+        promptSymbol.className = "prompt-symbol";
+      }
     }
   }
 
@@ -831,8 +856,13 @@
   function updateCursorPos() {
     const val = cmdInput.value;
     const pos = cmdInput.selectionStart;
-    cmdBefore.textContent = val.slice(0, pos);
-    cmdAfter.textContent = val.slice(pos);
+    if (state.suTarget) {
+      cmdBefore.textContent = "";
+      cmdAfter.textContent = "";
+    } else {
+      cmdBefore.textContent = val.slice(0, pos);
+      cmdAfter.textContent = val.slice(pos);
+    }
   }
 
   function showCursor() {
@@ -858,9 +888,7 @@
     div.className = "output-line command-line";
     const symbol = state.user === "root" ? "#" : "$";
     const symbolClass =
-      state.user === "root"
-        ? "prompt-symbol prompt-symbol-hash"
-        : "prompt-symbol";
+      state.user === "root" ? "prompt-symbol symbol-hash" : "prompt-symbol";
     div.innerHTML = [
       `<span class="prompt-user">${escapeHtml(state.user)}</span>`,
       `<span class="prompt-at">@</span>`,
@@ -1127,6 +1155,7 @@
 
     users() {
       return formatHtmlList([
+        ['<span class="text-green">root</span>', t("users.rootDesc")],
         ['<span class="text-green">airvzxf</span>', t("users.airvzxfDesc")],
         ['<span class="text-green">guest</span>', t("users.guestDesc")],
       ])
@@ -1139,6 +1168,13 @@
         return '<span class="text-red">' + t("su.usage") + "</span>";
       }
       const target = args[0].toLowerCase();
+      if (target === "root") {
+        state.suTarget = "root";
+        updatePrompt();
+        updateCursorPos();
+        cmdInput.focus();
+        return null;
+      }
       if (target === "airvzxf") {
         state.user = "airvzxf";
         state.cwd = "~";
@@ -1185,7 +1221,7 @@
     },
 
     airvzxf(args) {
-      if (state.user !== "airvzxf") {
+      if (state.user !== "airvzxf" && state.user !== "root") {
         return permDenied("airvzxf", "airvzxf");
       }
       if (!args.length) {
@@ -2200,6 +2236,7 @@
       .filter((s) => s);
     for (const seg of segments) {
       runSingle(seg);
+      if (state.suTarget) break;
     }
 
     Storage.save(state);
@@ -2213,6 +2250,14 @@
     if (!cmds.length) return;
     for (var i = 0; i < cmds.length; i++) {
       execute(cmds[i]);
+      if (state.suTarget) {
+        appendOutput(
+          '<span class="text-red">' + t("su.authFailed") + "</span>",
+        );
+        state.suTarget = null;
+        updatePrompt();
+        updateCursorPos();
+      }
     }
     try {
       window.history.replaceState(null, "", window.location.pathname);
@@ -2257,6 +2302,17 @@
 
     if (key === "Enter") {
       e.preventDefault();
+      if (state.suTarget) {
+        var failMsg =
+          '<span class="text-red">' + t("su.authFailed") + "</span>";
+        state.suTarget = null;
+        clearInput();
+        updatePrompt();
+        updateCursorPos();
+        appendOutput(failMsg);
+        Storage.save(state);
+        return;
+      }
       execute(cmdInput.value);
       clearInput();
       return;
@@ -2264,6 +2320,7 @@
 
     if (key === "ArrowUp") {
       e.preventDefault();
+      if (state.suTarget) return;
       if (state.history.length === 0) return;
       if (state.historyIndex === state.history.length) {
         state.tempInput = cmdInput.value;
@@ -2280,6 +2337,7 @@
 
     if (key === "ArrowDown") {
       e.preventDefault();
+      if (state.suTarget) return;
       if (state.historyIndex < state.history.length - 1) {
         state.historyIndex++;
         cmdInput.value = state.history[state.historyIndex];
@@ -2295,6 +2353,7 @@
 
     if (key === "Tab") {
       e.preventDefault();
+      if (state.suTarget) return;
       const val = cmdInput.value.trim().split(/\s+/);
       if (val.length === 1 && val[0] !== "") {
         const prefix = val[0].toLowerCase();
