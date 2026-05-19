@@ -24,7 +24,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.9.0";
+  const VERSION = "1.10.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -133,6 +133,7 @@
       "help.version": "Muestra la versi\u00f3n",
       "help.license": "Muestra la licencia",
       "help.history": "Historial de comandos",
+      "help.man": "Muestra p\u00e1ginas de manual",
       "help.shortcuts":
         "Atajos: \u2191/\u2193 (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicommando)",
       "help.urlParams":
@@ -162,7 +163,6 @@
       "airvzxf.projects": "Proyectos del portafolio",
       "airvzxf.skills": "Stack tecnol\u00f3gico y dominios",
       "airvzxf.research": "Investigaci\u00f3n en IA y ML",
-      "airvzxf.man": "P\u00e1gina de manual (man page)",
       "airvzxf.unknownSubcommand": "airvzxf: subcomando desconocido '{0}'",
       "airvzxf.useHelp":
         'Usa <span class="cmd">airvzxf</span> para ver los subcomandos disponibles.',
@@ -410,6 +410,151 @@
       "man.header.languages": "LENGUAJES",
       "man.langList": "Rust, Bash, Python, JavaScript, Assembly, C",
       "man.header.seeAlso": "VEASE TAMBIEN",
+      "man.header.options": "OPCIONES",
+      "man.header.subcommands": "SUBCOMANDOS",
+      "man.header.historyExpansion": "EXPANSION DE HISTORIAL",
+      "man.available": "Paginas de manual disponibles:",
+      "man.notFound": "No hay entrada de manual para '{0}'.",
+      "man.hint":
+        'Usa <span class="cmd">man</span> para ver las paginas disponibles.',
+
+      "man.help.name": "help - Muestra los comandos disponibles",
+      "man.help.synopsis": "help",
+      "man.help.description":
+        "Muestra una lista de todos los comandos disponibles en la terminal, junto con una breve descripcion de cada uno. Tambien muestra atajos de teclado y parametros de URL.",
+      "man.help.seeAlso": "man(1)",
+
+      "man.clear.name": "clear - Limpia la pantalla",
+      "man.clear.synopsis": "clear",
+      "man.clear.description":
+        "Limpia toda la salida visible de la terminal, proporcionando un espacio de trabajo limpio. El historial de comandos se preserva. Tambien se puede activar con Ctrl+L.",
+      "man.clear.seeAlso": "reboot(1), reset(1)",
+
+      "man.whoami.name": "whoami - Muestra el usuario actual",
+      "man.whoami.synopsis": "whoami",
+      "man.whoami.description":
+        "Muestra el nombre del usuario de la sesion actual. Los usuarios disponibles son: guest (invitado), airvzxf (administrador) y root (superusuario).",
+      "man.whoami.seeAlso": "users(1), su(1), man(1)",
+
+      "man.users.name": "users - Lista los usuarios del sistema",
+      "man.users.synopsis": "users",
+      "man.users.description":
+        "Muestra una lista de todos los usuarios disponibles en el sistema junto con sus roles y descripciones.",
+      "man.users.seeAlso": "whoami(1), su(1)",
+
+      "man.su.name": "su - Cambia de usuario",
+      "man.su.synopsis": "su <usuario>",
+      "man.su.description":
+        "Cambia la sesion al usuario especificado. Los usuarios disponibles son: guest (sin contrasena), airvzxf (sin contrasena) y root (requiere contrasena). Use su sin argumentos para ver el uso.",
+      "man.su.seeAlso": "whoami(1), users(1)",
+
+      "man.airvzxf.name": "airvzxf - Informacion del propietario",
+      "man.airvzxf.synopsis": "airvzxf <subcomando>",
+      "man.airvzxf.description":
+        "Muestra informacion sobre el propietario y administrador de RoviSoft.net. Requiere iniciar sesion como airvzxf o root. Los subcomandos disponibles son: about, contact, social, projects, skills y research.",
+      "man.airvzxf.seeAlso": "whoami(1), neofetch(1)",
+
+      "man.neofetch.name": "neofetch - Informacion del sistema",
+      "man.neofetch.synopsis": "neofetch",
+      "man.neofetch.description":
+        "Muestra informacion del sistema en formato neofetch, incluyendo: sistema operativo, host, kernel, shell, usuario, tema, tiempo de actividad, estado de configuracion y almacenamiento.",
+      "man.neofetch.seeAlso": "version(1), config(1)",
+
+      "man.date.name": "date - Fecha y hora actual",
+      "man.date.synopsis": "date",
+      "man.date.description":
+        "Muestra la fecha y hora actuales segun el reloj del navegador.",
+      "man.date.seeAlso": "neofetch(1)",
+
+      "man.echo.name": "echo - Repite texto",
+      "man.echo.synopsis": "echo <texto>",
+      "man.echo.description":
+        "Muestra el texto proporcionado en la terminal. Si no se proporciona texto, muestra una linea vacia.",
+      "man.echo.seeAlso": "alias(1)",
+
+      "man.alias.name": "alias - Define atajos para comandos",
+      "man.alias.synopsis": "alias | alias <nombre> | alias <nombre>='comando'",
+      "man.alias.description":
+        "Gestiona alias de comandos. Sin argumentos, muestra los alias definidos y el uso. Los alias no pueden sobreescribir comandos existentes. Se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
+      "man.alias.opt.show": "Muestra los alias definidos",
+      "man.alias.opt.showValue": "Muestra el valor de un alias especifico",
+      "man.alias.opt.define": "Define un nuevo alias con el valor especificado",
+      "man.alias.seeAlso": "unalias(1), config(1)",
+
+      "man.unalias.name": "unalias - Elimina un alias",
+      "man.unalias.synopsis": "unalias <nombre>",
+      "man.unalias.description":
+        "Elimina el alias especificado de la lista de alias definidos.",
+      "man.unalias.seeAlso": "alias(1)",
+
+      "man.theme.name": "theme - Gestiona temas de color",
+      "man.theme.synopsis":
+        "theme | theme <nombre> | theme list | theme create | theme edit | theme delete | theme export",
+      "man.theme.description":
+        "Gestiona los temas de color de la terminal. Los temas integrados son 'dark' y 'light'. Se pueden crear temas personalizados con variables de color especificas. Los temas personalizados se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
+      "man.theme.sub.list": "Lista los temas disponibles",
+      "man.theme.sub.set": "Cambia al tema especificado",
+      "man.theme.sub.create": "Crea un tema personalizado",
+      "man.theme.sub.edit": "Edita un tema personalizado",
+      "man.theme.sub.delete": "Elimina un tema personalizado",
+      "man.theme.sub.export": "Exporta las variables del tema",
+      "man.theme.seeAlso": "config(1), neofetch(1)",
+
+      "man.lang.name": "lang - Cambia el idioma de la interfaz",
+      "man.lang.synopsis": "lang | lang <codigo> | lang list",
+      "man.lang.description":
+        "Cambia o muestra el idioma de la interfaz de la terminal. Los idiomas disponibles se listan con 'lang list'. El cambio se guarda entre sesiones si el almacenamiento persistente esta habilitado.",
+      "man.lang.seeAlso": "config(1)",
+
+      "man.config.name": "config - Gestiona el almacenamiento local",
+      "man.config.synopsis":
+        "config | config accept | config reject | config status | config show",
+      "man.config.description":
+        "Gestiona las preferencias de almacenamiento local. Controla si los datos persisten entre sesiones (localStorage) o son volatiles (sessionStorage). Acepta tres estados: aceptado, rechazado o sin decidir.",
+      "man.config.sub.accept": "Acepta el almacenamiento persistente",
+      "man.config.sub.reject":
+        "Rechaza (datos volatiles, se pierden al cerrar)",
+      "man.config.sub.status": "Muestra detalles tecnicos del almacenamiento",
+      "man.config.sub.show": "Muestra los datos almacenados",
+      "man.config.seeAlso": "theme(1), reboot(1)",
+
+      "man.reboot.name": "reboot - Reinicia la terminal",
+      "man.reboot.synopsis": "reboot",
+      "man.reboot.description":
+        "Reinicia la terminal, recargando la pagina y reinicializando la sesion. Los datos se preservan si el almacenamiento persistente esta habilitado.",
+      "man.reboot.seeAlso": "reset(1), clear(1)",
+
+      "man.reset.name": "reset - Restablece a valores de fabrica",
+      "man.reset.synopsis": "reset",
+      "man.reset.description":
+        "Restablece la terminal a sus valores de fabrica, eliminando todos los datos almacenados incluyendo historial, alias, temas personalizados y preferencias. Esta accion es irreversible.",
+      "man.reset.seeAlso": "reboot(1), config(1)",
+
+      "man.version.name": "version - Muestra la version",
+      "man.version.synopsis": "version",
+      "man.version.description":
+        "Muestra la version actual de la terminal, informacion del build y enlaces al codigo fuente.",
+      "man.version.seeAlso": "neofetch(1), license(1)",
+
+      "man.license.name": "license - Muestra la licencia",
+      "man.license.synopsis": "license",
+      "man.license.description":
+        "Muestra la informacion de licencia GNU Affero General Public License v3 (AGPL v3), junto con enlaces al codigo fuente y al texto completo de la licencia.",
+      "man.license.seeAlso": "version(1)",
+
+      "man.history.name": "history - Historial de comandos",
+      "man.history.synopsis": "history",
+      "man.history.description":
+        "Muestra la lista de comandos ejecutados previamente con sus numeros de indice.",
+      "man.history.expansionText":
+        "Se puede re-ejecutar un comando usando su numero: !N ejecuta el comando numero N, y !! ejecuta el ultimo comando.",
+      "man.history.seeAlso": "alias(1)",
+
+      "man.man.name": "man - Muestra paginas de manual",
+      "man.man.synopsis": "man <comando>",
+      "man.man.description":
+        "Muestra la pagina de manual para el comando especificado. Las paginas de manual contienen informacion detallada sobre cada comando, incluyendo sinopsis, descripciones, opciones y comandos relacionados. Sin argumentos, lista todos los comandos con paginas de manual disponibles.",
+      "man.man.seeAlso": "help(1)",
 
       eventNotFound: "{0}: event not found",
       historyExpansion: "\u2192 {0}",
@@ -772,6 +917,35 @@
     return false;
   }
 
+  // ─── Man Page Helper ──────────────────────────────────────
+
+  function buildManPage(cmdName, sections) {
+    var lines = [];
+    for (var i = 0; i < sections.length; i++) {
+      var section = sections[i];
+      lines.push(
+        '<span class="man-section">' + escapeHtml(section.header) + "</span>",
+      );
+      if (Array.isArray(section.body)) {
+        for (var j = 0; j < section.body.length; j++) {
+          lines.push(section.body[j]);
+        }
+      } else {
+        lines.push(section.body);
+      }
+      lines.push("");
+    }
+    lines.push(
+      "RoviSoft.net                        " +
+        new Date().getFullYear() +
+        "                       " +
+        cmdName +
+        "(1)",
+    );
+    lines.push("");
+    return lines.join("\n");
+  }
+
   // ─── Commands ─────────────────────────────────────────────
 
   const commands = {
@@ -796,6 +970,7 @@
         ['<span class="cmd">version</span>', t("help.version")],
         ['<span class="cmd">license</span>', t("help.license")],
         ['<span class="cmd">history</span>', t("help.history")],
+        ['<span class="cmd">man &lt;cmd&gt;</span>', t("help.man")],
       ]);
 
       base.push(
@@ -1014,11 +1189,13 @@
               '<span class="cmd">airvzxf research</span>',
               t("airvzxf.research"),
             ],
-            ['<span class="cmd">airvzxf man</span>', t("airvzxf.man")],
           ]),
         );
         lines.push("");
         return lines.join("\n");
+      }
+      if (args[0].toLowerCase() === "man") {
+        return manPages.airvzxf();
       }
       const sub = args[0].toLowerCase();
       const subcommands = {
@@ -1028,7 +1205,6 @@
         social: true,
         skills: true,
         research: true,
-        man: true,
       };
       if (!subcommands[sub]) {
         return `<span class="text-red">${escapeHtml(tf("airvzxf.unknownSubcommand", sub))}</span>\n${t("airvzxf.useHelp")}`;
@@ -1705,6 +1881,45 @@
       return `<span class="text-red">${escapeHtml(tf("config.unknownSubcommand", sub))}</span>\n${t("config.useConfig")}`;
     },
 
+    man(args) {
+      if (!args.length) {
+        var cmdNames = Object.keys(manPages).sort();
+        var items = [];
+        for (var i = 0; i < cmdNames.length; i++) {
+          var name = cmdNames[i];
+          var desc = t("man." + name + ".name")
+            .split(" - ")
+            .slice(1)
+            .join(" - ");
+          items.push([
+            '<span class="cmd">' + escapeHtml(name) + "</span>",
+            escapeHtml(desc),
+          ]);
+        }
+        var lines = [
+          '<span class="text-yellow text-bold">' +
+            t("man.available") +
+            "</span>",
+          "",
+        ];
+        lines.push(...formatHtmlList(items));
+        lines.push("");
+        return lines.join("\n");
+      }
+
+      var cmd = args[0].toLowerCase();
+      if (!manPages[cmd]) {
+        return (
+          '<span class="text-red">' +
+          escapeHtml(tf("man.notFound", cmd)) +
+          "</span>\n" +
+          t("man.hint")
+        );
+      }
+
+      return manPages[cmd]();
+    },
+
     reboot() {
       cmdInput.disabled = true;
       cmdInput.blur();
@@ -1905,6 +2120,539 @@
           "                       airvzxf(1)",
         "",
       ].join("\n");
+    },
+  };
+
+  // ─── Man Pages ────────────────────────────────────────────
+
+  var manPages = {
+    help: function () {
+      return buildManPage("help", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.help.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.help.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.help.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.help.seeAlso")),
+        },
+      ]);
+    },
+
+    clear: function () {
+      return buildManPage("clear", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.clear.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.clear.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.clear.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.clear.seeAlso")),
+        },
+      ]);
+    },
+
+    whoami: function () {
+      return buildManPage("whoami", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.whoami.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.whoami.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.whoami.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.whoami.seeAlso")),
+        },
+      ]);
+    },
+
+    users: function () {
+      return buildManPage("users", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.users.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.users.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.users.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.users.seeAlso")),
+        },
+      ]);
+    },
+
+    su: function () {
+      return buildManPage("su", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.su.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.su.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.su.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.su.seeAlso")),
+        },
+      ]);
+    },
+
+    airvzxf: function () {
+      return airvzxfSubcommands.man();
+    },
+
+    neofetch: function () {
+      return buildManPage("neofetch", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.neofetch.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.neofetch.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.neofetch.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.neofetch.seeAlso")),
+        },
+      ]);
+    },
+
+    date: function () {
+      return buildManPage("date", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.date.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.date.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.date.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.date.seeAlso")),
+        },
+      ]);
+    },
+
+    echo: function () {
+      return buildManPage("echo", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.echo.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.echo.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.echo.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.echo.seeAlso")),
+        },
+      ]);
+    },
+
+    alias: function () {
+      return buildManPage("alias", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.alias.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.alias.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.alias.description")),
+        },
+        {
+          header: t("man.header.options"),
+          body: [
+            ...formatHtmlList([
+              ['<span class="cmd">alias</span>', t("man.alias.opt.show")],
+              [
+                '<span class="cmd">alias &lt;name&gt;</span>',
+                t("man.alias.opt.showValue"),
+              ],
+              [
+                "<span class=\"cmd\">alias &lt;name&gt;='command'</span>",
+                t("man.alias.opt.define"),
+                "wrap",
+              ],
+            ]),
+          ],
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.alias.seeAlso")),
+        },
+      ]);
+    },
+
+    unalias: function () {
+      return buildManPage("unalias", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.unalias.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.unalias.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.unalias.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.unalias.seeAlso")),
+        },
+      ]);
+    },
+
+    theme: function () {
+      return buildManPage("theme", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.theme.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.theme.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.theme.description")),
+        },
+        {
+          header: t("man.header.subcommands"),
+          body: [
+            ...formatHtmlList([
+              ['<span class="cmd">theme list</span>', t("man.theme.sub.list")],
+              [
+                '<span class="cmd">theme &lt;name&gt;</span>',
+                t("man.theme.sub.set"),
+              ],
+              [
+                '<span class="cmd">theme create</span>',
+                t("man.theme.sub.create"),
+              ],
+              ['<span class="cmd">theme edit</span>', t("man.theme.sub.edit")],
+              [
+                '<span class="cmd">theme delete</span>',
+                t("man.theme.sub.delete"),
+              ],
+              [
+                '<span class="cmd">theme export</span>',
+                t("man.theme.sub.export"),
+              ],
+            ]),
+          ],
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.theme.seeAlso")),
+        },
+      ]);
+    },
+
+    lang: function () {
+      return buildManPage("lang", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.lang.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.lang.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.lang.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.lang.seeAlso")),
+        },
+      ]);
+    },
+
+    config: function () {
+      return buildManPage("config", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.config.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.config.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.config.description")),
+        },
+        {
+          header: t("man.header.subcommands"),
+          body: [
+            ...formatHtmlList([
+              [
+                '<span class="cmd">config accept</span>',
+                t("man.config.sub.accept"),
+              ],
+              [
+                '<span class="cmd">config reject</span>',
+                t("man.config.sub.reject"),
+              ],
+              [
+                '<span class="cmd">config status</span>',
+                t("man.config.sub.status"),
+              ],
+              [
+                '<span class="cmd">config show</span>',
+                t("man.config.sub.show"),
+              ],
+            ]),
+          ],
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.config.seeAlso")),
+        },
+      ]);
+    },
+
+    reboot: function () {
+      return buildManPage("reboot", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.reboot.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.reboot.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.reboot.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.reboot.seeAlso")),
+        },
+      ]);
+    },
+
+    reset: function () {
+      return buildManPage("reset", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.reset.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.reset.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.reset.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.reset.seeAlso")),
+        },
+      ]);
+    },
+
+    version: function () {
+      return buildManPage("version", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.version.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.version.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.version.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.version.seeAlso")),
+        },
+      ]);
+    },
+
+    license: function () {
+      return buildManPage("license", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.license.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.license.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.license.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.license.seeAlso")),
+        },
+      ]);
+    },
+
+    history: function () {
+      return buildManPage("history", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.history.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.history.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.history.description")),
+        },
+        {
+          header: t("man.header.historyExpansion"),
+          body: "  " + escapeHtml(t("man.history.expansionText")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.history.seeAlso")),
+        },
+      ]);
+    },
+
+    man: function () {
+      return buildManPage("man", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.man.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.man.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.man.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.man.seeAlso")),
+        },
+      ]);
     },
   };
 
@@ -2140,6 +2888,23 @@
         } else if (matches.length > 1) {
           appendCommandLine(prefix);
           appendOutput(matches.join("  "));
+        }
+      } else if (val.length === 2 && val[0].toLowerCase() === "man") {
+        var manPrefix = val[1].toLowerCase();
+        var manCmds = Object.keys(manPages);
+        var manMatches = manCmds.filter(function (c) {
+          return c.startsWith(manPrefix);
+        });
+        if (manMatches.length === 1) {
+          cmdInput.value = "man " + manMatches[0] + " ";
+          updateCursorPos();
+          cmdInput.setSelectionRange(
+            cmdInput.value.length,
+            cmdInput.value.length,
+          );
+        } else if (manMatches.length > 1) {
+          appendCommandLine(cmdInput.value.trim());
+          appendOutput(manMatches.join("  "));
         }
       }
       return;

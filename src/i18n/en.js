@@ -37,6 +37,7 @@
     "help.version": "Show version",
     "help.license": "Show license",
     "help.history": "Command history",
+    "help.man": "Display manual pages",
     "help.shortcuts":
       "Shortcuts: \u2191/\u2193 (history) | Tab (autocomplete) | Ctrl+L (clear) | !N / !! (history) | ; (multicommand)",
     "help.urlParams":
@@ -66,7 +67,6 @@
     "airvzxf.projects": "Portfolio projects",
     "airvzxf.skills": "Tech stack and domains",
     "airvzxf.research": "AI and ML research",
-    "airvzxf.man": "Manual page (man page)",
     "airvzxf.unknownSubcommand": "airvzxf: unknown subcommand '{0}'",
     "airvzxf.useHelp":
       'Use <span class="cmd">airvzxf</span> to see available subcommands.',
@@ -307,6 +307,149 @@
     "man.header.languages": "LANGUAGES",
     "man.langList": "Rust, Bash, Python, JavaScript, Assembly, C",
     "man.header.seeAlso": "SEE ALSO",
+    "man.header.options": "OPTIONS",
+    "man.header.subcommands": "SUBCOMMANDS",
+    "man.header.historyExpansion": "HISTORY EXPANSION",
+    "man.available": "Available manual pages:",
+    "man.notFound": "No manual entry for '{0}'.",
+    "man.hint": 'Use <span class="cmd">man</span> to see available pages.',
+
+    "man.help.name": "help - Show available commands",
+    "man.help.synopsis": "help",
+    "man.help.description":
+      "Displays a list of all available commands in the terminal, along with a brief description of each one. Also shows keyboard shortcuts and URL parameters.",
+    "man.help.seeAlso": "man(1)",
+
+    "man.clear.name": "clear - Clear the terminal screen",
+    "man.clear.synopsis": "clear",
+    "man.clear.description":
+      "Clears all visible output from the terminal screen, providing a clean workspace. Command history is preserved. Can also be triggered with Ctrl+L.",
+    "man.clear.seeAlso": "reboot(1), reset(1)",
+
+    "man.whoami.name": "whoami - Show current user",
+    "man.whoami.synopsis": "whoami",
+    "man.whoami.description":
+      "Displays the name of the current user session. Available users are: guest (default), airvzxf (administrator), and root (superuser).",
+    "man.whoami.seeAlso": "users(1), su(1), man(1)",
+
+    "man.users.name": "users - List system users",
+    "man.users.synopsis": "users",
+    "man.users.description":
+      "Displays a list of all available users in the system along with their roles and descriptions.",
+    "man.users.seeAlso": "whoami(1), su(1)",
+
+    "man.su.name": "su - Switch user",
+    "man.su.synopsis": "su <user>",
+    "man.su.description":
+      "Switches the current user session to the specified user. Available users are: guest (no password), airvzxf (no password), and root (password required).",
+    "man.su.seeAlso": "whoami(1), users(1)",
+
+    "man.airvzxf.name": "airvzxf - Owner information",
+    "man.airvzxf.synopsis": "airvzxf <subcommand>",
+    "man.airvzxf.description":
+      "Displays information about the owner and administrator of RoviSoft.net. Accessible only by airvzxf and root users. Available subcommands are: about, contact, social, projects, skills, and research.",
+    "man.airvzxf.seeAlso": "whoami(1), neofetch(1)",
+
+    "man.neofetch.name": "neofetch - System information",
+    "man.neofetch.synopsis": "neofetch",
+    "man.neofetch.description":
+      "Displays system information in a neofetch-style format, including: OS, host, kernel, shell, user, theme, uptime, config status, and storage.",
+    "man.neofetch.seeAlso": "version(1), config(1)",
+
+    "man.date.name": "date - Current date and time",
+    "man.date.synopsis": "date",
+    "man.date.description":
+      "Displays the current date and time according to the browser clock.",
+    "man.date.seeAlso": "neofetch(1)",
+
+    "man.echo.name": "echo - Display text",
+    "man.echo.synopsis": "echo <text>",
+    "man.echo.description":
+      "Outputs the provided text to the terminal. If no text is provided, outputs an empty line.",
+    "man.echo.seeAlso": "alias(1)",
+
+    "man.alias.name": "alias - Define command shortcuts",
+    "man.alias.synopsis": "alias | alias <name> | alias <name>='command'",
+    "man.alias.description":
+      "Manages command aliases. Without arguments, shows defined aliases and usage. Aliases cannot override existing commands and are preserved between sessions if persistent storage is enabled.",
+    "man.alias.opt.show": "Show defined aliases",
+    "man.alias.opt.showValue": "Show value of a specific alias",
+    "man.alias.opt.define": "Define a new alias with the specified value",
+    "man.alias.seeAlso": "unalias(1), config(1)",
+
+    "man.unalias.name": "unalias - Remove an alias",
+    "man.unalias.synopsis": "unalias <name>",
+    "man.unalias.description":
+      "Removes the specified alias from the defined aliases list.",
+    "man.unalias.seeAlso": "alias(1)",
+
+    "man.theme.name": "theme - Manage color themes",
+    "man.theme.synopsis":
+      "theme | theme <name> | theme list | theme create | theme edit | theme delete | theme export",
+    "man.theme.description":
+      "Manages the terminal's color themes. Built-in themes are 'dark' and 'light'. Custom themes can be created with specific color variables. Custom themes are preserved between sessions if persistent storage is enabled.",
+    "man.theme.sub.list": "List available themes",
+    "man.theme.sub.set": "Switch to specified theme",
+    "man.theme.sub.create": "Create a custom theme",
+    "man.theme.sub.edit": "Edit a custom theme",
+    "man.theme.sub.delete": "Delete a custom theme",
+    "man.theme.sub.export": "Export theme variables",
+    "man.theme.seeAlso": "config(1), neofetch(1)",
+
+    "man.lang.name": "lang - Change interface language",
+    "man.lang.synopsis": "lang | lang <code> | lang list",
+    "man.lang.description":
+      "Changes or displays the terminal's interface language. Available languages are listed with 'lang list'. The change is persisted between sessions if persistent storage is enabled.",
+    "man.lang.seeAlso": "config(1)",
+
+    "man.config.name": "config - Manage local storage",
+    "man.config.synopsis":
+      "config | config accept | config reject | config status | config show",
+    "man.config.description":
+      "Manages local storage preferences. Controls whether data persists between sessions (localStorage) or is volatile (sessionStorage). Accepts three states: accepted, rejected, or undecided.",
+    "man.config.sub.accept": "Accept persistent storage",
+    "man.config.sub.reject": "Reject (volatile data, lost on close)",
+    "man.config.sub.status": "Show technical storage details",
+    "man.config.sub.show": "Show stored data",
+    "man.config.seeAlso": "theme(1), reboot(1)",
+
+    "man.reboot.name": "reboot - Reboot the terminal",
+    "man.reboot.synopsis": "reboot",
+    "man.reboot.description":
+      "Restarts the terminal, reloading the page and reinitializing the session. Data is preserved if persistent storage is enabled.",
+    "man.reboot.seeAlso": "reset(1), clear(1)",
+
+    "man.reset.name": "reset - Factory reset",
+    "man.reset.synopsis": "reset",
+    "man.reset.description":
+      "Restores the terminal to factory defaults, clearing all stored data including history, aliases, custom themes, and preferences. This action is irreversible.",
+    "man.reset.seeAlso": "reboot(1), config(1)",
+
+    "man.version.name": "version - Show version",
+    "man.version.synopsis": "version",
+    "man.version.description":
+      "Displays the current terminal version, build information, and source code links.",
+    "man.version.seeAlso": "neofetch(1), license(1)",
+
+    "man.license.name": "license - Show license",
+    "man.license.synopsis": "license",
+    "man.license.description":
+      "Displays the GNU Affero General Public License v3 (AGPL v3) information, along with links to the source code and full license text.",
+    "man.license.seeAlso": "version(1)",
+
+    "man.history.name": "history - Command history",
+    "man.history.synopsis": "history",
+    "man.history.description":
+      "Displays the list of previously executed commands with their index numbers.",
+    "man.history.expansionText":
+      "A command can be re-executed using its number: !N executes command number N, and !! executes the last command.",
+    "man.history.seeAlso": "alias(1)",
+
+    "man.man.name": "man - Display manual pages",
+    "man.man.synopsis": "man <command>",
+    "man.man.description":
+      "Displays the manual page for the specified command. Manual pages contain detailed information about each command, including synopsis, descriptions, options, and related commands. Without arguments, lists all commands with available manual pages.",
+    "man.man.seeAlso": "help(1)",
 
     eventNotFound: "{0}: event not found",
     historyExpansion: "\u2192 {0}",

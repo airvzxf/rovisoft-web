@@ -249,8 +249,9 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Agregar el comando `man` y además que cada comando tenga su página de documentación man: `help help`, `man clear`, `man whoami`, `man users`, `man su`, `man airvzxf`, `man neofetch`, `man date`, `man echo`, `man alias`, `man unalias`, `man theme`, `man lang`, `man config`, `man reboot`, `man reset`, `man version`, `man license`, `man history`, `man man`. Para `airvzxf` va a ser quitar el subcomando `airvzxf man` y más bien ese contenido ponerlo en él `man airvzxf`. No se te olvide hacer tanto para español como para inglés.
+- En los temas también agregar los tamaños de letra que se puedan modificar.
 - Easter eggs ocultos (comandos secretos). Vamos a empezar con una lluvia de ideas. Haz propuestas de unos buenos Easter eggs.
+- Revisa la descripción de todos los commits que se han hecho desde el inicio y ve que características se han agregado para lo siguiente. Mejorar el archivo README.md, crear el archivo CONTRIBUTING.md y analizar si se deja este documento SPECS.md o se quita. También ver si se agregan más documentos o no. O sea, todo lo que tiene que ver con documentación hay que hacerlo en este punto.
 
 ## 10. Informacion personal
 
