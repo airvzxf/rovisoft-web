@@ -403,6 +403,49 @@
         pointer-events: none;
       }
 
+      /* ─── Hacker Mode (Konami Code Easter Egg) ─────────────── */
+
+      .hacker-mode .output-area::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0) 0px,
+          rgba(0, 0, 0, 0) 1px,
+          rgba(0, 0, 0, 0.06) 1px,
+          rgba(0, 0, 0, 0.06) 2px
+        );
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      .hacker-mode .output-line {
+        text-shadow: 0 0 6px currentColor;
+      }
+
+      .hacker-mode .prompt-user,
+      .hacker-mode .prompt-host {
+        text-shadow: 0 0 8px currentColor;
+      }
+
+      .hacker-mode .cursor {
+        animation: blink-fast 0.35s step-end infinite;
+      }
+
+      @keyframes blink-fast {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
       /* ─── Responsive ──────────────────────────────────────────── */
 
       @media (max-width: 600px) {
@@ -456,8 +499,8 @@
         } catch (e) {}
       })();
     </script>
-    <script defer src="storage.js?v=1.10.0"></script>
-    <script defer src="main.js?v=1.10.0"></script>
+    <script defer src="storage.js?v=1.11.0"></script>
+    <script defer src="main.js?v=1.11.0"></script>
   </head>
   <body>
     <div class="terminal" id="terminal">

@@ -24,7 +24,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.10.0";
+  const VERSION = "1.11.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -103,6 +103,8 @@
     aliases: {},
     lang: "es",
     suTarget: null,
+    cowsayMode: false,
+    hackerMode: false,
   };
 
   // ─── Internationalization ──────────────────────────────────
@@ -564,6 +566,122 @@
 
       eventNotFound: "{0}: event not found",
       historyExpansion: "\u2192 {0}",
+
+      "easter.sudo":
+        "Permiso denegado. S\u00e9 lo que est\u00e1s pensando... pero no.",
+      "easter.exit": "No hay escape; La Matrix te tiene.",
+      "easter.42": "La respuesta a la vida, el universo y todo.",
+      "easter.cowsay.on":
+        "Modo cowsay activado. Las vacas est\u00e1n observando.",
+      "easter.cowsay.off": "Modo cowsay desactivado. Las vacas se han ido.",
+      "easter.cowsay.quips": [
+        "Muu.",
+        "Ya despert\u00e9. \u00bfQu\u00e9 haces?",
+        "El c\u00f3digo compila. Disfrútalo mientras dure.",
+        "sudo no funciona aquí tampoco.",
+        "Estaba debuggeando y me encontr\u00e9 con esta vaca.",
+        "He visto tu historial. Impresionante.",
+        "\u00bfProbaste con 42?",
+        "La Matrix te tiene.",
+        "Este no es el Easter egg que buscas.",
+        "En mi servidor me alimentan bien.",
+        "0xC0FFEE \u2014 mi direcci\u00f3n de memoria favorita.",
+        "El bug estaba entre la silla y el teclado.",
+        "Un developer, una vaca, una terminal. \u00bfQu\u00e9 puede salir mal?",
+        "He visto cosas que no creer\u00edas... como CSS que se centra solo.",
+        "La respuesta es siempre 42.",
+      ],
+      "easter.rmrf.header": "Eliminando archivos...",
+      "easter.rmrf.punchline":
+        "Es broma, tus datos est\u00e1n a salvo... \u00bfo no?",
+      "easter.rmrf.files.linux": [
+        "removing /etc/passwd...",
+        "removing /etc/shadow...",
+        "removing /home/user/.bashrc...",
+        "removing /home/user/.ssh/authorized_keys...",
+        "removing /usr/bin/vim...",
+        "removing /usr/bin/git...",
+        "removing /usr/bin/python3...",
+        "removing /boot/vmlinuz...",
+        "removing /var/log/syslog...",
+        "removing /etc/hostname...",
+        "removing /root/.config/...",
+        "removing /tmp/.X11-unix/...",
+        "removing /usr/share/doc/...",
+        "removing /lib/systemd/systemd...",
+        "removing /bin/sh...",
+      ],
+      "easter.rmrf.files.windows": [
+        "removing C:\\Windows\\System32\\drivers\\etc\\hosts...",
+        "removing C:\\Windows\\System32\\config\\SAM...",
+        "removing C:\\Users\\User\\Documents...",
+        "removing C:\\Users\\User\\Desktop...",
+        "removing C:\\Program Files\\App...",
+        "removing C:\\Windows\\explorer.exe...",
+        "removing C:\\Windows\\System32\\cmd.exe...",
+        "removing C:\\Users\\User\\AppData\\Local...",
+        "removing C:\\Windows\\System32\\ntdll.dll...",
+        "removing C:\\Users\\User\\.ssh\\id_rsa...",
+        "removing C:\\ProgramData...",
+        "removing C:\\Windows\\Temp...",
+        "removing C:\\Users\\User\\Downloads...",
+        "removing C:\\Windows\\RegEdit.exe...",
+        "removing C:\\pagefile.sys...",
+      ],
+      "easter.rmrf.files.macos": [
+        "removing /Users/user/.zshrc...",
+        "removing /Users/user/.ssh/id_rsa...",
+        "removing /System/Library/CoreServices...",
+        "removing /Applications/Safari.app...",
+        "removing /Applications/Xcode.app...",
+        "removing /usr/bin/git...",
+        "removing /usr/local/bin/brew...",
+        "removing /Library/Preferences/com.apple...",
+        "removing /private/var/db/...",
+        "removing /Users/user/Documents...",
+        "removing /Users/user/Downloads...",
+        "removing /System/Library/Extensions...",
+        "removing /usr/sbin/periodic...",
+        "removing /var/log/system.log...",
+        "removing /Users/user/Library/...",
+      ],
+      "easter.rmrf.files.android": [
+        "removing /data/app/com.android.settings/base.apk...",
+        "removing /data/data/com.android.chrome/...",
+        "removing /sdcard/DCIM/Camera/...",
+        "removing /sdcard/Download/...",
+        "removing /system/bin/sh...",
+        "removing /system/app/Settings/Settings.apk...",
+        "removing /data/local/tmp/...",
+        "removing /sdcard/WhatsApp/...",
+        "removing /data/app/com.google.android.gms/...",
+        "removing /system/etc/hosts...",
+        "removing /sdcard/Pictures/...",
+        "removing /data/data/com.android.providers.media/...",
+        "removing /system/lib64/libandroid_runtime.so...",
+        "removing /data/misc/wifi/wpa_supplicant.conf...",
+        "removing /system/framework/framework.jar...",
+      ],
+      "easter.rmrf.files.ios": [
+        "removing /var/mobile/Applications/com.apple.mobilesafari/...",
+        "removing /var/mobile/Library/Preferences/...",
+        "removing /private/var/containers/Data/Application/...",
+        "removing /System/Library/CoreServices/SpringBoard.app/...",
+        "removing /var/mobile/Containers/Data/Application/...",
+        "removing /System/Library/PrivateFrameworks/...",
+        "removing /private/var/mobile/Library/Caches/...",
+        "removing /var/mobile/Documents/...",
+        "removing /System/Library/Frameworks/UIKit.framework/...",
+        "removing /private/var/mobile/Library/SMS/...",
+        "removing /System/Library/CoreServices/...",
+        "removing /var/mobile/Library/AddressBook/...",
+        "removing /private/var/db/...",
+        "removing /System/Library/Extensions/...",
+        "removing /var/mobile/Library/Preferences/com.apple...",
+      ],
+      "easter.konami.on": "MODO HACKER ACTIVADO",
+      "easter.konami.off": "MODO HACKER DESACTIVADO",
+      "easter.konami.hint": "Algunos secretos requieren m\u00e1s que escribir.",
     },
   };
 
@@ -923,6 +1041,133 @@
     return false;
   }
 
+  // ─── Easter Eggs ────────────────────────────────────────────
+
+  function detectOS() {
+    var ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/.test(ua)) return "ios";
+    if (/Android/.test(ua)) return "android";
+    if (/Win/.test(ua)) return "windows";
+    if (/Mac/.test(ua)) return "macos";
+    return "linux";
+  }
+
+  function isRmrfPattern(args) {
+    if (args.length < 2) return false;
+    var flags = args[0];
+    var target = args[args.length - 1];
+    if (flags.charAt(0) !== "-") return false;
+    var flagsLower = flags.toLowerCase();
+    var hasR = flagsLower.indexOf("r") !== -1;
+    var hasF = flagsLower.indexOf("f") !== -1;
+    if (!hasR || !hasF) return false;
+    if (target === "/" || target === "/*" || target === "." || target === "./*")
+      return true;
+    return false;
+  }
+
+  function executeRmrf() {
+    cmdInput.disabled = true;
+    cmdInput.blur();
+
+    var os = detectOS();
+    var files = t("easter.rmrf.files." + os);
+    if (!Array.isArray(files)) {
+      files = t("easter.rmrf.files.linux");
+    }
+
+    appendOutput(
+      '<span class="text-red">' + t("easter.rmrf.header") + "</span>",
+    );
+
+    var i = 0;
+    function nextLine() {
+      if (i < files.length) {
+        appendOutput('<span class="text">' + escapeHtml(files[i]) + "</span>");
+        i++;
+        setTimeout(nextLine, Math.floor(Math.random() * 2000));
+      } else {
+        appendOutput("");
+        appendOutput(
+          '<span class="text-dim">' + t("easter.rmrf.punchline") + "</span>",
+        );
+        if (state.cowsayMode) {
+          appendCowQuip();
+        }
+        cmdInput.disabled = false;
+        cmdInput.focus();
+      }
+    }
+    setTimeout(nextLine, 500);
+  }
+
+  function appendCowQuip() {
+    var quips = t("easter.cowsay.quips");
+    if (!Array.isArray(quips) || quips.length === 0) return;
+    var quip = quips[Math.floor(Math.random() * quips.length)];
+    appendOutput(
+      '<span class="text-green">  ^__^\n  (oo) "' +
+        escapeHtml(quip) +
+        '"\n  (__)</span>',
+    );
+  }
+
+  function maybeAppendCowQuip(cmdName) {
+    if (!state.cowsayMode) return;
+    if (cmdName === "cowsay") return;
+    if (cmdName === "clear") return;
+    if (cmdName === "reboot") return;
+    if (cmdName === "reset") return;
+    appendCowQuip();
+  }
+
+  function toggleHackerMode() {
+    state.hackerMode = !state.hackerMode;
+    if (state.hackerMode) {
+      terminal.classList.add("hacker-mode");
+      appendCommandLine("\u2191\u2191\u2193\u2193\u2190\u2192\u2190\u2192BA");
+      appendOutput(
+        '<span class="text-green">' + t("easter.konami.on") + "</span>",
+      );
+    } else {
+      terminal.classList.remove("hacker-mode");
+      appendCommandLine("\u2191\u2191\u2193\u2193\u2190\u2192\u2190\u2192BA");
+      appendOutput(
+        '<span class="text-yellow">' + t("easter.konami.off") + "</span>",
+      );
+    }
+  }
+
+  var easterEggs = {
+    42: function () {
+      return '<span class="text-cyan">' + t("easter.42") + "</span>";
+    },
+
+    exit: function () {
+      return '<span class="text-green">' + t("easter.exit") + "</span>";
+    },
+
+    cowsay: function () {
+      state.cowsayMode = !state.cowsayMode;
+      if (state.cowsayMode) {
+        return '<span class="text-green">' + t("easter.cowsay.on") + "</span>";
+      }
+      return '<span class="text-yellow">' + t("easter.cowsay.off") + "</span>";
+    },
+
+    konami: function () {
+      return (
+        '<span class="text-magenta">' + t("easter.konami.hint") + "</span>"
+      );
+    },
+
+    "konami-code": function () {
+      return (
+        '<span class="text-magenta">' + t("easter.konami.hint") + "</span>"
+      );
+    },
+  };
+
   // ─── Man Page Helper ──────────────────────────────────────
 
   function buildManPage(cmdName, sections) {
@@ -997,7 +1242,7 @@
       if (!args.length) {
         var currentLangName = AVAILABLE_LANGS[state.lang] || state.lang;
         return [
-          '<span class="text-yellow text-bold">' + t("lang.title") + "</span>",
+          '<span class="text-yellow">' + t("lang.title") + "</span>",
           '  <span class="cmd">lang &lt;lang&gt;</span>',
           "",
           t("lang.current") +
@@ -1015,9 +1260,7 @@
 
       if (sub === "list") {
         var lines = [
-          '<span class="text-yellow text-bold">' +
-            t("lang.available") +
-            "</span>",
+          '<span class="text-yellow">' + t("lang.available") + "</span>",
         ];
         var langKeys = Object.keys(AVAILABLE_LANGS);
         var langItems = [];
@@ -1176,9 +1419,7 @@
       }
       if (!args.length) {
         const lines = [
-          '<span class="text-yellow text-bold">' +
-            t("airvzxf.usage") +
-            "</span>",
+          '<span class="text-yellow">' + t("airvzxf.usage") + "</span>",
           "",
         ];
         lines.push(
@@ -1355,7 +1596,7 @@
           ],
         ];
         return [
-          '<span class="text-yellow text-bold">' + t("theme.title") + "</span>",
+          '<span class="text-yellow">' + t("theme.title") + "</span>",
           `  ${t("theme.current")} <span class="text-cyan">${escapeHtml(currentTheme)}</span>`,
           "",
           ...formatHtmlList(themeItems),
@@ -1367,9 +1608,7 @@
 
       if (sub === "list") {
         var lines = [
-          '<span class="text-yellow text-bold">' +
-            t("theme.builtin") +
-            "</span>",
+          '<span class="text-yellow">' + t("theme.builtin") + "</span>",
         ];
         var builtinKeys = Object.keys(BUILTIN_THEMES);
         var builtinItems = [];
@@ -1391,9 +1630,7 @@
         if (customKeys.length) {
           lines.push("");
           lines.push(
-            '<span class="text-yellow text-bold">' +
-              t("theme.custom") +
-              "</span>",
+            '<span class="text-yellow">' + t("theme.custom") + "</span>",
           );
           var customItems = [];
           for (var i = 0; i < customKeys.length; i++) {
@@ -1576,7 +1813,7 @@
           return `<span class="text-red">${escapeHtml(tf("theme.exportNotExists", themeName))}</span>`;
         }
         var lines = [
-          '<span class="text-yellow text-bold">' +
+          '<span class="text-yellow">' +
             escapeHtml(tf("theme.exportTitle", themeName)) +
             "</span>",
         ];
@@ -1602,7 +1839,7 @@
       if (!args.length) {
         const keys = Object.keys(state.aliases);
         const lines = [
-          '<span class="text-yellow text-bold">' + t("alias.title") + "</span>",
+          '<span class="text-yellow">' + t("alias.title") + "</span>",
         ];
         lines.push(
           ...formatHtmlList([
@@ -1663,9 +1900,7 @@
     unalias(args) {
       if (!args.length) {
         const lines = [
-          '<span class="text-yellow text-bold">' +
-            t("unalias.title") +
-            "</span>",
+          '<span class="text-yellow">' + t("unalias.title") + "</span>",
           "",
         ];
         lines.push(
@@ -1708,9 +1943,7 @@
         const storeLabel =
           status.accepted === true ? "localStorage" : t("config.volatile");
         const lines = [
-          '<span class="text-yellow text-bold">' +
-            t("config.title") +
-            "</span>",
+          '<span class="text-yellow">' + t("config.title") + "</span>",
         ];
         lines.push(
           ...formatHtmlList([
@@ -1903,9 +2136,7 @@
           ]);
         }
         var lines = [
-          '<span class="text-yellow text-bold">' +
-            t("man.available") +
-            "</span>",
+          '<span class="text-yellow">' + t("man.available") + "</span>",
           "",
         ];
         lines.push(...formatHtmlList(items));
@@ -1927,6 +2158,9 @@
     },
 
     reboot() {
+      state.cowsayMode = false;
+      state.hackerMode = false;
+      terminal.classList.remove("hacker-mode");
       cmdInput.disabled = true;
       cmdInput.blur();
       terminal.classList.add("terminal-rebooting");
@@ -1939,6 +2173,9 @@
     },
 
     reset() {
+      state.cowsayMode = false;
+      state.hackerMode = false;
+      terminal.classList.remove("hacker-mode");
       cmdInput.disabled = true;
       cmdInput.blur();
       terminal.classList.add("terminal-rebooting");
@@ -2712,6 +2949,27 @@
     let cmdName = parts[0].toLowerCase();
     let args = parts.slice(1);
 
+    if (cmdName === "sudo") {
+      appendOutput('<span class="text-red">' + t("easter.sudo") + "</span>");
+      maybeAppendCowQuip(cmdName);
+      return;
+    }
+
+    if (cmdName === "rm" && isRmrfPattern(args)) {
+      executeRmrf();
+      return;
+    }
+
+    var easterFn = easterEggs[cmdName];
+    if (easterFn) {
+      var easterResult = easterFn(args, trimmed);
+      if (easterResult !== undefined && easterResult !== null) {
+        appendOutput(easterResult);
+      }
+      maybeAppendCowQuip(cmdName);
+      return;
+    }
+
     if (state.aliases[cmdName]) {
       const expanded =
         state.aliases[cmdName] + (args.length ? " " + args.join(" ") : "");
@@ -2727,10 +2985,12 @@
       if (result !== undefined && result !== null) {
         appendOutput(result);
       }
+      maybeAppendCowQuip(cmdName);
     } else {
       appendOutput(
         `<span class="text-red">${escapeHtml(tf("cmdNotFound", cmdName))}</span>`,
       );
+      maybeAppendCowQuip(cmdName);
     }
   }
 
@@ -2820,8 +3080,45 @@
 
   // ─── Event: Keydown ───────────────────────────────────────
 
+  var konamiBuffer = [];
+  var KONAMI_SEQUENCE = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a",
+  ];
+
   cmdInput.addEventListener("keydown", function (e) {
     const key = e.key;
+
+    konamiBuffer.push(key);
+    if (konamiBuffer.length > KONAMI_SEQUENCE.length) {
+      konamiBuffer.shift();
+    }
+    if (konamiBuffer.length === KONAMI_SEQUENCE.length) {
+      var konamiMatch = true;
+      for (var ki = 0; ki < KONAMI_SEQUENCE.length; ki++) {
+        if (konamiBuffer[ki] !== KONAMI_SEQUENCE[ki]) {
+          konamiMatch = false;
+          break;
+        }
+      }
+      if (konamiMatch && !state.suTarget) {
+        e.preventDefault();
+        konamiBuffer = [];
+        cmdInput.value = "";
+        cmdBefore.textContent = "";
+        cmdAfter.textContent = "";
+        toggleHackerMode();
+        return;
+      }
+    }
 
     if (key === "Enter") {
       e.preventDefault();
