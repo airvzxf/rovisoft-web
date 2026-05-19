@@ -91,6 +91,25 @@ El comando `license` muestra un bloque de texto con:
 
 Esto cumple con los requisitos de atribución y transparencia que la AGPL fomenta, y además sirve como llamado a la acción para que otros desarrolladores visiten el repo.
 
+### 2.6. Parámetros URL
+
+La terminal soporta ejecución de comandos a través de parámetros en la URL. Esto permite:
+
+- **SEO**: Los crawlers y compartición en redes pueden indexar contenido específico (about, contact, social, etc.).
+- **Deep linking**: Compartir una URL que pre-configura la terminal con el tema, idioma y contenido deseado.
+- **Juguete/herramienta**: El usuario construye la vista que quiere visualizar al abrir la página.
+
+**Formatos soportados:**
+
+| Formato | Ejemplo |
+| --- | --- |
+| Punto y coma (en un solo `cmd`) | `/?cmd=clear;su%20airvzxf;airvzxf%20about` |
+| Parámetros repetidos (`&cmd=`) | `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about` |
+
+Ambos formatos pueden combinarse. Los comandos se ejecutan secuencialmente tras la carga de la terminal. Tras la ejecución, los parámetros se eliminan de la URL (`history.replaceState`) para evitar re-ejecución al refrescar la página.
+
+Los comandos se ejecutan con el mismo pipeline que la entrada manual: soporte de `;` para multicomando, historial de comandos, alias y expansión de historial.
+
 ## 3. Stack Tecnológico
 
 Se usan **exclusivamente tecnologías nativas de la web**, sin frameworks, sin dependencias, sin build tools:
@@ -230,7 +249,7 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Una buena implementación es que si pones en la URL argumentos o parámetros los puede ejecutar. Un ejemplo, quiero hacer lo de Google SEO para el posicionamiento y quiero hacer un mapa. Entonces quiero mostrar el texto y enlace de acerca de nosotros; podría poner en la URL parámetros como: `/?cmd=clear;su%20airvzxf;airvzxf%20about;airvzxf%20contact;airvzxf%20social;` o `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about&cmd=airvzxf%20contact&cmd=airvzxf%20social`. Esto no solamente se limita a SEO, esto es también como un tipo juguete herramienta en el cual yo puedo abrir mi página como la quiero visualizar al ejecutar los comandos básicamente se va a visualizar como yo quiero, podría cambiarle el tema y así, el potencial aplicable para jugar es mucho.
+- Qué opinas de que la información que muestra con el comando `airvzxf` de forma estatica respecto al idioma. Subcomandos `about`, `projects`, `skills`, etcétera,  el contenido cambie de idioma de acuerdo al que se seleccionó; si ejecutó el comando `lang en` entonces todo eso me aparece en inglés, si le pongo `lang es` todo me parece en español.
 - Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a estar logueado y va a tener acceso a todos los comandos. A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
 - Mejorar el rendimiento dividiendo el archivo main.js en más pequeños sobre todo los que se necesitan para el inicio del DOM para que no de pena descargar los 50 kilobytes y luego cargue el DOM. Hay que evitar los flash. Esto inclusive podría incluir dividir los idiomas y que más bien se pidan cuando cuando se haga el cambio de idioma descargue el archivo o se bajen en background progresivamente porque imaginemos que tenemos 50 idiomas pues van a va a ser mucho no sé cómo se maneja esto de la mejor forma profesional o la forma industrial o la forma más chingona. Ahora que lo pienso si la conexión es muy lenta le va a cargar rápido la página al usuario con todo el banner y la bienvenida pero cuando escriba un comando supongo que causaría error.
 - Easter eggs ocultos (comandos secretos). Vamos a empezar con una lluvia de ideas. Haz propuestas de unos buenos Easter eggs.

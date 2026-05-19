@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.5.2";
+  const VERSION = "1.6.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -131,7 +131,9 @@
       "help.license": "Muestra la licencia",
       "help.history": "Historial de comandos",
       "help.shortcuts":
-        "Atajos: \u2191/\u2193 (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicomando)",
+        "Atajos: \u2191/\u2193 (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicommando)",
+      "help.urlParams":
+        'Par\u00e1metros URL: <span class="cmd">?cmd=clear;su%20airvzxf</span> (\u00f3 &cmd= repetidos)',
 
       "users.airvzxfDesc": "Administrador / Propietario",
       "users.guestDesc": "Invitado (sesi\u00f3n actual por defecto)",
@@ -351,6 +353,8 @@
       "help.history": "Command history",
       "help.shortcuts":
         "Shortcuts: \u2191/\u2193 (history) | Tab (autocomplete) | Ctrl+L (clear) | !N / !! (history) | ; (multicommand)",
+      "help.urlParams":
+        'URL parameters: <span class="cmd">?cmd=clear;su%20airvzxf</span> (or repeated &cmd=)',
 
       "users.airvzxfDesc": "Administrator / Owner",
       "users.guestDesc": "Guest (default session)",
@@ -856,6 +860,7 @@
       base.push(
         "",
         '<span class="text-dim">' + t("help.shortcuts") + "</span>",
+        '<span class="text-dim">' + t("help.urlParams") + "</span>",
         "",
       );
       return base.join("\n");
@@ -2089,6 +2094,22 @@
     Storage.save(state);
   }
 
+  // ─── URL Command Execution ────────────────────────────────
+
+  function executeUrlCommands() {
+    var params = new URLSearchParams(window.location.search);
+    var cmds = params.getAll("cmd");
+    if (!cmds.length) return;
+    for (var i = 0; i < cmds.length; i++) {
+      execute(cmds[i]);
+    }
+    try {
+      window.history.replaceState(null, "", window.location.pathname);
+    } catch (e) {}
+    scrollToBottom();
+    cmdInput.focus();
+  }
+
   // ─── Event: Click anywhere in terminal focuses input ─────
 
   terminal.addEventListener("click", function (e) {
@@ -2277,6 +2298,8 @@
   updatePrompt();
   updateCursorPos();
   scrollToBottom();
+
+  executeUrlCommands();
 
   window.addEventListener("resize", function () {
     const atBottom =
