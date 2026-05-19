@@ -7,13 +7,423 @@
       name="description"
       content="RoviSoft.net — No es un sitio web tradicional: es una terminal de comandos interactiva (TTY) que funciona como página de inicio personal."
     />
+    <meta name="theme-color" content="#0d1117" />
     <meta name="color-scheme" content="dark" />
     <title>RoviSoft.net</title>
-    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="preload"
+      href="fonts/martian-mono-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>"
     />
+    <style>
+      /* =====================================================
+      RoviSoft.net — Terminal CSS (inlined for instant render)
+      GNU AGPL v3 — https://github.com/airvzxf/rovisoft-web
+      Source: style.css — keep both in sync
+      ===================================================== */
+
+      /* ─── Martian Mono (self-hosted variable font) ─────────────── */
+      @font-face {
+        font-family: "Martian Mono";
+        font-style: normal;
+        font-weight: 100 800;
+        font-stretch: 75% 112.5%;
+        font-display: swap;
+        src: url("fonts/martian-mono-cyrillic-ext.woff2") format("woff2");
+        unicode-range:
+          U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+          U+FE2E-FE2F;
+      }
+      @font-face {
+        font-family: "Martian Mono";
+        font-style: normal;
+        font-weight: 100 800;
+        font-stretch: 75% 112.5%;
+        font-display: swap;
+        src: url("fonts/martian-mono-cyrillic.woff2") format("woff2");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: "Martian Mono";
+        font-style: normal;
+        font-weight: 100 800;
+        font-stretch: 75% 112.5%;
+        font-display: swap;
+        src: url("fonts/martian-mono-latin-ext.woff2") format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Martian Mono";
+        font-style: normal;
+        font-weight: 100 800;
+        font-stretch: 75% 112.5%;
+        font-display: swap;
+        src: url("fonts/martian-mono-latin.woff2") format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      :root {
+        --bg: #0d1117;
+        --bg-prompt: #0d1117;
+        --text: #c9d1d9;
+        --text-dim: #8b949e;
+        --green: #3fb950;
+        --green-bright: #56d364;
+        --red: #f85149;
+        --cyan: #58a6ff;
+        --cyan-bright: #79c0ff;
+        --yellow: #d2991d;
+        --magenta: #bc8cff;
+        --border: #21262d;
+        --scrollbar: #30363d;
+        --font: "Martian Mono", monospace;
+        --font-size: 15px;
+        --font-weight: 400;
+        --line-height: 1.6;
+        --prompt-height: 55px;
+      }
+
+      [data-theme="light"] {
+        --bg: #f6f8fa;
+        --bg-prompt: #ffffff;
+        --text: #1f2328;
+        --text-dim: #656d76;
+        --green: #1a7f37;
+        --green-bright: #238636;
+        --red: #cf222e;
+        --cyan: #0969da;
+        --cyan-bright: #0550ae;
+        --yellow: #9a6700;
+        --magenta: #8250df;
+        --border: #d0d7de;
+        --scrollbar: #afb8c1;
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        font-size: var(--font-size);
+        font-weight: var(--font-weight);
+        font-style: normal;
+        line-height: var(--line-height);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .terminal {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      /* ─── Prompt Area (fixed at top) ──────────────────────────── */
+
+      .prompt-area {
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--bg-prompt);
+        border-bottom: 20px solid var(--border);
+        padding: 6px 16px;
+        display: flex;
+        align-items: center;
+        height: var(--prompt-height);
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+      }
+
+      .prompt-line {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        width: 100%;
+        position: relative;
+      }
+
+      .prompt-user {
+        color: var(--green);
+        font-weight: bold;
+      }
+      .prompt-at {
+        color: var(--text-dim);
+      }
+      .prompt-host {
+        color: var(--cyan);
+        font-weight: bold;
+      }
+      .prompt-colon {
+        color: var(--text-dim);
+      }
+      .prompt-path {
+        color: var(--yellow);
+      }
+      .prompt-symbol {
+        color: var(--text);
+        margin-right: 8px;
+      }
+
+      .prompt-symbol.symbol-hash {
+        color: var(--red);
+      }
+
+      .prompt-input-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .prompt-cmd-before,
+      .prompt-cmd-after {
+        color: var(--text);
+        white-space: pre;
+      }
+
+      /* ─── Cursor ──────────────────────────────────────────────── */
+
+      .cursor {
+        display: inline-block;
+        width: 1ch;
+        height: 1.15em;
+        background: var(--green);
+        animation: blink 1s step-end infinite;
+        vertical-align: text-bottom;
+      }
+
+      .cursor.cursor-hidden {
+        background: transparent;
+        animation: none;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ─── Hidden real input ───────────────────────────────────── */
+
+      .cmd-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: transparent;
+        caret-color: transparent;
+        font-family: var(--font);
+        font-size: var(--font-size);
+        z-index: 2;
+      }
+
+      /* ─── Output Area ─────────────────────────────────────────── */
+
+      .output-area {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 8px 16px 24px;
+        scroll-behavior: smooth;
+      }
+
+      /* ─── Output Lines ────────────────────────────────────────── */
+
+      .output-line {
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .output-line.command-line {
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border);
+      }
+
+      /* ─── Utility text styles ─────────────────────────────────── */
+
+      .text-green {
+        color: var(--green);
+      }
+      .text-red {
+        color: var(--red);
+      }
+      .text-cyan {
+        color: var(--cyan);
+      }
+      .text-yellow {
+        color: var(--yellow);
+      }
+      .text-magenta {
+        color: var(--magenta);
+      }
+      .text-dim {
+        color: var(--text-dim);
+      }
+      .text-bold {
+        font-weight: bold;
+      }
+      .text-white {
+        color: #fff;
+      }
+
+      .cmd {
+        color: var(--cyan);
+        font-weight: bold;
+      }
+
+      /* ─── Links ──────────────────────────────────────────────── */
+
+      .output-line a {
+        color: var(--cyan);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+      }
+
+      .output-line a:hover {
+        color: var(--green-bright);
+        border-bottom-color: var(--green-bright);
+      }
+
+      /* ─── Scrollbar ───────────────────────────────────────────── */
+
+      .output-area::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .output-area::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+
+      .output-area::-webkit-scrollbar-thumb {
+        background: var(--scrollbar);
+        border-radius: 3px;
+      }
+
+      .output-area::-webkit-scrollbar-thumb:hover {
+        background: var(--text-dim);
+      }
+
+      .output-area {
+        scrollbar-color: var(--scrollbar) var(--bg);
+        scrollbar-width: thin;
+      }
+
+      /* ─── ASCII Banner ────────────────────────────────────────── */
+
+      .ascii-banner {
+        color: var(--cyan);
+        font-size: 10px;
+        line-height: 1;
+        margin: 0 0 25px 0;
+      }
+
+      .output-welcome {
+        color: var(--text-dim);
+      }
+
+      .output-welcome p {
+        margin-bottom: 2px;
+      }
+
+      /* ─── Neofetch ────────────────────────────────────────────── */
+
+      .neofetch-block {
+        line-height: 1.6;
+      }
+
+      .neofetch-block .nf-label {
+        color: var(--green);
+        font-weight: bold;
+      }
+
+      /* ─── Man page ────────────────────────────────────────────── */
+
+      .man-name {
+        color: var(--yellow);
+        font-weight: bold;
+      }
+
+      .man-section {
+        color: var(--green);
+        font-weight: bold;
+        margin-top: 8px;
+      }
+
+      /* ─── Permission denied ───────────────────────────────────── */
+
+      .perm-denied {
+        color: var(--red);
+      }
+
+      /* ─── Reboot overlay ──────────────────────────────────────── */
+
+      .terminal-rebooting {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      /* ─── Responsive ──────────────────────────────────────────── */
+
+      @media (max-width: 600px) {
+        :root {
+          --font-size: 13px;
+        }
+
+        .prompt-area {
+          padding: 4px 10px;
+        }
+
+        .output-area {
+          padding: 6px 10px 16px;
+        }
+      }
+
+      @media (max-width: 411px) {
+        .ascii-banner {
+          font-size: 8px;
+        }
+      }
+    </style>
     <script>
       (function () {
         try {
@@ -40,10 +450,13 @@
           }
           var lg = localStorage.getItem("rs_lang");
           if (!lg) lg = sessionStorage.getItem("rs_lang");
-          if (lg) document.documentElement.setAttribute("lang", lg);
+          if (!lg) lg = "es";
+          document.documentElement.setAttribute("lang", lg);
         } catch (e) {}
       })();
     </script>
+    <script defer src="storage.js?v=1.9.0"></script>
+    <script defer src="main.js?v=1.9.0"></script>
   </head>
   <body>
     <div class="terminal" id="terminal">
@@ -73,6 +486,7 @@
           type="text"
           id="cmd-input"
           class="cmd-input"
+          disabled
           autofocus
           autocomplete="off"
           autocorrect="off"
@@ -86,7 +500,52 @@
       </div>
     </div>
 
-    <script src="storage.js"></script>
-    <script src="main.js"></script>
+    <script>
+      (function () {
+        try {
+          var lg = document.documentElement.getAttribute("lang") || "es";
+          var WELCOME = {
+            es: {
+              main: "Bienvenido a <strong>RoviSoft.net</strong> \u2014 Terminal interactiva (TTY).",
+              desc: "Este no es un sitio web tradicional: es una terminal de comandos interactiva que funciona como p\u00e1gina de inicio personal.",
+              help: 'Escribe <span class="cmd">help</span> para ver los comandos disponibles.',
+              config:
+                'Escribe <span class="cmd">config</span> para gestionar el almacenamiento de preferencias.',
+              mouse: "El mouse no sirve de mucho... mejor escribe.",
+            },
+            en: {
+              main: "Welcome to <strong>RoviSoft.net</strong> \u2014 Interactive terminal (TTY).",
+              desc: "This is not a traditional website: it's an interactive command terminal that works as a personal homepage.",
+              help: 'Type <span class="cmd">help</span> to see available commands.',
+              config:
+                'Type <span class="cmd">config</span> to manage storage preferences.',
+              mouse: "The mouse is not very useful here... just type.",
+            },
+          };
+          var BANNER =
+            '8888888b.                   d8b  .d8888b.            .d888 888    \n888   Y88b                  Y8P d88P  Y88b          d88P" 888    \n888    888                      Y88b.               888    888    \n888   d88P .d88b.  888  888 888  "Y888b.    .d88b.  888888 888888 \n8888888P" d88""88b 888  888 888     "Y88b. d88""88b 888    888    \n888 T88b  888  888 Y88  88P 888       "888 888  888 888    888    \n888  T88b Y88..88P  Y8bd8P  888 Y88b  d88P Y88..88P 888    Y88b.  \n888   T88b "Y88P"    Y88P   888  "Y8888P"   "Y88P"  888     "Y888';
+          var w = WELCOME[lg] || WELCOME.es;
+          var el = document.getElementById("welcome-message");
+          if (el) {
+            el.setAttribute("data-lang", lg);
+            el.innerHTML =
+              '<pre class="ascii-banner">' +
+              BANNER +
+              "</pre>" +
+              "<p>" +
+              w.main +
+              "\n" +
+              w.desc +
+              "\n\n" +
+              w.help +
+              "\n" +
+              w.config +
+              "\n" +
+              w.mouse +
+              "</p>";
+          }
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>

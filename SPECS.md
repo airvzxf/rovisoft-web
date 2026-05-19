@@ -249,7 +249,7 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Mejorar el rendimiento dividiendo el archivo main.js en más pequeños sobre todo los que se necesitan para el inicio del DOM para que no de pena descargar los 50 kilobytes y luego cargue el DOM. Hay que evitar los flash. Esto inclusive podría incluir dividir los idiomas y que más bien se pidan cuando cuando se haga el cambio de idioma descargue el archivo o se bajen en background progresivamente porque imaginemos que tenemos 50 idiomas pues van a va a ser mucho no sé cómo se maneja esto de la mejor forma profesional o la forma industrial o la forma más chingona. Ahora que lo pienso si la conexión es muy lenta le va a cargar rápido la página al usuario con todo el banner y la bienvenida pero cuando escriba un comando supongo que causaría error.
+- Agregar el comando `man` y además que cada comando tenga su página de documentación man: `help help`, `man clear`, `man whoami`, `man users`, `man su`, `man airvzxf`, `man neofetch`, `man date`, `man echo`, `man alias`, `man unalias`, `man theme`, `man lang`, `man config`, `man reboot`, `man reset`, `man version`, `man license`, `man history`, `man man`. Para `airvzxf` va a ser quitar el subcomando `airvzxf man` y más bien ese contenido ponerlo en él `man airvzxf`. No se te olvide hacer tanto para español como para inglés.
 - Easter eggs ocultos (comandos secretos). Vamos a empezar con una lluvia de ideas. Haz propuestas de unos buenos Easter eggs.
 
 ## 10. Informacion personal
