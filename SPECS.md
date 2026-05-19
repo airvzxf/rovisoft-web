@@ -65,6 +65,8 @@ Lista completa de comandos disponibles:
 | `license`  | Muestra la licencia (AGPL) y enlace al repositorio |
 | `lang es/en` | Cambia el idioma de la interfaz            |
 | `history`  | Muestra el historial de comandos de la sesión    |
+| `reboot`   | Reinicia la terminal (refresca la página, sin pérdida de datos) |
+| `reset`    | Restablece a valores de fábrica (borra todos los datos) |
 
 ### 2.5. Comando `license`
 
@@ -216,7 +218,6 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Tengo una discrepancia entre el comando reboot porque realmente lo pensé al inicio como que se reinicie todo pero sin que se pierda información es como por ejemplo si quieres tener la pantalla de bienvenida con el banner no hay otra forma más que darle control r para refrescar el navegador entonces reboot originalmente era como esta parte de reiniciar la página de cero osea un refresh del navegador web a esa página pero ahora se supone que elimina datos crees que debería agregar otro comando que sustituya el reboot actual por ejemplo no se gustó o forma por ejemplo y luego dejemos reboot con un simple local.reload? Obviamente en el reboot en caso de que si sea el reboot que refresca la pantalla pues éste actualizaría el uptime para que el contador que lleva prendida la terminal empiece de cero.
 - Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos. En caso de que se eliminen todos estos comandos y el sistema de archivos solamente me quedaría con `man`; me había dicho que para traducir los archivos o el sistema de archivos tenía un tipo problema y no se podía traducir a diferentes idiomas entonces con esto estaríamos eliminando esa barrera.
 - Una buena implementación es que si pones en la URL argumentos o parámetros los puede ejecutar. Un ejemplo, quiero hacer lo de Google SEO para el posicionamiento y quiero hacer un mapa. Entonces quiero mostrar el texto y enlace de acerca de nosotros; podría poner en la URL parámetros como: `/?cmd=clear;su%20airvzxf;airvzxf%20about;airvzxf%20contact;airvzxf%20social;` o `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about&cmd=airvzxf%20contact&cmd=airvzxf%20social`. Esto no solamente se limita a SEO, esto es también como un tipo juguete herramienta en el cual yo puedo abrir mi página como la quiero visualizar al ejecutar los comandos básicamente se va a visualizar como yo quiero, podría cambiarle el tema y así, el potencial aplicable para jugar es mucho.
 - Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo. A nivel obviamente JavaScript y datos en las cookies de su dispositivo.

@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.5.0";
+  const VERSION = "1.5.1";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -125,7 +125,8 @@
       "help.theme": "Gestiona temas de color",
       "help.lang": "Cambia el idioma de la interfaz",
       "help.config": "Gestiona el almacenamiento local",
-      "help.reboot": "Reinicia la terminal (borra datos)",
+      "help.reboot": "Reinicia la terminal",
+      "help.reset": "Restablece a valores de fábrica (borra datos)",
       "help.version": "Muestra la versi\u00f3n",
       "help.license": "Muestra la licencia",
       "help.history": "Historial de comandos",
@@ -332,6 +333,7 @@
       "config.codeWord": "c\u00f3digo",
       "config.inWord": "en",
 
+      "reset.msg": "Restableciendo a valores de f\u00e1brica...",
       "reboot.msg": "Reiniciando terminal...",
 
       eventNotFound: "{0}: event not found",
@@ -364,7 +366,8 @@
       "help.theme": "Manage color themes",
       "help.lang": "Change interface language",
       "help.config": "Manage local storage",
-      "help.reboot": "Reboot terminal (clears data)",
+      "help.reboot": "Reboots the terminal",
+      "help.reset": "Factory reset (clears all data)",
       "help.version": "Show version",
       "help.license": "Show license",
       "help.history": "Command history",
@@ -565,6 +568,7 @@
       "config.codeWord": "code",
       "config.inWord": "in",
 
+      "reset.msg": "Restoring factory defaults...",
       "reboot.msg": "Rebooting terminal...",
 
       eventNotFound: "{0}: event not found",
@@ -962,6 +966,7 @@
         ['<span class="cmd">lang</span>', t("help.lang")],
         ['<span class="cmd">config</span>', t("help.config")],
         ['<span class="cmd">reboot</span>', t("help.reboot")],
+        ['<span class="cmd">reset</span>', t("help.reset")],
         ['<span class="cmd">version</span>', t("help.version")],
         ['<span class="cmd">license</span>', t("help.license")],
         ['<span class="cmd">history</span>', t("help.history")],
@@ -2021,6 +2026,18 @@
       cmdInput.blur();
       terminal.classList.add("terminal-rebooting");
       appendOutput('<span class="text-yellow">' + t("reboot.msg") + "</span>");
+      setTimeout(function () {
+        Storage.saveFirstVisit(Date.now());
+        location.reload();
+      }, 1800);
+      return undefined;
+    },
+
+    reset() {
+      cmdInput.disabled = true;
+      cmdInput.blur();
+      terminal.classList.add("terminal-rebooting");
+      appendOutput('<span class="text-yellow">' + t("reset.msg") + "</span>");
       setTimeout(function () {
         Storage.reset();
         location.reload();
