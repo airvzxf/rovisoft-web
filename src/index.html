@@ -1,68 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="RoviSoft.net — No es un sitio web tradicional: es una terminal de comandos interactiva (TTY) que funciona como página de inicio personal.">
-  <meta name="color-scheme" content="dark">
-  <title>RoviSoft.net</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>">
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('rs_theme');
-        if (!t) t = sessionStorage.getItem('rs_theme');
-        if (t === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else if (t && t !== 'dark') {
-          var a = localStorage.getItem('rs_config_accepted');
-          var s = a === 'true' ? localStorage : sessionStorage;
-          var r = s.getItem('rs_custom_themes');
-          if (r) {
-            try {
-              var ct = JSON.parse(r);
-              if (ct[t]) {
-                var b = ct[t].base || 'dark';
-                document.documentElement.setAttribute('data-theme', b);
-                var v = ct[t].vars;
-                for (var k in v) document.documentElement.style.setProperty(k, v[k]);
-              }
-            } catch (e) { }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="RoviSoft.net — No es un sitio web tradicional: es una terminal de comandos interactiva (TTY) que funciona como página de inicio personal."
+    />
+    <meta name="color-scheme" content="dark" />
+    <title>RoviSoft.net</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>"
+    />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("rs_theme");
+          if (!t) t = sessionStorage.getItem("rs_theme");
+          if (t === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+          } else if (t && t !== "dark") {
+            var a = localStorage.getItem("rs_config_accepted");
+            var s = a === "true" ? localStorage : sessionStorage;
+            var r = s.getItem("rs_custom_themes");
+            if (r) {
+              try {
+                var ct = JSON.parse(r);
+                if (ct[t]) {
+                  var b = ct[t].base || "dark";
+                  document.documentElement.setAttribute("data-theme", b);
+                  var v = ct[t].vars;
+                  for (var k in v)
+                    document.documentElement.style.setProperty(k, v[k]);
+                }
+              } catch (e) {}
+            }
           }
-        }
-        var lg = localStorage.getItem('rs_lang');
-        if (!lg) lg = sessionStorage.getItem('rs_lang');
-        if (lg) document.documentElement.setAttribute('lang', lg);
-      } catch (e) { }
-    })();
-  </script>
-</head>
-<body>
-  <div class="terminal" id="terminal">
-    <div class="prompt-area" id="prompt-area">
-      <span class="prompt-line">
-        <span class="prompt-user" id="prompt-user">guest</span><!--
-     --><span class="prompt-at">@</span><!--
-     --><span class="prompt-host" id="prompt-host">rovisoft.net</span><!--
-     --><span class="prompt-colon">:</span><!--
-     --><span class="prompt-path" id="prompt-path">~</span><!--
-     --><span class="prompt-symbol" id="prompt-symbol">$</span><!--
+          var lg = localStorage.getItem("rs_lang");
+          if (!lg) lg = sessionStorage.getItem("rs_lang");
+          if (lg) document.documentElement.setAttribute("lang", lg);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="terminal" id="terminal">
+      <div class="prompt-area" id="prompt-area">
+        <span class="prompt-line">
+          <span class="prompt-user" id="prompt-user">guest</span
+          ><!--
+     --><span class="prompt-at">@</span
+          ><!--
+     --><span class="prompt-host" id="prompt-host">rovisoft.net</span
+          ><!--
+     --><span class="prompt-colon">:</span
+          ><!--
+     --><span class="prompt-path" id="prompt-path">~</span
+          ><!--
+     --><span class="prompt-symbol" id="prompt-symbol">$</span
+          ><!--
      --><span class="prompt-input-wrapper">
-          <span class="prompt-cmd-before" id="prompt-cmd-before"></span><!--
-       --><span class="cursor" id="cursor"></span><!--
+            <span class="prompt-cmd-before" id="prompt-cmd-before"></span
+            ><!--
+       --><span class="cursor" id="cursor"></span
+            ><!--
        --><span class="prompt-cmd-after" id="prompt-cmd-after"></span>
+          </span>
         </span>
-      </span>
-      <input type="text" id="cmd-input" class="cmd-input" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Command line">
-    </div>
-    <div class="output-area" id="output-area">
-<div class="output-line output-welcome" id="welcome-message">
+        <input
+          type="text"
+          id="cmd-input"
+          class="cmd-input"
+          autofocus
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Command line"
+        />
+      </div>
+      <div class="output-area" id="output-area">
+        <div class="output-line output-welcome" id="welcome-message"></div>
       </div>
     </div>
-  </div>
 
-  <script src="storage.js"></script>
-  <script src="main.js"></script>
-</body>
+    <script src="storage.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>

@@ -7,22 +7,22 @@
    ===================================================== */
 
 (function () {
-  'use strict';
+  "use strict";
 
   var KEYS = {
-    ACCEPTED: 'rs_config_accepted',
-    STATE: 'rs_state',
-    VERSION: 'rs_version',
-    FIRST_VISIT: 'rs_first_visit',
-    THEME: 'rs_theme',
-    CUSTOM_THEMES: 'rs_custom_themes',
-    LANG: 'rs_lang'
+    ACCEPTED: "rs_config_accepted",
+    STATE: "rs_state",
+    VERSION: "rs_version",
+    FIRST_VISIT: "rs_first_visit",
+    THEME: "rs_theme",
+    CUSTOM_THEMES: "rs_custom_themes",
+    LANG: "rs_lang",
   };
 
   function isAccepted() {
     var val = localStorage.getItem(KEYS.ACCEPTED);
     if (val === null) return null;
-    return val === 'true';
+    return val === "true";
   }
 
   function getStore() {
@@ -30,9 +30,16 @@
   }
 
   function accept() {
-    localStorage.setItem(KEYS.ACCEPTED, 'true');
+    localStorage.setItem(KEYS.ACCEPTED, "true");
 
-    var keysToMigrate = [KEYS.STATE, KEYS.VERSION, KEYS.FIRST_VISIT, KEYS.THEME, KEYS.CUSTOM_THEMES, KEYS.LANG];
+    var keysToMigrate = [
+      KEYS.STATE,
+      KEYS.VERSION,
+      KEYS.FIRST_VISIT,
+      KEYS.THEME,
+      KEYS.CUSTOM_THEMES,
+      KEYS.LANG,
+    ];
     for (var i = 0; i < keysToMigrate.length; i++) {
       var key = keysToMigrate[i];
       var val = sessionStorage.getItem(key);
@@ -44,7 +51,7 @@
   }
 
   function reject() {
-    localStorage.setItem(KEYS.ACCEPTED, 'false');
+    localStorage.setItem(KEYS.ACCEPTED, "false");
 
     var storedVersion = localStorage.getItem(KEYS.VERSION);
     var storedFirstVisit = localStorage.getItem(KEYS.FIRST_VISIT);
@@ -74,7 +81,7 @@
       cwd: state.cwd,
       history: state.history,
       aliases: state.aliases,
-      lang: state.lang
+      lang: state.lang,
     };
     try {
       store.setItem(KEYS.STATE, JSON.stringify(data));
@@ -150,14 +157,14 @@
   function getStatus() {
     var accepted = isAccepted();
     var store = getStore();
-    var storeName = accepted === true ? 'localStorage' : 'sessionStorage';
+    var storeName = accepted === true ? "localStorage" : "sessionStorage";
     var firstVisit = loadFirstVisit();
 
     return {
       accepted: accepted,
       storeName: storeName,
       versionStored: loadVersion(),
-      firstVisit: firstVisit
+      firstVisit: firstVisit,
     };
   }
 
@@ -168,7 +175,7 @@
 
     for (var i = 0; i < store.length; i++) {
       var key = store.key(i);
-      if (key.indexOf('rs_') === 0) {
+      if (key.indexOf("rs_") === 0) {
         allKeys.push(key);
         var val = store.getItem(key);
         totalBytes += (key.length + (val ? val.length : 0)) * 2;
@@ -178,7 +185,7 @@
     return {
       keys: allKeys,
       keysCount: allKeys.length,
-      totalBytes: totalBytes
+      totalBytes: totalBytes,
     };
   }
 
@@ -214,7 +221,12 @@
     if (!raw) return {};
     try {
       var parsed = JSON.parse(raw);
-      if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) return parsed;
+      if (
+        typeof parsed === "object" &&
+        parsed !== null &&
+        !Array.isArray(parsed)
+      )
+        return parsed;
       return {};
     } catch (e) {
       return {};
@@ -253,7 +265,6 @@
     saveCustomThemes: saveCustomThemes,
     loadCustomThemes: loadCustomThemes,
     saveLang: saveLang,
-    loadLang: loadLang
+    loadLang: loadLang,
   };
-
 })();
