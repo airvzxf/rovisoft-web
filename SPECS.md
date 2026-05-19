@@ -249,7 +249,6 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- En los temas también agregar los tamaños de letra que se puedan modificar.
 - Easter eggs ocultos (comandos secretos). Vamos a empezar con una lluvia de ideas. Haz propuestas de unos buenos Easter eggs.
 - Revisa la descripción de todos los commits que se han hecho desde el inicio y ve que características se han agregado para lo siguiente. Mejorar el archivo README.md, crear el archivo CONTRIBUTING.md y analizar si se deja este documento SPECS.md o se quita. También ver si se agregan más documentos o no. O sea, todo lo que tiene que ver con documentación hay que hacerlo en este punto.
 

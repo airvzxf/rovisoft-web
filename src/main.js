@@ -43,12 +43,16 @@
     "--magenta",
     "--border",
     "--scrollbar",
+    "--font-size",
+    "--line-height",
   ];
 
   const BUILTIN_THEMES = {
     dark: {
       name: "Dark",
       vars: {
+        "--font-size": "15px",
+        "--line-height": "1.6",
         "--bg": "#0d1117",
         "--bg-prompt": "#0d1117",
         "--text": "#c9d1d9",
@@ -67,6 +71,8 @@
     light: {
       name: "Light",
       vars: {
+        "--font-size": "15px",
+        "--line-height": "1.6",
         "--bg": "#f6f8fa",
         "--bg-prompt": "#ffffff",
         "--text": "#1f2328",
@@ -125,7 +131,7 @@
       "help.echo": "Repite el texto",
       "help.alias": "Gestiona alias de comandos",
       "help.unalias": "Elimina un alias",
-      "help.theme": "Gestiona temas de color",
+      "help.theme": "Gestiona temas de color y tipograf\u00eda",
       "help.lang": "Cambia el idioma de la interfaz",
       "help.config": "Gestiona el almacenamiento local",
       "help.reboot": "Reinicia la terminal",
@@ -207,7 +213,7 @@
       "lang.hint":
         'Usa <span class="cmd">lang list</span> para ver los idiomas disponibles.',
 
-      "theme.title": "Temas de color",
+      "theme.title": "Temas de color y tipograf\u00eda",
       "theme.current": "Tema actual:",
       "theme.currentMarker": "actual",
       "theme.builtin": "Temas integrados:",
@@ -228,7 +234,7 @@
       "theme.createVarUnknown":
         "theme create: variable desconocida '{0}'. Variables disponibles: {1}",
       "theme.createVarRequired":
-        "theme create: se requiere al menos una variable de color.",
+        "theme create: se requiere al menos una variable de color o tipograf\u00eda.",
       "theme.createUseExport":
         'Usa <span class="cmd">theme export</span> para ver las variables disponibles.',
       "theme.created": "Tema '{0}' creado (base: {1}, {2} variable{3}).",
@@ -487,11 +493,11 @@
         "Elimina el alias especificado de la lista de alias definidos.",
       "man.unalias.seeAlso": "alias(1)",
 
-      "man.theme.name": "theme - Gestiona temas de color",
+      "man.theme.name": "theme - Gestiona temas de color y tipograf\u00eda",
       "man.theme.synopsis":
         "theme | theme <nombre> | theme list | theme create | theme edit | theme delete | theme export",
       "man.theme.description":
-        "Gestiona los temas de color de la terminal. Los temas integrados son 'dark' y 'light'. Se pueden crear temas personalizados con variables de color especificas. Los temas personalizados se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
+        "Gestiona los temas de color y tipografia de la terminal. Los temas integrados son 'dark' y 'light'. Se pueden crear temas personalizados con variables de color y tipografia especificas. Los temas personalizados se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
       "man.theme.sub.list": "Lista los temas disponibles",
       "man.theme.sub.set": "Cambia al tema especificado",
       "man.theme.sub.create": "Crea un tema personalizado",

@@ -29,7 +29,7 @@
     "help.echo": "Echo text",
     "help.alias": "Manage command aliases",
     "help.unalias": "Remove an alias",
-    "help.theme": "Manage color themes",
+    "help.theme": "Manage color and typography themes",
     "help.lang": "Change interface language",
     "help.config": "Manage local storage",
     "help.reboot": "Reboots the terminal",
@@ -111,7 +111,7 @@
     "lang.hint":
       'Use <span class="cmd">lang list</span> to see available languages.',
 
-    "theme.title": "Color themes",
+    "theme.title": "Color and typography themes",
     "theme.current": "Current theme:",
     "theme.currentMarker": "current",
     "theme.builtin": "Built-in themes:",
@@ -132,7 +132,7 @@
     "theme.createVarUnknown":
       "theme create: unknown variable '{0}'. Available variables: {1}",
     "theme.createVarRequired":
-      "theme create: at least one color variable is required.",
+      "theme create: at least one color or typography variable is required.",
     "theme.createUseExport":
       'Use <span class="cmd">theme export</span> to see available variables.',
     "theme.created": "Theme '{0}' created (base: {1}, {2} variable{3}).",
@@ -383,11 +383,11 @@
       "Removes the specified alias from the defined aliases list.",
     "man.unalias.seeAlso": "alias(1)",
 
-    "man.theme.name": "theme - Manage color themes",
+    "man.theme.name": "theme - Manage color and typography themes",
     "man.theme.synopsis":
       "theme | theme <name> | theme list | theme create | theme edit | theme delete | theme export",
     "man.theme.description":
-      "Manages the terminal's color themes. Built-in themes are 'dark' and 'light'. Custom themes can be created with specific color variables. Custom themes are preserved between sessions if persistent storage is enabled.",
+      "Manages the terminal's color and typography themes. Built-in themes are 'dark' and 'light'. Custom themes can be created with specific color and typography variables. Custom themes are preserved between sessions if persistent storage is enabled.",
     "man.theme.sub.list": "List available themes",
     "man.theme.sub.set": "Switch to specified theme",
     "man.theme.sub.create": "Create a custom theme",
