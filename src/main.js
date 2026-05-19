@@ -107,7 +107,6 @@
       'help.neofetch': 'Informaci\u00f3n del sistema',
       'help.date': 'Fecha y hora actual',
       'help.echo': 'Repite el texto',
-      'help.echoParam': 'texto',
       'help.alias': 'Gestiona alias de comandos',
       'help.unalias': 'Elimina un alias',
       'help.theme': 'Gestiona temas de color',
@@ -127,8 +126,7 @@
       'users.airvzxfDesc': 'Administrador / Propietario',
       'users.guestDesc': 'Invitado (sesi\u00f3n actual por defecto)',
 
-      'su.usage': 'Uso: su &lt;usuario&gt;',
-      'su.paramUser': 'usuario',
+      'su.usage': 'Uso: su &lt;user&gt;',
       'su.authSuccess': 'Autenticaci\u00f3n exitosa.',
       'su.welcomeUser': 'Bienvenido, {0}',
       'su.guestRestored': 'Sesi\u00f3n de invitado restaurada.',
@@ -192,8 +190,6 @@
       'theme.builtin': 'Temas integrados:',
       'theme.custom': 'Temas personalizados:',
       'theme.description': 'Cambia al tema especificado',
-      'theme.themeParam': 'nombre',
-      'theme.varParam': 'valor',
       'theme.listDesc': 'Lista los temas disponibles',
       'theme.createDesc': 'Crea un tema personalizado',
       'theme.editDesc': 'Edita un tema personalizado',
@@ -231,8 +227,6 @@
       'alias.showAliases': 'Muestra los alias definidos',
       'alias.showValue': 'Muestra el valor de un alias',
       'alias.define': 'Define un nuevo alias',
-      'alias.paramName': 'nombre',
-      'alias.paramCommand': 'comando',
       'alias.preserved': 'Los alias se conservan entre sesiones.',
       'alias.noOverride': 'No se puede crear un alias con el nombre de un comando existente.',
       'alias.notDefined': "alias: {0}: no definido.",
@@ -242,7 +236,6 @@
 
       'unalias.title': 'unalias \u2014 Elimina un alias definido',
       'unalias.desc': 'Elimina el alias especificado',
-      'unalias.paramName': 'nombre',
       'unalias.useAlias': 'Usa <span class="cmd">alias</span> para ver los alias definidos.',
       'unalias.notDefined': "unalias: {0}: no definido.",
 
@@ -323,7 +316,6 @@
       'help.neofetch': 'System information',
       'help.date': 'Current date and time',
       'help.echo': 'Echo text',
-      'help.echoParam': 'text',
       'help.alias': 'Manage command aliases',
       'help.unalias': 'Remove an alias',
       'help.theme': 'Manage color themes',
@@ -344,7 +336,6 @@
       'users.guestDesc': 'Guest (default session)',
 
       'su.usage': 'Usage: su &lt;user&gt;',
-      'su.paramUser': 'user',
       'su.authSuccess': 'Authentication successful.',
       'su.welcomeUser': 'Welcome, {0}',
       'su.guestRestored': 'Guest session restored.',
@@ -408,8 +399,6 @@
       'theme.builtin': 'Built-in themes:',
       'theme.custom': 'Custom themes:',
       'theme.description': 'Switch to specified theme',
-      'theme.themeParam': 'name',
-      'theme.varParam': 'value',
       'theme.listDesc': 'List available themes',
       'theme.createDesc': 'Create a custom theme',
       'theme.editDesc': 'Edit a custom theme',
@@ -447,8 +436,6 @@
       'alias.showAliases': 'Show defined aliases',
       'alias.showValue': 'Show value of an alias',
       'alias.define': 'Define a new alias',
-      'alias.paramName': 'name',
-      'alias.paramCommand': 'command',
       'alias.preserved': 'Aliases are preserved between sessions.',
       'alias.noOverride': 'Cannot create an alias with an existing command name.',
       'alias.notDefined': "alias: {0}: not defined.",
@@ -458,7 +445,6 @@
 
       'unalias.title': 'unalias \u2014 Remove a defined alias',
       'unalias.desc': 'Remove the specified alias',
-      'unalias.paramName': 'name',
       'unalias.useAlias': 'Use <span class="cmd">alias</span> to see defined aliases.',
       'unalias.notDefined': "unalias: {0}: not defined.",
 
@@ -746,9 +732,67 @@
   }
 
 function formatStorageSize(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KiB';
-    return (bytes / 1048576).toFixed(2) + ' MiB';
+     if (bytes < 1024) return bytes + ' B';
+     if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KiB';
+     return (bytes / 1048576).toFixed(2) + ' MiB';
+   }
+
+  function stripHtml(html) {
+    return html.replace(/<[^>]*>/g, '')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"');
+  }
+
+  function visualLen(html) {
+    return stripHtml(html).length;
+  }
+
+  function formatHtmlList(items, options) {
+    if (!options) options = {};
+    var indent = options.indent || '  ';
+    var minGap = options.minGap != null ? options.minGap : 2;
+    var maxLen = 0;
+    for (var i = 0; i < items.length; i++) {
+      var len = visualLen(items[i][0]);
+      if (len > maxLen) maxLen = len;
+    }
+    var descCol = maxLen + minGap;
+    var lines = [];
+    for (var i = 0; i < items.length; i++) {
+      var cmdHtml = items[i][0];
+      var desc = items[i][1];
+      if (items[i].length >= 3 && items[i][2] === 'wrap') {
+        lines.push(indent + cmdHtml);
+        lines.push(indent + ' '.repeat(descCol) + desc);
+      } else {
+        var currentLen = visualLen(cmdHtml);
+        var padding = descCol - currentLen;
+        lines.push(indent + cmdHtml + ' '.repeat(padding) + desc);
+      }
+    }
+    return lines;
+  }
+
+  function formatTextList(items, options) {
+    if (!options) options = {};
+    var indent = options.indent || '  ';
+    var minGap = options.minGap != null ? options.minGap : 2;
+    var maxLen = 0;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i][0].length > maxLen) maxLen = items[i][0].length;
+    }
+    var descCol = maxLen + minGap;
+    var lines = [];
+    for (var i = 0; i < items.length; i++) {
+      var key = items[i][0];
+      var val = items[i][1];
+      var padding = descCol - key.length;
+      lines.push(indent + key + ' '.repeat(padding) + val);
+    }
+    return lines;
   }
 
   function applyTheme(themeName) {
@@ -790,36 +834,38 @@ function formatStorageSize(bytes) {
   const commands = {
 
     help() {
-      const base = [
-        '  <span class="cmd">help</span>            ' + t('help.help'),
-        '  <span class="cmd">clear</span>           ' + t('help.clear'),
-        '  <span class="cmd">whoami</span>          ' + t('help.whoami'),
-        '  <span class="cmd">users</span>           ' + t('help.users'),
-        '  <span class="cmd">su &lt;user&gt;</span>       ' + t('help.su'),
-        '  <span class="cmd">airvzxf</span>         ' + t('help.airvzxf'),
-        '  <span class="cmd">neofetch</span>        ' + t('help.neofetch'),
-        '  <span class="cmd">date</span>            ' + t('help.date'),
-        '  <span class="cmd">echo &lt;' + t('help.echoParam') + '&gt;</span>    ' + t('help.echo'),
-        '  <span class="cmd">alias</span>           ' + t('help.alias'),
-        '  <span class="cmd">unalias</span>         ' + t('help.unalias'),
-        '  <span class="cmd">theme</span>           ' + t('help.theme'),
-        '  <span class="cmd">lang</span>            ' + t('help.lang'),
-        '  <span class="cmd">config</span>          ' + t('help.config'),
-        '  <span class="cmd">reboot</span>          ' + t('help.reboot'),
-        '  <span class="cmd">version</span>         ' + t('help.version'),
-        '  <span class="cmd">license</span>         ' + t('help.license'),
-        '  <span class="cmd">history</span>         ' + t('help.history'),
-      ];
+      const base = formatHtmlList([
+        ['<span class="cmd">help</span>', t('help.help')],
+        ['<span class="cmd">clear</span>', t('help.clear')],
+        ['<span class="cmd">whoami</span>', t('help.whoami')],
+        ['<span class="cmd">users</span>', t('help.users')],
+        ['<span class="cmd">su &lt;user&gt;</span>', t('help.su')],
+        ['<span class="cmd">airvzxf</span>', t('help.airvzxf')],
+        ['<span class="cmd">neofetch</span>', t('help.neofetch')],
+        ['<span class="cmd">date</span>', t('help.date')],
+        ['<span class="cmd">echo &lt;text&gt;</span>', t('help.echo')],
+        ['<span class="cmd">alias</span>', t('help.alias')],
+        ['<span class="cmd">unalias</span>', t('help.unalias')],
+        ['<span class="cmd">theme</span>', t('help.theme')],
+        ['<span class="cmd">lang</span>', t('help.lang')],
+        ['<span class="cmd">config</span>', t('help.config')],
+        ['<span class="cmd">reboot</span>', t('help.reboot')],
+        ['<span class="cmd">version</span>', t('help.version')],
+        ['<span class="cmd">license</span>', t('help.license')],
+        ['<span class="cmd">history</span>', t('help.history')],
+      ]);
 
       if (state.user === 'airvzxf') {
         base.push(
           '',
           '  <span class="text-dim">\u2500\u2500 ' + t('help.additional') + ' \u2500\u2500</span>',
           '',
-          '  <span class="cmd">cat &lt;file&gt;</span>      ' + t('help.cat'),
-          '  <span class="cmd">ls [-l] &lt;dir&gt;</span>   ' + t('help.ls'),
-          '  <span class="cmd">man &lt;topic&gt;</span>      ' + t('help.man'),
-          '  <span class="cmd">tail [-f] &lt;file&gt;</span> ' + t('help.tail'),
+          ...formatHtmlList([
+            ['<span class="cmd">cat &lt;file&gt;</span>', t('help.cat')],
+            ['<span class="cmd">ls [-l] &lt;dir&gt;</span>', t('help.ls')],
+            ['<span class="cmd">man &lt;topic&gt;</span>', t('help.man')],
+            ['<span class="cmd">tail [-f] &lt;file&gt;</span>', t('help.tail')],
+          ])
         );
       }
 
@@ -854,11 +900,13 @@ function formatStorageSize(bytes) {
       if (sub === 'list') {
         var lines = ['<span class="text-yellow text-bold">' + t('lang.available') + '</span>'];
         var langKeys = Object.keys(AVAILABLE_LANGS);
+        var langItems = [];
         for (var i = 0; i < langKeys.length; i++) {
           var k = langKeys[i];
           var marker = k === state.lang ? ' <span class="text-dim">\u2190</span>' : '';
-          lines.push('  <span class="text-green">' + escapeHtml(k) + '</span>    ' + escapeHtml(AVAILABLE_LANGS[k]) + marker);
+          langItems.push(['<span class="text-green">' + escapeHtml(k) + '</span>', escapeHtml(AVAILABLE_LANGS[k]) + marker]);
         }
+        lines.push(...formatHtmlList(langItems));
         lines.push('');
         return lines.join('\n');
       }
@@ -883,11 +931,10 @@ function formatStorageSize(bytes) {
     },
 
     users() {
-      return [
-        '  <span class="text-green">airvzxf</span>    ' + t('users.airvzxfDesc'),
-        '  <span class="text-green">guest</span>      ' + t('users.guestDesc'),
-        ''
-      ].join('\n');
+      return formatHtmlList([
+        ['<span class="text-green">airvzxf</span>', t('users.airvzxfDesc')],
+        ['<span class="text-green">guest</span>', t('users.guestDesc')],
+      ]).concat(['']).join('\n');
     },
 
     su(args) {
@@ -917,12 +964,13 @@ function formatStorageSize(bytes) {
     },
 
     version() {
-      return [
-        '<span class="text-dim">' + t('version.label') + '</span>       v' + VERSION,
-        '<span class="text-dim">' + t('version.build') + '</span>         AGPL v3 \u2014 vanilla HTML5/CSS3/ES6+',
-        '<span class="text-dim">' + t('license.source') + '</span>   ' + link('https://github.com/airvzxf/rovisoft-web'),
-        ''
-      ].join('\n');
+      const lines = formatHtmlList([
+        ['<span class="text-dim">' + t('version.label') + '</span>', 'v' + VERSION],
+        ['<span class="text-dim">' + t('version.build') + '</span>', 'AGPL v3 \u2014 vanilla HTML5/CSS3/ES6+'],
+        ['<span class="text-dim">' + t('license.source') + '</span>', link('https://github.com/airvzxf/rovisoft-web')],
+      ]);
+      lines.push('');
+      return lines.join('\n');
     },
 
     airvzxf(args) {
@@ -930,15 +978,18 @@ function formatStorageSize(bytes) {
         return permDenied('airvzxf', 'airvzxf');
       }
       if (!args.length) {
-        return [
+        const lines = [
           '<span class="text-yellow text-bold">' + t('airvzxf.usage') + '</span>',
-          '',
-          '  <span class="cmd">airvzxf about</span>     ' + t('airvzxf.about'),
-          '  <span class="cmd">airvzxf contact</span>   ' + t('airvzxf.contact'),
-          '  <span class="cmd">airvzxf social</span>    ' + t('airvzxf.social'),
-          '  <span class="cmd">airvzxf projects</span>  ' + t('airvzxf.projects'),
           ''
-        ].join('\n');
+        ];
+        lines.push(...formatHtmlList([
+          ['<span class="cmd">airvzxf about</span>', t('airvzxf.about')],
+          ['<span class="cmd">airvzxf contact</span>', t('airvzxf.contact')],
+          ['<span class="cmd">airvzxf social</span>', t('airvzxf.social')],
+          ['<span class="cmd">airvzxf projects</span>', t('airvzxf.projects')],
+        ]));
+        lines.push('');
+        return lines.join('\n');
       }
       const sub = args[0].toLowerCase();
       const subcommands = { about: true, contact: true, projects: true, social: true };
@@ -971,17 +1022,17 @@ function formatStorageSize(bytes) {
       }
 
       const configLabel = status.accepted === true ? t('neofetch.accepted') : status.accepted === false ? t('neofetch.rejected') : t('neofetch.undecided');
-      const lines = [
-        `<span class="nf-label">${t('neofetch.os')}</span>        RoviSoft Terminal v${VERSION}`,
-        `<span class="nf-label">${t('neofetch.host')}</span>      ${escapeHtml(state.host)}`,
-        `<span class="nf-label">${t('neofetch.kernel')}</span>    HTML5/CSS3/ES6+`,
-        `<span class="nf-label">${t('neofetch.shell')}</span>     ${escapeHtml(u.shell)}`,
-        `<span class="nf-label">${t('neofetch.user')}</span>      ${escapeHtml(state.user)}`,
-        `<span class="nf-label">${t('neofetch.theme')}</span>     ${escapeHtml(currentTheme)}`,
-        `<span class="nf-label">${t('neofetch.uptime')}</span>    ${uptime}`,
-        `<span class="nf-label">${t('neofetch.config')}</span>    ${configLabel}`,
-        `<span class="nf-label">${t('neofetch.storage')}</span>   ${ram}`,
-      ];
+      const lines = formatHtmlList([
+        ['<span class="nf-label">' + t('neofetch.os') + '</span>', 'RoviSoft Terminal v' + VERSION],
+        ['<span class="nf-label">' + t('neofetch.host') + '</span>', escapeHtml(state.host)],
+        ['<span class="nf-label">' + t('neofetch.kernel') + '</span>', 'HTML5/CSS3/ES6+'],
+        ['<span class="nf-label">' + t('neofetch.shell') + '</span>', escapeHtml(u.shell)],
+        ['<span class="nf-label">' + t('neofetch.user') + '</span>', escapeHtml(state.user)],
+        ['<span class="nf-label">' + t('neofetch.theme') + '</span>', escapeHtml(currentTheme)],
+        ['<span class="nf-label">' + t('neofetch.uptime') + '</span>', uptime],
+        ['<span class="nf-label">' + t('neofetch.config') + '</span>', configLabel],
+        ['<span class="nf-label">' + t('neofetch.storage') + '</span>', ram],
+      ]);
       return '<div class="neofetch-block">' + lines.join('\n') + '</div>';
     },
 
@@ -1031,18 +1082,19 @@ function formatStorageSize(bytes) {
 
     theme(args) {
       if (!args.length) {
+        const themeItems = [
+          ['<span class="cmd">theme list</span>', t('theme.listDesc')],
+          ['<span class="cmd">theme &lt;name&gt;</span>', t('theme.description')],
+          ['<span class="cmd">theme create &lt;name&gt; [--base=dark|light] [--var=value]</span>', t('theme.createDesc'), 'wrap'],
+          ['<span class="cmd">theme edit &lt;name&gt; [--base=dark|light] [--var=value]</span>', t('theme.editDesc'), 'wrap'],
+          ['<span class="cmd">theme delete &lt;name&gt;</span>', t('theme.deleteDesc')],
+          ['<span class="cmd">theme export [&lt;name&gt;]</span>', t('theme.exportDesc')],
+        ];
         return [
           '<span class="text-yellow text-bold">' + t('theme.title') + '</span>',
           `  ${t('theme.current')} <span class="text-cyan">${escapeHtml(currentTheme)}</span>`,
           '',
-          '  <span class="cmd">theme list</span>                   ' + t('theme.listDesc'),
-          '  <span class="cmd">theme &lt;' + t('theme.themeParam') + '&gt;</span>               ' + t('theme.description'),
-          '  <span class="cmd">theme create &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']</span>',
-          '                               ' + t('theme.createDesc'),
-          '  <span class="cmd">theme edit &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']</span>',
-          '                               ' + t('theme.editDesc'),
-          '  <span class="cmd">theme delete &lt;' + t('theme.themeParam') + '&gt;</span>        ' + t('theme.deleteDesc'),
-          '  <span class="cmd">theme export [&lt;' + t('theme.themeParam') + '&gt;]</span>      ' + t('theme.exportDesc'),
+          ...formatHtmlList(themeItems),
           ''
         ].join('\n');
       }
@@ -1052,20 +1104,24 @@ function formatStorageSize(bytes) {
       if (sub === 'list') {
         var lines = ['<span class="text-yellow text-bold">' + t('theme.builtin') + '</span>'];
         var builtinKeys = Object.keys(BUILTIN_THEMES);
+        var builtinItems = [];
         for (var i = 0; i < builtinKeys.length; i++) {
           var k = builtinKeys[i];
           var marker = k === currentTheme ? ' <span class="text-dim">(' + t('theme.currentMarker') + ')</span>' : '';
-          lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   ${escapeHtml(BUILTIN_THEMES[k].name)}${marker}`);
+          builtinItems.push(['<span class="text-green">' + escapeHtml(k) + '</span>', escapeHtml(BUILTIN_THEMES[k].name) + marker]);
         }
+        lines.push(...formatHtmlList(builtinItems));
         var customKeys = Object.keys(customThemes);
         if (customKeys.length) {
           lines.push('');
           lines.push('<span class="text-yellow text-bold">' + t('theme.custom') + '</span>');
+          var customItems = [];
           for (var i = 0; i < customKeys.length; i++) {
             var k = customKeys[i];
             var marker = k === currentTheme ? ' <span class="text-dim">(' + t('theme.currentMarker') + ')</span>' : '';
-            lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   base: ${escapeHtml(customThemes[k].base || 'dark')}${marker}`);
+            customItems.push(['<span class="text-green">' + escapeHtml(k) + '</span>', 'base: ' + escapeHtml(customThemes[k].base || 'dark') + marker]);
           }
+          lines.push(...formatHtmlList(customItems));
         }
         lines.push('');
         return lines.join('\n');
@@ -1119,7 +1175,7 @@ function formatStorageSize(bytes) {
 
       if (sub === 'edit') {
         if (args.length < 2) {
-          return '<span class="text-red">' + t('theme.editNameRequired') + '</span>\n<span class="cmd">theme edit &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']...</span>';
+          return '<span class="text-red">' + t('theme.editNameRequired') + '</span>\n<span class="cmd">theme edit &lt;name&gt; [--base=dark|light] [--var=value]...</span>';
         }
         var name = args[1].toLowerCase();
         if (BUILTIN_THEMES[name]) {
@@ -1220,16 +1276,21 @@ function formatStorageSize(bytes) {
     alias(args) {
       if (!args.length) {
         const keys = Object.keys(state.aliases);
-        return [
+        const lines = [
           '<span class="text-yellow text-bold">' + t('alias.title') + '</span>',
-          '  <span class="cmd">alias</span>                     ' + t('alias.showAliases'),
-          '  <span class="cmd">alias ' + t('alias.paramName') + '</span>              ' + t('alias.showValue'),
-          '  <span class="cmd">alias ' + t('alias.paramName') + '=&#39;' + t('alias.paramCommand') + '&#39;</span>    ' + t('alias.define'),
+        ];
+        lines.push(...formatHtmlList([
+          ['<span class="cmd">alias</span>', t('alias.showAliases')],
+          ['<span class="cmd">alias &lt;name&gt;</span>', t('alias.showValue')],
+          ['<span class="cmd">alias &lt;name&gt;=\'command\'</span>', t('alias.define')],
+        ]));
+        lines.push(
           '',
           '  <span class="text-dim">' + t('alias.preserved') + '</span>',
           '  <span class="text-dim">' + t('alias.noOverride') + '</span>',
-          keys.length ? '\n' + keys.map(k => `<span class="cmd">alias</span> ${escapeHtml(k)}=${escapeHtml(state.aliases[k])}`) : []
-        ].join('\n');
+          keys.length ? '\n' + keys.map(k => `<span class="cmd">alias</span> ${escapeHtml(k)}=${escapeHtml(state.aliases[k])}`).join('\n') : []
+        );
+        return lines.join('\n');
       }
       const rawArgs = args.join(' ');
       const eqIdx = rawArgs.indexOf('=');
@@ -1254,14 +1315,19 @@ function formatStorageSize(bytes) {
 
     unalias(args) {
       if (!args.length) {
-        return [
+        const lines = [
           '<span class="text-yellow text-bold">' + t('unalias.title') + '</span>',
-          '',
-          '  <span class="cmd">unalias ' + t('unalias.paramName') + '</span>   ' + t('unalias.desc'),
+          ''
+        ];
+        lines.push(...formatHtmlList([
+          ['<span class="cmd">unalias &lt;name&gt;</span>', t('unalias.desc')],
+        ]));
+        lines.push(
           '',
           '  <span class="text-dim">' + t('unalias.useAlias') + '</span>',
           ''
-        ].join('\n');
+        );
+        return lines.join('\n');
       }
       const name = args[0];
       if (!(name in state.aliases)) return `<span class="text-red">${escapeHtml(tf('unalias.notDefined', name))}</span>`;
@@ -1358,11 +1424,13 @@ function formatStorageSize(bytes) {
           '  deep system analysis, and zero tolerance for dirty code.',
           '',
           'ENVIRONMENT',
-          '  OS:         Arch Linux (pacman)',
-          '  WM:         labwc (Wayland)',
-          '  Terminal:   Alacritty + Tmux',
-          '  Containers: Podman',
-          '  VCS:        Git',
+          ...formatTextList([
+            ['OS:', 'Arch Linux (pacman)'],
+            ['WM:', 'labwc (Wayland)'],
+            ['Terminal:', 'Alacritty + Tmux'],
+            ['Containers:', 'Podman'],
+            ['VCS:', 'Git'],
+          ]),
           '',
           'LANGUAGES',
           '  Rust, Bash, Python, JavaScript, Assembly, C',
@@ -1397,11 +1465,13 @@ function formatStorageSize(bytes) {
           '  al c\u00f3digo sucio.',
           '',
           'ENTORNO',
-          '  OS:         Arch Linux (pacman)',
-          '  WM:         labwc (Wayland)',
-          '  Terminal:   Alacritty + Tmux',
-          '  Contenedores: Podman',
-          '  VCS:        Git',
+          ...formatTextList([
+            ['OS:', 'Arch Linux (pacman)'],
+            ['WM:', 'labwc (Wayland)'],
+            ['Terminal:', 'Alacritty + Tmux'],
+            ['Contenedores:', 'Podman'],
+            ['VCS:', 'Git'],
+          ]),
           '',
           'LENGUAJES',
           '  Rust, Bash, Python, JavaScript, Assembly, C',
@@ -1445,23 +1515,30 @@ function formatStorageSize(bytes) {
         const status = Storage.getStatus();
         const acceptedLabel = status.accepted === true ? '<span class="text-green">' + t('config.acceptedShort') + '</span>' : status.accepted === false ? '<span class="text-red">' + t('config.rejectedShort') + '</span>' : '<span class="text-yellow">' + t('config.undecidedShort') + '</span>';
         const storeLabel = status.accepted === true ? 'localStorage' : t('config.volatile');
-        return [
+        const lines = [
           '<span class="text-yellow text-bold">' + t('config.title') + '</span>',
-          `  ${t('config.state')}     ${acceptedLabel}`,
-          `  ${t('config.mechanism')}  ${storeLabel}`,
+        ];
+        lines.push(...formatHtmlList([
+          [t('config.state'), acceptedLabel],
+          [t('config.mechanism'), storeLabel],
+        ]));
+        lines.push(
           '',
           '  <span class="text-dim">' + t('config.wouldStore') + '</span>',
           '  <span class="text-dim">  \u2014 ' + t('config.session') + '</span>',
           '  <span class="text-dim">  \u2014 ' + t('config.historyStore') + '</span>',
           '  <span class="text-dim">  \u2014 ' + t('config.preferences') + '</span>',
           '  <span class="text-dim">  \u2014 ' + t('config.versionStore') + '</span>',
-          '',
-          '  <span class="cmd">config accept</span>   ' + t('config.accept'),
-          '  <span class="cmd">config reject</span>   ' + t('config.reject'),
-          '  <span class="cmd">config status</span>   ' + t('config.status'),
-          '  <span class="cmd">config show</span>     ' + t('config.show'),
           ''
-        ].join('\n');
+        );
+        lines.push(...formatHtmlList([
+          ['<span class="cmd">config accept</span>', t('config.accept')],
+          ['<span class="cmd">config reject</span>', t('config.reject')],
+          ['<span class="cmd">config status</span>', t('config.status')],
+          ['<span class="cmd">config show</span>', t('config.show')],
+        ]));
+        lines.push('');
+        return lines.join('\n');
       }
 
       const sub = args[0].toLowerCase();
@@ -1484,14 +1561,13 @@ function formatStorageSize(bytes) {
         const versionStr = s.versionStored ? 'v' + s.versionStored : 'N/A';
         const info = Storage.getStorageInfo();
         const sizeStr = formatStorageSize(info.totalBytes);
-        return [
-          `  <span class="nf-label">${t('config.labelMode')}</span>        ${acceptedLabel}`,
-          `  <span class="nf-label">${t('config.labelStore')}</span>     ${s.storeName}`,
-          `  <span class="nf-label">${t('config.labelVersion')}</span>     ${versionStr} (${t('config.codeWord')}: v${VERSION})`,
-          `  <span class="nf-label">${t('config.labelUptime')}</span>      ${uptimeStr}`,
-          `  <span class="nf-label">${t('config.labelData')}</span>       ${sizeStr} en ${info.keysCount} ${t('config.keys')}`,
-          ''
-        ].join('\n');
+        return formatHtmlList([
+          ['<span class="nf-label">' + t('config.labelMode') + '</span>', acceptedLabel],
+          ['<span class="nf-label">' + t('config.labelStore') + '</span>', s.storeName],
+          ['<span class="nf-label">' + t('config.labelVersion') + '</span>', versionStr + ' (' + t('config.codeWord') + ': v' + VERSION + ')'],
+          ['<span class="nf-label">' + t('config.labelUptime') + '</span>', uptimeStr],
+          ['<span class="nf-label">' + t('config.labelData') + '</span>', sizeStr + ' ' + t('config.inWord') + ' ' + info.keysCount + ' ' + t('config.keys')],
+        ]).concat(['']).join('\n');
       }
 
       if (sub === 'show') {
@@ -1548,24 +1624,28 @@ function formatStorageSize(bytes) {
   const airvzxfSubcommands = {
     about() {
       const u = USERS.airvzxf;
+      const infoLines = formatHtmlList([
+        ['<span class="text-dim">' + t('about.location') + '</span>', escapeHtml(u.location)],
+        ['<span class="text-dim">' + t('about.role') + '</span>', 'Senior Software Engineer & Software Architect'],
+        ['<span class="text-dim">' + t('about.tech') + '</span>', escapeHtml(u.tech.join(', '))],
+      ], { indent: '' });
       return [
         `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">\u2014 ${escapeHtml(u.role)} ${t('about.of')}</span>`,
         '',
         escapeHtml(u.bio),
         '',
-        `<span class="text-dim">${t('about.location')}</span> ${escapeHtml(u.location)}`,
-        `<span class="text-dim">${t('about.role')}</span>       Senior Software Engineer & Software Architect`,
-        `<span class="text-dim">${t('about.tech')}</span>      ${escapeHtml(u.tech.join(', '))}`,
+        ...infoLines,
         ''
       ].join('\n');
     },
 
     contact() {
       const u = USERS.airvzxf;
-      return [
-        `<span class="text-dim">${t('contact.email')}</span>     ${escapeHtml(u.email)}`,
-        ''
-      ].join('\n');
+      const lines = formatHtmlList([
+        ['<span class="text-dim">' + t('contact.email') + '</span>', escapeHtml(u.email)],
+      ], { indent: '' });
+      lines.push('');
+      return lines.join('\n');
     },
 
     projects() {
@@ -1579,15 +1659,16 @@ function formatStorageSize(bytes) {
       return projectLines.join('\n');
     },
 
-    social() {
+social() {
       const u = USERS.airvzxf;
-      return [
-        `<span class="text-dim">${t('social.github')}</span>    ${link(u.github)}`,
-        `<span class="text-dim">${t('social.youtube')}</span>   ${link(u.youtube)}`,
-        `<span class="text-dim">${t('social.x')}</span>         ${link(u.x)}`,
-        `<span class="text-dim">${t('social.linkedin')}</span>  ${link(u.linkedin)}`,
-        ''
-      ].join('\n');
+      const lines = formatHtmlList([
+        ['<span class="text-dim">' + t('social.github') + '</span>', link(u.github)],
+        ['<span class="text-dim">' + t('social.youtube') + '</span>', link(u.youtube)],
+        ['<span class="text-dim">' + t('social.x') + '</span>', link(u.x)],
+        ['<span class="text-dim">' + t('social.linkedin') + '</span>', link(u.linkedin)],
+      ], { indent: '' });
+      lines.push('');
+      return lines.join('\n');
     }
   };
 
