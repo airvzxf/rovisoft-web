@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.5.1";
+  const VERSION = "1.5.2";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -130,11 +130,6 @@
       "help.version": "Muestra la versi\u00f3n",
       "help.license": "Muestra la licencia",
       "help.history": "Historial de comandos",
-      "help.additional": "Comandos adicionales (airvzxf)",
-      "help.cat": "Lee un archivo del sistema",
-      "help.ls": "Lista contenido de un directorio",
-      "help.man": "P\u00e1gina de manual",
-      "help.tail": "Muestra el final de un archivo",
       "help.shortcuts":
         "Atajos: \u2191/\u2193 (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicomando)",
 
@@ -157,6 +152,9 @@
       "airvzxf.contact": "Formas de contacto",
       "airvzxf.social": "Enlaces a redes sociales",
       "airvzxf.projects": "Proyectos del portafolio",
+      "airvzxf.skills": "Stack tecnol\u00f3gico y dominios",
+      "airvzxf.research": "Investigaci\u00f3n en IA y ML",
+      "airvzxf.man": "P\u00e1gina de manual (man page)",
       "airvzxf.unknownSubcommand": "airvzxf: subcomando desconocido '{0}'",
       "airvzxf.useHelp":
         'Usa <span class="cmd">airvzxf</span> para ver los subcomandos disponibles.',
@@ -278,26 +276,6 @@
 
       cmdNotFound: "comando no encontrado: {0}",
 
-      "cat.permDenied":
-        "cat: permiso denegado. Inicia sesi\u00f3n como airvzxf.",
-      "cat.missingFile": "cat: falta el nombre del archivo.",
-      "cat.notFound": "cat: {0}: No existe el archivo o directorio.",
-      "cat.isDirectory": "cat: {0}: Es un directorio.",
-
-      "ls.permDenied": "ls: permiso denegado. Inicia sesi\u00f3n como airvzxf.",
-      "ls.notFound": "ls: {0}: No existe el archivo o directorio.",
-
-      "man.permDenied":
-        "man: permiso denegado. Inicia sesi\u00f3n como airvzxf.",
-      "man.notFound": "man: No existe entrada de manual para {0}.",
-      "man.noEntry": "man: No existe entrada de manual para ese tema.",
-
-      "tail.permDenied":
-        "tail: permiso denegado. Inicia sesi\u00f3n como airvzxf.",
-      "tail.missingFile": "tail: falta el nombre del archivo.",
-      "tail.notFound": "tail: {0}: No existe el archivo.",
-      "tail.isDirectory": "tail: {0}: Es un directorio.",
-
       "config.title": "Almacenamiento local",
       "config.state": "Estado:",
       "config.mechanism": "Mecanismo:",
@@ -371,11 +349,6 @@
       "help.version": "Show version",
       "help.license": "Show license",
       "help.history": "Command history",
-      "help.additional": "Additional commands (airvzxf)",
-      "help.cat": "Read a system file",
-      "help.ls": "List directory contents",
-      "help.man": "Manual page",
-      "help.tail": "Show end of a file",
       "help.shortcuts":
         "Shortcuts: \u2191/\u2193 (history) | Tab (autocomplete) | Ctrl+L (clear) | !N / !! (history) | ; (multicommand)",
 
@@ -398,6 +371,9 @@
       "airvzxf.contact": "Contact information",
       "airvzxf.social": "Social media links",
       "airvzxf.projects": "Portfolio projects",
+      "airvzxf.skills": "Tech stack and domains",
+      "airvzxf.research": "AI and ML research",
+      "airvzxf.man": "Manual page (man page)",
       "airvzxf.unknownSubcommand": "airvzxf: unknown subcommand '{0}'",
       "airvzxf.useHelp":
         'Use <span class="cmd">airvzxf</span> to see available subcommands.',
@@ -517,23 +493,6 @@
 
       cmdNotFound: "command not found: {0}",
 
-      "cat.permDenied": "cat: permission denied. Log in as airvzxf.",
-      "cat.missingFile": "cat: file name is required.",
-      "cat.notFound": "cat: {0}: No such file or directory.",
-      "cat.isDirectory": "cat: {0}: Is a directory.",
-
-      "ls.permDenied": "ls: permission denied. Log in as airvzxf.",
-      "ls.notFound": "ls: {0}: No such file or directory.",
-
-      "man.permDenied": "man: permission denied. Log in as airvzxf.",
-      "man.notFound": "man: No manual entry for {0}.",
-      "man.noEntry": "man: No manual entry for that topic.",
-
-      "tail.permDenied": "tail: permission denied. Log in as airvzxf.",
-      "tail.missingFile": "tail: file name is required.",
-      "tail.notFound": "tail: {0}: No such file.",
-      "tail.isDirectory": "tail: {0}: Is a directory.",
-
       "config.title": "Local storage",
       "config.state": "State:",
       "config.mechanism": "Mechanism:",
@@ -645,84 +604,6 @@
       ],
     },
   };
-
-  // ─── Virtual Filesystem ───────────────────────────────────
-
-  const FS = {
-    "/home/airvzxf/skills.txt": [
-      "LANGUAGES:",
-      "  Rust        [██████████] Systems programming, rendimiento crítico",
-      "  Bash        [██████████] Automatización, scripting de sistemas",
-      "  Python      [██████████] Prototipado rápido, ML/DL, tooling",
-      "  JavaScript  [████████░░] Web frontend, Node.js",
-      "  Assembly    [██████░░░░] x86/x64, optimización de bajo nivel",
-      "",
-      "ENTORNO & HERRAMIENTAS:",
-      "  OS:         Arch Linux (pacman)",
-      "  WM:         labwc (Wayland)",
-      "  Terminal:   Alacritty + Tmux",
-      "  Contenedores: Podman",
-      "  VCS:        Git",
-      "",
-      "DOMINIOS:",
-      "  Arquitectura de sistemas     Optimización de bajo nivel",
-      "  Machine Learning / Deep Learning    MCP / IA Agéntica",
-      "  Ingeniería inversa            Empaquetado AUR",
-      "  Orquestación de IA bajo dirección arquitectónica",
-    ].join("\n"),
-
-    "/home/airvzxf/projects": {
-      type: "dir",
-      entries: {
-        c2flowch: {
-          type: "dir",
-          desc: "C source control flow visualization via AST analysis",
-        },
-        fibonacci_benchmark: {
-          type: "dir",
-          desc: "Assembly Fibonacci outperforming compiled C",
-        },
-        aur_packages: { type: "dir", desc: "AUR maintenance (duc, duc-git)" },
-        rovisoft_web: {
-          type: "dir",
-          desc: "Interactive personal terminal — RoviSoft.net",
-        },
-      },
-    },
-
-    "/home/airvzxf/ai_research.log": [
-      "[2024-01-15 09:23:11] ML Specialization completada (Udemy)",
-      "[2024-03-02 14:55:42] Deep Learning Specialization completada (Udemy)",
-      "[2024-06-10 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
-      "[2024-06-10 11:30:05] Modelos cargados: Gemma 4, DeepSeek, Qwen",
-      "[2024-06-10 11:30:07] Investigación MCP (Model Context Protocol) iniciada",
-      "[2024-08-22 16:45:33] Pipeline de orquestación de IA agéntica: fase 1",
-      "[2024-11-05 08:12:00] Automatización de análisis de código con LLMs locales",
-      "[2025-01-20 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
-      "[2025-03-15 10:00:00] Evaluación DeepSeek V4 para tareas de bajo nivel",
-    ].join("\n"),
-  };
-
-  function resolvePath(rawPath) {
-    let p = rawPath.trim();
-    if (p.startsWith("~")) p = "/home/" + state.user + p.slice(1);
-    if (p === "." || p === "./") p = "/home/" + state.user;
-    if (p.startsWith("./")) p = "/home/" + state.user + "/" + p.slice(2);
-    if (!p.startsWith("/")) p = "/home/" + state.user + "/" + p;
-    return p;
-  }
-
-  function fsRead(absPath) {
-    const entry = FS[absPath];
-    if (entry) return entry;
-    return FS[absPath.replace(/\/+$/, "")] || null;
-  }
-
-  function fsLs(absPath) {
-    const entry = FS[absPath];
-    if (!entry || entry.type !== "dir") return null;
-    return entry.entries;
-  }
 
   // ─── Helpers ──────────────────────────────────────────────
 
@@ -972,22 +853,6 @@
         ['<span class="cmd">history</span>', t("help.history")],
       ]);
 
-      if (state.user === "airvzxf") {
-        base.push(
-          "",
-          '  <span class="text-dim">\u2500\u2500 ' +
-            t("help.additional") +
-            " \u2500\u2500</span>",
-          "",
-          ...formatHtmlList([
-            ['<span class="cmd">cat &lt;file&gt;</span>', t("help.cat")],
-            ['<span class="cmd">ls [-l] &lt;dir&gt;</span>', t("help.ls")],
-            ['<span class="cmd">man &lt;topic&gt;</span>', t("help.man")],
-            ['<span class="cmd">tail [-f] &lt;file&gt;</span>', t("help.tail")],
-          ]),
-        );
-      }
-
       base.push(
         "",
         '<span class="text-dim">' + t("help.shortcuts") + "</span>",
@@ -1149,6 +1014,12 @@
               '<span class="cmd">airvzxf projects</span>',
               t("airvzxf.projects"),
             ],
+            ['<span class="cmd">airvzxf skills</span>', t("airvzxf.skills")],
+            [
+              '<span class="cmd">airvzxf research</span>',
+              t("airvzxf.research"),
+            ],
+            ['<span class="cmd">airvzxf man</span>', t("airvzxf.man")],
           ]),
         );
         lines.push("");
@@ -1160,6 +1031,9 @@
         contact: true,
         projects: true,
         social: true,
+        skills: true,
+        research: true,
+        man: true,
       };
       if (!subcommands[sub]) {
         return `<span class="text-red">${escapeHtml(tf("airvzxf.unknownSubcommand", sub))}</span>\n${t("airvzxf.useHelp")}`;
@@ -1639,191 +1513,6 @@
       return "";
     },
 
-    // ─── File system commands (airvzxf only) ──────────────
-
-    cat(args) {
-      if (state.user !== "airvzxf") {
-        return '<span class="perm-denied">' + t("cat.permDenied") + "</span>";
-      }
-      if (!args.length) {
-        return '<span class="text-red">' + t("cat.missingFile") + "</span>";
-      }
-      const absPath = resolvePath(args[0]);
-      const content = fsRead(absPath);
-      if (content === null) {
-        return `<span class="text-red">${escapeHtml(tf("cat.notFound", args[0]))}</span>`;
-      }
-      if (typeof content === "object") {
-        return `<span class="text-red">${escapeHtml(tf("cat.isDirectory", args[0]))}</span>`;
-      }
-      return textOut(content);
-    },
-
-    ls(args) {
-      if (state.user !== "airvzxf") {
-        return '<span class="perm-denied">' + t("ls.permDenied") + "</span>";
-      }
-      let longFormat = false;
-      let target = ".";
-      for (const a of args) {
-        if (a === "-l" || a === "-la" || a === "-al") longFormat = true;
-        else if (!a.startsWith("-")) target = a;
-      }
-      const absPath = resolvePath(target);
-      const entries = fsLs(absPath);
-      if (entries === null) {
-        const content = fsRead(absPath);
-        if (content !== null && typeof content !== "object") {
-          if (longFormat) {
-            return textOut(
-              `-rw-r--r-- airvzxf airvzxf  ${target.split("/").pop()}`,
-            );
-          }
-          return escapeHtml(target.split("/").pop());
-        }
-        return `<span class="text-red">${escapeHtml(tf("ls.notFound", target))}</span>`;
-      }
-      const keys = Object.keys(entries);
-      if (longFormat) {
-        const lines = [`total ${keys.length}`];
-        keys.forEach((k) => {
-          const e = entries[k];
-          const type = e.type === "dir" ? "d" : "-";
-          lines.push(
-            `${type}rwxr-xr-x airvzxf airvzxf  ${k.padEnd(22)} ${e.desc}`,
-          );
-        });
-        return textOut(lines);
-      }
-      return textOut(keys.join("  "));
-    },
-
-    man(args) {
-      if (state.user !== "airvzxf") {
-        return '<span class="perm-denied">' + t("man.permDenied") + "</span>";
-      }
-      if (!args.length || args[0] === "airvzxf") {
-        const topic = args[0] || "airvzxf";
-        if (topic !== "airvzxf") {
-          return `<span class="text-red">${escapeHtml(tf("man.notFound", topic))}</span>`;
-        }
-        var manContent =
-          state.lang === "en"
-            ? [
-                "NAME",
-                "  airvzxf - Senior Software Engineer, Systems Architect, Toolsmith",
-                "",
-                "SYNOPSIS",
-                "  Systems architecture, low-level optimization, AI orchestration.",
-                "",
-                "DESCRIPTION",
-                "  airvzxf is a systems programmer and software architect with over 19",
-                "  years of experience. He operates at the intersection of hardware",
-                "  and high-level systems, with an obsessive focus on architectural",
-                "  purity and extreme optimization.",
-                "",
-                "  He despises inefficient code, MVP-driven shortcuts, and technical",
-                "  debt. His approach is rooted in deep understanding of the machine",
-                "  from assembly up through high-level abstractions.",
-                "",
-                "  Currently at the job, he orchestrates AI systems as development",
-                "  tools under strict architectural direction \u2014 not as end-user",
-                "  applications, but as instruments of engineering.",
-                "",
-                "  Diagnosed with mild functional Asperger's, which provides hyperfocus,",
-                "  deep system analysis, and zero tolerance for dirty code.",
-                "",
-                "ENVIRONMENT",
-                ...formatTextList([
-                  ["OS:", "Arch Linux (pacman)"],
-                  ["WM:", "labwc (Wayland)"],
-                  ["Terminal:", "Alacritty + Tmux"],
-                  ["Containers:", "Podman"],
-                  ["VCS:", "Git"],
-                ]),
-                "",
-                "LANGUAGES",
-                "  Rust, Bash, Python, JavaScript, Assembly, C",
-                "",
-                "SEE ALSO",
-                "  whoami(1), cat(1), ls(1), tail(1)",
-                "",
-                `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
-              ]
-            : [
-                "NOMBRE",
-                "  airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith",
-                "",
-                "SINOPSIS",
-                "  Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.",
-                "",
-                "DESCRIPCI\u00d3N",
-                "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s",
-                "  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware",
-                "  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza",
-                "  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
-                "",
-                "  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.",
-                "  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,",
-                "  desde ensamblador hasta las abstracciones de alto nivel.",
-                "",
-                "  Actualmente orquesta sistemas de IA como herramientas de desarrollo",
-                "  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones",
-                "  de usuario final, sino como instrumentos de ingenier\u00eda.",
-                "",
-                "  Diagnosticado con Asperger leve funcional, lo que le otorga",
-                "  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia",
-                "  al c\u00f3digo sucio.",
-                "",
-                "ENTORNO",
-                ...formatTextList([
-                  ["OS:", "Arch Linux (pacman)"],
-                  ["WM:", "labwc (Wayland)"],
-                  ["Terminal:", "Alacritty + Tmux"],
-                  ["Contenedores:", "Podman"],
-                  ["VCS:", "Git"],
-                ]),
-                "",
-                "LENGUAJES",
-                "  Rust, Bash, Python, JavaScript, Assembly, C",
-                "",
-                "VEASE TAMBIEN",
-                "  whoami(1), cat(1), ls(1), tail(1)",
-                "",
-                `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
-              ];
-        return textOut(manContent);
-      }
-      return '<span class="text-red">' + t("man.noEntry") + "</span>";
-    },
-
-    tail(args) {
-      if (state.user !== "airvzxf") {
-        return '<span class="perm-denied">' + t("tail.permDenied") + "</span>";
-      }
-      if (!args.length) {
-        return '<span class="text-red">' + t("tail.missingFile") + "</span>";
-      }
-      let fileArg = args[args.length - 1];
-      for (const a of args) {
-        if (!a.startsWith("-")) {
-          fileArg = a;
-          break;
-        }
-      }
-      const absPath = resolvePath(fileArg);
-      const content = fsRead(absPath);
-      if (content === null) {
-        return `<span class="text-red">${escapeHtml(tf("tail.notFound", fileArg))}</span>`;
-      }
-      if (typeof content === "object") {
-        return `<span class="text-red">${escapeHtml(tf("tail.isDirectory", fileArg))}</span>`;
-      }
-      const lines = content.split("\n");
-      const tailLines = lines.slice(-10);
-      return textOut(tailLines);
-    },
-
     config(args) {
       if (!args.length) {
         const status = Storage.getStatus();
@@ -2128,6 +1817,173 @@
       );
       lines.push("");
       return lines.join("\n");
+    },
+
+    skills() {
+      return state.lang === "en"
+        ? [
+            "LANGUAGES:",
+            "  Rust        [##########] Systems programming, critical performance",
+            "  Bash        [##########] Automation, systems scripting",
+            "  Python      [##########] Rapid prototyping, ML/DL, tooling",
+            "  JavaScript  [########..] Web frontend, Node.js",
+            "  Assembly    [######....] x86/x64, low-level optimization",
+            "",
+            "ENVIRONMENT & TOOLS:",
+            ...formatTextList([
+              ["OS:", "Arch Linux (pacman)"],
+              ["WM:", "labwc (Wayland)"],
+              ["Terminal:", "Alacritty + Tmux"],
+              ["Containers:", "Podman"],
+              ["VCS:", "Git"],
+            ]),
+            "",
+            "DOMAINS:",
+            "  Systems architecture          Low-level optimization",
+            "  Machine Learning / Deep Learning    MCP / Agentic AI",
+            "  Reverse engineering            AUR packaging",
+            "  AI orchestration under architectural direction",
+            "",
+          ].join("\n")
+        : [
+            "LENGUAJES:",
+            "  Rust        [##########] Systems programming, rendimiento cr\u00edtico",
+            "  Bash        [##########] Automatizaci\u00f3n, scripting de sistemas",
+            "  Python      [##########] Prototipado r\u00e1pido, ML/DL, tooling",
+            "  JavaScript  [########..] Web frontend, Node.js",
+            "  Assembly    [######....] x86/x64, optimizaci\u00f3n de bajo nivel",
+            "",
+            "ENTORNO & HERRAMIENTAS:",
+            ...formatTextList([
+              ["OS:", "Arch Linux (pacman)"],
+              ["WM:", "labwc (Wayland)"],
+              ["Terminal:", "Alacritty + Tmux"],
+              ["Contenedores:", "Podman"],
+              ["VCS:", "Git"],
+            ]),
+            "",
+            "DOMINIOS:",
+            "  Arquitectura de sistemas     Optimizaci\u00f3n de bajo nivel",
+            "  Machine Learning / Deep Learning    MCP / IA Ag\u00e9ntica",
+            "  Ingenier\u00eda inversa            Empaquetado AUR",
+            "  Orquestaci\u00f3n de IA bajo direcci\u00f3n arquitect\u00f3nica",
+            "",
+          ].join("\n");
+    },
+
+    research() {
+      return state.lang === "en"
+        ? [
+            "[2024-01-15 09:23:11] ML Specialization completed (Udemy)",
+            "[2024-03-02 14:55:42] Deep Learning Specialization completed (Udemy)",
+            "[2024-06-10 11:30:00] Local inference infrastructure deployed with Ollama",
+            "[2024-06-10 11:30:05] Models loaded: Gemma 4, DeepSeek, Qwen",
+            "[2024-06-10 11:30:07] MCP (Model Context Protocol) research started",
+            "[2024-08-22 16:45:33] Agentic AI orchestration pipeline: phase 1",
+            "[2024-11-05 08:12:00] Code analysis automation with local LLMs",
+            "[2025-01-20 13:00:00] OpenCode: AI-driven development environment",
+            "[2025-03-15 10:00:00] DeepSeek V4 evaluation for low-level tasks",
+            "",
+          ].join("\n")
+        : [
+            "[2024-01-15 09:23:11] ML Specialization completada (Udemy)",
+            "[2024-03-02 14:55:42] Deep Learning Specialization completada (Udemy)",
+            "[2024-06-10 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
+            "[2024-06-10 11:30:05] Modelos cargados: Gemma 4, DeepSeek, Qwen",
+            "[2024-06-10 11:30:07] Investigaci\u00f3n MCP (Model Context Protocol) iniciada",
+            "[2024-08-22 16:45:33] Pipeline de orquestaci\u00f3n de IA ag\u00e9ntica: fase 1",
+            "[2024-11-05 08:12:00] Automatizaci\u00f3n de an\u00e1lisis de c\u00f3digo con LLMs locales",
+            "[2025-01-20 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
+            "[2025-03-15 10:00:00] Evaluaci\u00f3n DeepSeek V4 para tareas de bajo nivel",
+            "",
+          ].join("\n");
+    },
+
+    man() {
+      return state.lang === "en"
+        ? [
+            "NAME",
+            "  airvzxf - Senior Software Engineer, Systems Architect, Toolsmith",
+            "",
+            "SYNOPSIS",
+            "  Systems architecture, low-level optimization, AI orchestration.",
+            "",
+            "DESCRIPTION",
+            "  airvzxf is a systems programmer and software architect with over 19",
+            "  years of experience. He operates at the intersection of hardware",
+            "  and high-level systems, with an obsessive focus on architectural",
+            "  purity and extreme optimization.",
+            "",
+            "  He despises inefficient code, MVP-driven shortcuts, and technical",
+            "  debt. His approach is rooted in deep understanding of the machine",
+            "  from assembly up through high-level abstractions.",
+            "",
+            "  Currently at the job, he orchestrates AI systems as development",
+            "  tools under strict architectural direction \u2014 not as end-user",
+            "  applications, but as instruments of engineering.",
+            "",
+            "  Diagnosed with mild functional Asperger's, which provides hyperfocus,",
+            "  deep system analysis, and zero tolerance for dirty code.",
+            "",
+            "ENVIRONMENT",
+            ...formatTextList([
+              ["OS:", "Arch Linux (pacman)"],
+              ["WM:", "labwc (Wayland)"],
+              ["Terminal:", "Alacritty + Tmux"],
+              ["Containers:", "Podman"],
+              ["VCS:", "Git"],
+            ]),
+            "",
+            "LANGUAGES",
+            "  Rust, Bash, Python, JavaScript, Assembly, C",
+            "",
+            "SEE ALSO",
+            "  whoami(1)",
+            "",
+            `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
+          ].join("\n")
+        : [
+            "NOMBRE",
+            "  airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith",
+            "",
+            "SINOPSIS",
+            "  Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.",
+            "",
+            "DESCRIPCI\u00d3N",
+            "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s",
+            "  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware",
+            "  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza",
+            "  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
+            "",
+            "  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.",
+            "  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,",
+            "  desde ensamblador hasta las abstracciones de alto nivel.",
+            "",
+            "  Actualmente orquesta sistemas de IA como herramientas de desarrollo",
+            "  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones",
+            "  de usuario final, sino como instrumentos de ingenier\u00eda.",
+            "",
+            "  Diagnosticado con Asperger leve funcional, lo que le otorga",
+            "  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia",
+            "  al c\u00f3digo sucio.",
+            "",
+            "ENTORNO",
+            ...formatTextList([
+              ["OS:", "Arch Linux (pacman)"],
+              ["WM:", "labwc (Wayland)"],
+              ["Terminal:", "Alacritty + Tmux"],
+              ["Contenedores:", "Podman"],
+              ["VCS:", "Git"],
+            ]),
+            "",
+            "LENGUAJES",
+            "  Rust, Bash, Python, JavaScript, Assembly, C",
+            "",
+            "VEASE TAMBIEN",
+            "  whoami(1)",
+            "",
+            `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
+          ].join("\n");
     },
   };
 
