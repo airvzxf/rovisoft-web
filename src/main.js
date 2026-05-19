@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.6.0";
+  const VERSION = "1.7.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -316,6 +316,95 @@
       "reset.msg": "Restableciendo a valores de f\u00e1brica...",
       "reboot.msg": "Reiniciando terminal...",
 
+      "about.bio":
+        "Senior Software Engineer & Software Architect con m\u00e1s de 19 a\u00f1os de experiencia. Programador de sistemas y arquitecto de bajo nivel. Busco la perfecci\u00f3n t\u00e9cnica, la optimizaci\u00f3n extrema y la comprensi\u00f3n profunda de la m\u00e1quina \u2014 desde el hardware y ensamblador hasta el alto nivel.",
+      "about.roleAdmin": "Administrador / Propietario",
+      "about.roleTitle": "Senior Software Engineer & Software Architect",
+
+      "projects.c2flowch.desc":
+        "Sistema de mapeo y visualizaci\u00f3n de flujo de control para c\u00f3digo fuente C, analizando el AST",
+      "projects.telora.desc":
+        "Asistente de Speech-to-Text para Linux: demonio en Rust con Whisper (CUDA) y cliente GTK4",
+      "projects.bose_connect_linux.desc":
+        "Aplicaci\u00f3n Bose\u00ae Connect para Linux: ingenier\u00eda inversa de protocolos Bluetooth (46\u2605)",
+      "projects.ftp_deployment_action.desc":
+        "GitHub Action para despliegue v\u00eda FTP: copia archivos del repositorio al servidor (36\u2605, 9 forks)",
+      "projects.fibonacci_benchmark.desc":
+        "Algoritmo de Fibonacci en ensamblador que super\u00f3 en rendimiento a la versi\u00f3n compilada en C",
+      "projects.aur_packages.desc":
+        "Mantenimiento de paquetes duc y duc-git en el Arch User Repository",
+
+      "env.containers": "Contenedores:",
+
+      "skills.header.languages": "LENGUAJES:",
+      "skills.lang.rust": "Systems programming, rendimiento cr\u00edtico",
+      "skills.lang.bash": "Automatizaci\u00f3n, scripting de sistemas",
+      "skills.lang.python": "Prototipado r\u00e1pido, ML/DL, tooling",
+      "skills.lang.javascript": "Web frontend, Node.js",
+      "skills.lang.assembly": "x86/x64, optimizaci\u00f3n de bajo nivel",
+      "skills.lang.c": "Reverse engineering, sistemas embebidos",
+      "skills.header.env": "ENTORNO & HERRAMIENTAS:",
+      "skills.header.domains": "DOMINIOS:",
+      "skills.domain.1": "  Arquitectura de sistemas",
+      "skills.domain.2": "  Optimizaci\u00f3n de bajo nivel",
+      "skills.domain.3": "  Machine Learning / Deep Learning",
+      "skills.domain.4": "  MCP / IA Ag\u00e9ntica",
+      "skills.domain.5": "  Ingenier\u00eda inversa",
+      "skills.domain.6": "  Empaquetado AUR",
+      "skills.domain.7":
+        "  Orquestaci\u00f3n de IA bajo direcci\u00f3n arquitect\u00f3nica",
+      "skills.domain.8": "  Speech-to-Text (Whisper/CUDA)",
+      "skills.domain.9": "  CI/CD (GitHub Actions)",
+
+      "research.log1":
+        "[2024-01-15 09:23:11] ML Specialization completada (Udemy)",
+      "research.log2":
+        "[2024-03-02 14:55:42] Deep Learning Specialization completada (Udemy)",
+      "research.log3":
+        "[2024-06-10 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
+      "research.log4":
+        "[2024-06-10 11:30:05] Modelos cargados: Gemma 4, DeepSeek, Qwen",
+      "research.log5":
+        "[2024-06-10 11:30:07] Investigaci\u00f3n MCP (Model Context Protocol) iniciada",
+      "research.log6":
+        "[2024-08-22 16:45:33] Pipeline de orquestaci\u00f3n de IA ag\u00e9ntica: fase 1",
+      "research.log7":
+        "[2024-11-05 08:12:00] Automatizaci\u00f3n de an\u00e1lisis de c\u00f3digo con LLMs locales",
+      "research.log8":
+        "[2025-01-20 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
+      "research.log9":
+        "[2025-03-15 10:00:00] Evaluaci\u00f3n DeepSeek V4 para tareas de bajo nivel",
+      "research.log10":
+        "[2025-05-01 10:00:00] ai-llm-rust-expert: fine-tuning con SFT + DPO para Rust idiom\u00e1tico",
+      "research.log11":
+        "[2025-09-01 09:00:00] formic-ai-framework: orquestaci\u00f3n multi-agente declarativa con YAML",
+      "research.log12":
+        "[2025-11-10 14:30:00] Experimentos de Deep Learning: backpropagation, CNNs y RNNs desde cero",
+      "research.log13":
+        "[2026-02-09 18:10:00] Telora: demonio Rust + Whisper (CUDA) para Speech-to-Text en Linux",
+      "research.log14":
+        "[2026-05-05 03:42:00] Candle: framework minimalista de ML en Rust",
+
+      "man.header.name": "NOMBRE",
+      "man.nameText":
+        "airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith",
+      "man.header.synopsis": "SINOPSIS",
+      "man.synopsisText":
+        "Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.",
+      "man.header.description": "DESCRIPCI\u00d3N",
+      "man.desc.p1":
+        "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s\n  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware\n  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza\n  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
+      "man.desc.p2":
+        "  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.\n  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,\n  desde ensamblador hasta las abstracciones de alto nivel.",
+      "man.desc.p3":
+        "  Actualmente orquesta sistemas de IA como herramientas de desarrollo\n  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones\n  de usuario final, sino como instrumentos de ingenier\u00eda.",
+      "man.desc.p4":
+        "  Diagnosticado con Asperger leve funcional, lo que le otorga\n  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia\n  al c\u00f3digo sucio.",
+      "man.header.environment": "ENTORNO",
+      "man.header.languages": "LENGUAJES",
+      "man.langList": "Rust, Bash, Python, JavaScript, Assembly, C",
+      "man.header.seeAlso": "VEASE TAMBIEN",
+
       eventNotFound: "{0}: event not found",
       historyExpansion: "\u2192 {0}",
     },
@@ -534,6 +623,94 @@
       "reset.msg": "Restoring factory defaults...",
       "reboot.msg": "Rebooting terminal...",
 
+      "about.bio":
+        "Senior Software Engineer & Software Architect with over 19 years of experience. Systems programmer and low-level architect. Seeking technical perfection, extreme optimization, and deep understanding of the machine \u2014 from hardware and assembly to high level.",
+      "about.roleAdmin": "Administrator / Owner",
+      "about.roleTitle": "Senior Software Engineer & Software Architect",
+
+      "projects.c2flowch.desc":
+        "Control flow mapping and visualization system for C source code, analyzing the AST",
+      "projects.telora.desc":
+        "Speech-to-Text Assistant for Linux: Rust daemon with Whisper (CUDA) and GTK4 client",
+      "projects.bose_connect_linux.desc":
+        "Bose\u00ae Connect App for Linux: reverse-engineered Bluetooth protocols (46\u2605)",
+      "projects.ftp_deployment_action.desc":
+        "GitHub Action for FTP deployment: copies repo files to a server path (36\u2605, 9 forks)",
+      "projects.fibonacci_benchmark.desc":
+        "Fibonacci algorithm in assembly that outperformed the C-compiled version",
+      "projects.aur_packages.desc":
+        "Maintenance of duc and duc-git packages in the Arch User Repository",
+
+      "env.containers": "Containers:",
+
+      "skills.header.languages": "LANGUAGES:",
+      "skills.lang.rust": "Systems programming, critical performance",
+      "skills.lang.bash": "Automation, systems scripting",
+      "skills.lang.python": "Rapid prototyping, ML/DL, tooling",
+      "skills.lang.javascript": "Web frontend, Node.js",
+      "skills.lang.assembly": "x86/x64, low-level optimization",
+      "skills.lang.c": "Reverse engineering, embedded systems",
+      "skills.header.env": "ENVIRONMENT & TOOLS:",
+      "skills.header.domains": "DOMAINS:",
+      "skills.domain.1": "  Systems architecture",
+      "skills.domain.2": "  Low-level optimization",
+      "skills.domain.3": "  Machine Learning / Deep Learning",
+      "skills.domain.4": "  MCP / Agentic AI",
+      "skills.domain.5": "  Reverse engineering",
+      "skills.domain.6": "  AUR packaging",
+      "skills.domain.7": "  AI orchestration under architectural direction",
+      "skills.domain.8": "  Speech-to-Text (Whisper/CUDA)",
+      "skills.domain.9": "  CI/CD (GitHub Actions)",
+
+      "research.log1":
+        "[2024-01-15 09:23:11] ML Specialization completed (Udemy)",
+      "research.log2":
+        "[2024-03-02 14:55:42] Deep Learning Specialization completed (Udemy)",
+      "research.log3":
+        "[2024-06-10 11:30:00] Local inference infrastructure deployed with Ollama",
+      "research.log4":
+        "[2024-06-10 11:30:05] Models loaded: Gemma 4, DeepSeek, Qwen",
+      "research.log5":
+        "[2024-06-10 11:30:07] MCP (Model Context Protocol) research started",
+      "research.log6":
+        "[2024-08-22 16:45:33] Agentic AI orchestration pipeline: phase 1",
+      "research.log7":
+        "[2024-11-05 08:12:00] Code analysis automation with local LLMs",
+      "research.log8":
+        "[2025-01-20 13:00:00] OpenCode: AI-driven development environment",
+      "research.log9":
+        "[2025-03-15 10:00:00] DeepSeek V4 evaluation for low-level tasks",
+      "research.log10":
+        "[2025-05-01 10:00:00] ai-llm-rust-expert: fine-tuning with SFT + DPO for idiomatic Rust",
+      "research.log11":
+        "[2025-09-01 09:00:00] formic-ai-framework: declarative multi-agent orchestration with YAML",
+      "research.log12":
+        "[2025-11-10 14:30:00] Deep Learning experiments: backpropagation, CNNs and RNNs from scratch",
+      "research.log13":
+        "[2026-02-09 18:10:00] Telora: Rust daemon + Whisper (CUDA) for Speech-to-Text on Linux",
+      "research.log14":
+        "[2026-05-05 03:42:00] Candle: minimalist ML framework in Rust",
+
+      "man.header.name": "NAME",
+      "man.nameText":
+        "airvzxf - Senior Software Engineer, Systems Architect, Toolsmith",
+      "man.header.synopsis": "SYNOPSIS",
+      "man.synopsisText":
+        "Systems architecture, low-level optimization, AI orchestration.",
+      "man.header.description": "DESCRIPTION",
+      "man.desc.p1":
+        "  airvzxf is a systems programmer and software architect with over 19\n  years of experience. He operates at the intersection of hardware\n  and high-level systems, with an obsessive focus on architectural\n  purity and extreme optimization.",
+      "man.desc.p2":
+        "  He despises inefficient code, MVP-driven shortcuts, and technical\n  debt. His approach is rooted in deep understanding of the machine\n  from assembly up through high-level abstractions.",
+      "man.desc.p3":
+        "  Currently at the job, he orchestrates AI systems as development\n  tools under strict architectural direction \u2014 not as end-user\n  applications, but as instruments of engineering.",
+      "man.desc.p4":
+        "  Diagnosed with mild functional Asperger's, which provides hyperfocus,\n  deep system analysis, and zero tolerance for dirty code.",
+      "man.header.environment": "ENVIRONMENT",
+      "man.header.languages": "LANGUAGES",
+      "man.langList": "Rust, Bash, Python, JavaScript, Assembly, C",
+      "man.header.seeAlso": "SEE ALSO",
+
       eventNotFound: "{0}: event not found",
       historyExpansion: "\u2192 {0}",
     },
@@ -570,16 +747,15 @@
     airvzxf: {
       name: "Israel Alberto Roldan Vega",
       email: "israel.alberto.rv@gmail.com",
-      bio: "Senior Software Engineer & Software Architect con más de 19 años de experiencia. Programador de sistemas y arquitecto de bajo nivel. Busco la perfección técnica, la optimización extrema y la comprensión profunda de la máquina — desde el hardware y ensamblador hasta el alto nivel.",
-      role: "Administrador / Propietario",
       shell: "/bin/bash",
-      location: "Guadalajara, Jalisco, México",
+      location: "Guadalajara, Jalisco, M\u00e9xico",
       tech: [
         "Rust",
         "Bash",
         "Python",
         "JavaScript",
         "Assembly",
+        "C",
         "Podman",
         "Linux (Arch)",
         "Git",
@@ -592,17 +768,26 @@
       projects: [
         {
           name: "c2flowch",
-          desc: "Sistema de mapeo y visualización de flujo de control para código fuente C, analizando el AST",
           url: "https://github.com/airvzxf/c2flowch",
         },
         {
+          name: "telora",
+          url: "https://github.com/airvzxf/telora",
+        },
+        {
+          name: "bose_connect_linux",
+          url: "https://github.com/airvzxf/bose-connect-app-linux",
+        },
+        {
+          name: "ftp_deployment_action",
+          url: "https://github.com/airvzxf/ftp-deployment-action",
+        },
+        {
           name: "fibonacci_benchmark",
-          desc: "Algoritmo de Fibonacci en ensamblador que superó en rendimiento a la versión compilada en C",
           url: "https://github.com/airvzxf/assembly/tree/master/linux/benchmark/fibonacci",
         },
         {
           name: "aur_packages",
-          desc: "Mantenimiento de paquetes duc y duc-git en el Arch User Repository",
           url: "https://aur.archlinux.org/packages/duc",
         },
       ],
@@ -1753,7 +1938,7 @@
           ],
           [
             '<span class="text-dim">' + t("about.role") + "</span>",
-            "Senior Software Engineer & Software Architect",
+            escapeHtml(t("about.roleTitle")),
           ],
           [
             '<span class="text-dim">' + t("about.tech") + "</span>",
@@ -1763,9 +1948,9 @@
         { indent: "" },
       );
       return [
-        `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">\u2014 ${escapeHtml(u.role)} ${t("about.of")}</span>`,
+        `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">\u2014 ${escapeHtml(t("about.roleAdmin"))} ${t("about.of")}</span>`,
         "",
-        escapeHtml(u.bio),
+        escapeHtml(t("about.bio")),
         "",
         ...infoLines,
         "",
@@ -1791,8 +1976,9 @@
       const u = USERS.airvzxf;
       const projectLines = [];
       u.projects.forEach((p) => {
+        const descKey = "projects." + p.name + ".desc";
         projectLines.push(
-          `<span class="text-cyan text-bold">${escapeHtml(p.name)}</span> \u2014 ${escapeHtml(p.desc)}`,
+          `<span class="text-cyan text-bold">${escapeHtml(p.name)}</span> \u2014 ${escapeHtml(t(descKey))}`,
         );
         projectLines.push(`<span class="text-dim">${link(p.url)}</span>`);
         projectLines.push("");
@@ -1825,170 +2011,95 @@
     },
 
     skills() {
-      return state.lang === "en"
-        ? [
-            "LANGUAGES:",
-            "  Rust        [##########] Systems programming, critical performance",
-            "  Bash        [##########] Automation, systems scripting",
-            "  Python      [##########] Rapid prototyping, ML/DL, tooling",
-            "  JavaScript  [########..] Web frontend, Node.js",
-            "  Assembly    [######....] x86/x64, low-level optimization",
-            "",
-            "ENVIRONMENT & TOOLS:",
-            ...formatTextList([
-              ["OS:", "Arch Linux (pacman)"],
-              ["WM:", "labwc (Wayland)"],
-              ["Terminal:", "Alacritty + Tmux"],
-              ["Containers:", "Podman"],
-              ["VCS:", "Git"],
-            ]),
-            "",
-            "DOMAINS:",
-            "  Systems architecture          Low-level optimization",
-            "  Machine Learning / Deep Learning    MCP / Agentic AI",
-            "  Reverse engineering            AUR packaging",
-            "  AI orchestration under architectural direction",
-            "",
-          ].join("\n")
-        : [
-            "LENGUAJES:",
-            "  Rust        [##########] Systems programming, rendimiento cr\u00edtico",
-            "  Bash        [##########] Automatizaci\u00f3n, scripting de sistemas",
-            "  Python      [##########] Prototipado r\u00e1pido, ML/DL, tooling",
-            "  JavaScript  [########..] Web frontend, Node.js",
-            "  Assembly    [######....] x86/x64, optimizaci\u00f3n de bajo nivel",
-            "",
-            "ENTORNO & HERRAMIENTAS:",
-            ...formatTextList([
-              ["OS:", "Arch Linux (pacman)"],
-              ["WM:", "labwc (Wayland)"],
-              ["Terminal:", "Alacritty + Tmux"],
-              ["Contenedores:", "Podman"],
-              ["VCS:", "Git"],
-            ]),
-            "",
-            "DOMINIOS:",
-            "  Arquitectura de sistemas     Optimizaci\u00f3n de bajo nivel",
-            "  Machine Learning / Deep Learning    MCP / IA Ag\u00e9ntica",
-            "  Ingenier\u00eda inversa            Empaquetado AUR",
-            "  Orquestaci\u00f3n de IA bajo direcci\u00f3n arquitect\u00f3nica",
-            "",
-          ].join("\n");
+      return [
+        t("skills.header.languages"),
+        "  Rust        [##########] " + t("skills.lang.rust"),
+        "  Bash        [##########] " + t("skills.lang.bash"),
+        "  Python      [##########] " + t("skills.lang.python"),
+        "  JavaScript  [########..] " + t("skills.lang.javascript"),
+        "  Assembly    [######....] " + t("skills.lang.assembly"),
+        "  C           [####......] " + t("skills.lang.c"),
+        "",
+        t("skills.header.env"),
+        ...formatTextList([
+          ["OS:", "Arch Linux (pacman)"],
+          ["WM:", "labwc (Wayland)"],
+          ["Terminal:", "Alacritty + Tmux"],
+          [t("env.containers"), "Podman"],
+          ["VCS:", "Git"],
+        ]),
+        "",
+        t("skills.header.domains"),
+        t("skills.domain.1"),
+        t("skills.domain.2"),
+        t("skills.domain.3"),
+        t("skills.domain.4"),
+        t("skills.domain.5"),
+        t("skills.domain.6"),
+        t("skills.domain.7"),
+        t("skills.domain.8"),
+        t("skills.domain.9"),
+        "",
+      ].join("\n");
     },
 
     research() {
-      return state.lang === "en"
-        ? [
-            "[2024-01-15 09:23:11] ML Specialization completed (Udemy)",
-            "[2024-03-02 14:55:42] Deep Learning Specialization completed (Udemy)",
-            "[2024-06-10 11:30:00] Local inference infrastructure deployed with Ollama",
-            "[2024-06-10 11:30:05] Models loaded: Gemma 4, DeepSeek, Qwen",
-            "[2024-06-10 11:30:07] MCP (Model Context Protocol) research started",
-            "[2024-08-22 16:45:33] Agentic AI orchestration pipeline: phase 1",
-            "[2024-11-05 08:12:00] Code analysis automation with local LLMs",
-            "[2025-01-20 13:00:00] OpenCode: AI-driven development environment",
-            "[2025-03-15 10:00:00] DeepSeek V4 evaluation for low-level tasks",
-            "",
-          ].join("\n")
-        : [
-            "[2024-01-15 09:23:11] ML Specialization completada (Udemy)",
-            "[2024-03-02 14:55:42] Deep Learning Specialization completada (Udemy)",
-            "[2024-06-10 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
-            "[2024-06-10 11:30:05] Modelos cargados: Gemma 4, DeepSeek, Qwen",
-            "[2024-06-10 11:30:07] Investigaci\u00f3n MCP (Model Context Protocol) iniciada",
-            "[2024-08-22 16:45:33] Pipeline de orquestaci\u00f3n de IA ag\u00e9ntica: fase 1",
-            "[2024-11-05 08:12:00] Automatizaci\u00f3n de an\u00e1lisis de c\u00f3digo con LLMs locales",
-            "[2025-01-20 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
-            "[2025-03-15 10:00:00] Evaluaci\u00f3n DeepSeek V4 para tareas de bajo nivel",
-            "",
-          ].join("\n");
+      return [
+        t("research.log1"),
+        t("research.log2"),
+        t("research.log3"),
+        t("research.log4"),
+        t("research.log5"),
+        t("research.log6"),
+        t("research.log7"),
+        t("research.log8"),
+        t("research.log9"),
+        t("research.log10"),
+        t("research.log11"),
+        t("research.log12"),
+        t("research.log13"),
+        t("research.log14"),
+        "",
+      ].join("\n");
     },
 
     man() {
-      return state.lang === "en"
-        ? [
-            "NAME",
-            "  airvzxf - Senior Software Engineer, Systems Architect, Toolsmith",
-            "",
-            "SYNOPSIS",
-            "  Systems architecture, low-level optimization, AI orchestration.",
-            "",
-            "DESCRIPTION",
-            "  airvzxf is a systems programmer and software architect with over 19",
-            "  years of experience. He operates at the intersection of hardware",
-            "  and high-level systems, with an obsessive focus on architectural",
-            "  purity and extreme optimization.",
-            "",
-            "  He despises inefficient code, MVP-driven shortcuts, and technical",
-            "  debt. His approach is rooted in deep understanding of the machine",
-            "  from assembly up through high-level abstractions.",
-            "",
-            "  Currently at the job, he orchestrates AI systems as development",
-            "  tools under strict architectural direction \u2014 not as end-user",
-            "  applications, but as instruments of engineering.",
-            "",
-            "  Diagnosed with mild functional Asperger's, which provides hyperfocus,",
-            "  deep system analysis, and zero tolerance for dirty code.",
-            "",
-            "ENVIRONMENT",
-            ...formatTextList([
-              ["OS:", "Arch Linux (pacman)"],
-              ["WM:", "labwc (Wayland)"],
-              ["Terminal:", "Alacritty + Tmux"],
-              ["Containers:", "Podman"],
-              ["VCS:", "Git"],
-            ]),
-            "",
-            "LANGUAGES",
-            "  Rust, Bash, Python, JavaScript, Assembly, C",
-            "",
-            "SEE ALSO",
-            "  whoami(1)",
-            "",
-            `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
-          ].join("\n")
-        : [
-            "NOMBRE",
-            "  airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith",
-            "",
-            "SINOPSIS",
-            "  Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.",
-            "",
-            "DESCRIPCI\u00d3N",
-            "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s",
-            "  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware",
-            "  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza",
-            "  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
-            "",
-            "  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.",
-            "  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,",
-            "  desde ensamblador hasta las abstracciones de alto nivel.",
-            "",
-            "  Actualmente orquesta sistemas de IA como herramientas de desarrollo",
-            "  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones",
-            "  de usuario final, sino como instrumentos de ingenier\u00eda.",
-            "",
-            "  Diagnosticado con Asperger leve funcional, lo que le otorga",
-            "  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia",
-            "  al c\u00f3digo sucio.",
-            "",
-            "ENTORNO",
-            ...formatTextList([
-              ["OS:", "Arch Linux (pacman)"],
-              ["WM:", "labwc (Wayland)"],
-              ["Terminal:", "Alacritty + Tmux"],
-              ["Contenedores:", "Podman"],
-              ["VCS:", "Git"],
-            ]),
-            "",
-            "LENGUAJES",
-            "  Rust, Bash, Python, JavaScript, Assembly, C",
-            "",
-            "VEASE TAMBIEN",
-            "  whoami(1)",
-            "",
-            `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
-          ].join("\n");
+      return [
+        t("man.header.name"),
+        "  " + t("man.nameText"),
+        "",
+        t("man.header.synopsis"),
+        "  " + t("man.synopsisText"),
+        "",
+        t("man.header.description"),
+        ...t("man.desc.p1").split("\n"),
+        "",
+        ...t("man.desc.p2").split("\n"),
+        "",
+        ...t("man.desc.p3").split("\n"),
+        "",
+        ...t("man.desc.p4").split("\n"),
+        "",
+        t("man.header.environment"),
+        ...formatTextList([
+          ["OS:", "Arch Linux (pacman)"],
+          ["WM:", "labwc (Wayland)"],
+          ["Terminal:", "Alacritty + Tmux"],
+          [t("env.containers"), "Podman"],
+          ["VCS:", "Git"],
+        ]),
+        "",
+        t("man.header.languages"),
+        "  " + t("man.langList"),
+        "",
+        t("man.header.seeAlso"),
+        "  whoami(1)",
+        "",
+        "RoviSoft.net                        " +
+          new Date().getFullYear() +
+          "                       airvzxf(1)",
+        "",
+      ].join("\n");
     },
   };
 
