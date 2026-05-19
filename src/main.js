@@ -1051,7 +1051,6 @@
       document.documentElement.setAttribute("lang", sub);
       Storage.save(state);
       Storage.saveLang(sub);
-      renderWelcome();
       cmdInput.setAttribute("aria-label", t("welcome.ariaLabel"));
 
       var newLangName = AVAILABLE_LANGS[sub] || sub;
