@@ -22,7 +22,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = '1.4.0';
+  const VERSION = '1.5.0';
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -83,7 +83,461 @@
     history: [],
     historyIndex: -1,
     tempInput: '',
-    aliases: {}
+    aliases: {},
+    lang: 'es'
+  };
+
+  // ─── Internationalization ──────────────────────────────────
+
+  var I18N = {
+    es: {
+      'welcome.main': 'Bienvenido a <strong>RoviSoft.net</strong> \u2014 Terminal interactiva (TTY).',
+      'welcome.desc': 'Este no es un sitio web tradicional: es una terminal de comandos interactiva que funciona como p\u00e1gina de inicio personal.',
+      'welcome.help': 'Escribe <span class="cmd">help</span> para ver los comandos disponibles.',
+      'welcome.config': 'Escribe <span class="cmd">config</span> para gestionar el almacenamiento de preferencias.',
+      'welcome.mouse': 'El mouse no sirve de mucho... mejor escribe.',
+      'welcome.ariaLabel': 'L\u00ednea de comandos',
+
+      'help.help': 'Muestra esta ayuda',
+      'help.clear': 'Limpia la pantalla',
+      'help.whoami': 'Muestra el usuario actual',
+      'help.users': 'Lista los usuarios del sistema',
+      'help.su': 'Cambia de usuario',
+      'help.airvzxf': 'Informaci\u00f3n de AirvZxf',
+      'help.neofetch': 'Informaci\u00f3n del sistema',
+      'help.date': 'Fecha y hora actual',
+      'help.echo': 'Repite el texto',
+      'help.echoParam': 'texto',
+      'help.alias': 'Gestiona alias de comandos',
+      'help.unalias': 'Elimina un alias',
+      'help.theme': 'Gestiona temas de color',
+      'help.lang': 'Cambia el idioma de la interfaz',
+      'help.config': 'Gestiona el almacenamiento local',
+      'help.reboot': 'Reinicia la terminal (borra datos)',
+      'help.version': 'Muestra la versi\u00f3n',
+      'help.license': 'Muestra la licencia',
+      'help.history': 'Historial de comandos',
+      'help.additional': 'Comandos adicionales (airvzxf)',
+      'help.cat': 'Lee un archivo del sistema',
+      'help.ls': 'Lista contenido de un directorio',
+      'help.man': 'P\u00e1gina de manual',
+      'help.tail': 'Muestra el final de un archivo',
+      'help.shortcuts': 'Atajos: \u2191/\u2193 (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicomando)',
+
+      'users.airvzxfDesc': 'Administrador / Propietario',
+      'users.guestDesc': 'Invitado (sesi\u00f3n actual por defecto)',
+
+      'su.usage': 'Uso: su &lt;usuario&gt;',
+      'su.paramUser': 'usuario',
+      'su.authSuccess': 'Autenticaci\u00f3n exitosa.',
+      'su.welcomeUser': 'Bienvenido, {0}',
+      'su.guestRestored': 'Sesi\u00f3n de invitado restaurada.',
+      'su.unknownUser': "su: usuario '{0}' no existe.",
+
+      'version.label': 'Versi\u00f3n:',
+      'version.build': 'Build:',
+      'version.upgraded': 'instalada',
+
+      'airvzxf.usage': 'Uso: airvzxf &lt;subcomando&gt;',
+      'airvzxf.paramSubcommand': 'subcomando',
+      'airvzxf.about': 'Informaci\u00f3n del propietario',
+      'airvzxf.contact': 'Formas de contacto',
+      'airvzxf.social': 'Enlaces a redes sociales',
+      'airvzxf.projects': 'Proyectos del portafolio',
+      'airvzxf.unknownSubcommand': "airvzxf: subcomando desconocido '{0}'",
+      'airvzxf.useHelp': 'Usa <span class="cmd">airvzxf</span> para ver los subcomandos disponibles.',
+
+      'about.of': 'de RoviSoft.net',
+      'about.location': 'Ubicaci\u00f3n:',
+      'about.role': 'Rol:',
+      'about.tech': 'Tech:',
+
+      'contact.email': 'Email:',
+
+      'social.github': 'GitHub:',
+      'social.youtube': 'YouTube:',
+      'social.x': 'X:',
+      'social.linkedin': 'LinkedIn:',
+
+      'neofetch.os': 'OS:',
+      'neofetch.host': 'Host:',
+      'neofetch.kernel': 'Kernel:',
+      'neofetch.shell': 'Shell:',
+      'neofetch.user': 'User:',
+      'neofetch.theme': 'Theme:',
+      'neofetch.uptime': 'Uptime:',
+      'neofetch.config': 'Config:',
+      'neofetch.storage': 'Storage:',
+      'neofetch.session': '(sesi\u00f3n)',
+      'neofetch.accepted': 'aceptado',
+      'neofetch.rejected': 'rechazado',
+      'neofetch.undecided': 'sin decidir',
+
+      'license.title': 'RoviSoft.net \u2014 Terminal Personal',
+      'license.source': 'C\u00f3digo fuente:',
+      'license.fullLicense': 'Licencia completa:',
+
+      'history.empty': 'No hay comandos en el historial.',
+
+      'lang.title': 'Idioma de la interfaz',
+      'lang.current': 'Idioma actual:',
+      'lang.available': 'Idiomas disponibles:',
+      'lang.changed': "Idioma cambiado a '{0}'.",
+      'lang.unknownLang': "lang: idioma desconocido '{0}'.",
+      'lang.hint': 'Usa <span class="cmd">lang list</span> para ver los idiomas disponibles.',
+
+      'theme.title': 'Temas de color',
+      'theme.current': 'Tema actual:',
+      'theme.currentMarker': 'actual',
+      'theme.builtin': 'Temas integrados:',
+      'theme.custom': 'Temas personalizados:',
+      'theme.description': 'Cambia al tema especificado',
+      'theme.themeParam': 'nombre',
+      'theme.varParam': 'valor',
+      'theme.listDesc': 'Lista los temas disponibles',
+      'theme.createDesc': 'Crea un tema personalizado',
+      'theme.editDesc': 'Edita un tema personalizado',
+      'theme.deleteDesc': 'Elimina un tema personalizado',
+      'theme.exportDesc': 'Exporta las variables del tema',
+      'theme.createNameRequired': 'theme create: se requiere un nombre.',
+      'theme.createNameInvalid': 'theme create: nombre inv\u00e1lido. Solo letras min\u00fasculas, n\u00fameros, guiones y guiones bajos. Debe iniciar con letra, m\u00e1x 20 caracteres.',
+      'theme.createBuiltIn': "theme create: '{0}' es un tema integrado y no puede sobreescribirse.",
+      'theme.createBaseInvalid': "theme create: base inv\u00e1lida '{0}'. Valores: dark, light.",
+      'theme.createVarUnknown': "theme create: variable desconocida '{0}'. Variables disponibles: {1}",
+      'theme.createVarRequired': 'theme create: se requiere al menos una variable de color.',
+      'theme.createUseExport': 'Usa <span class="cmd">theme export</span> para ver las variables disponibles.',
+      'theme.created': "Tema '{0}' creado (base: {1}, {2} variable{3}).",
+      'theme.useTheme': 'Usa <span class="cmd">theme {0}</span> para activarlo.',
+      'theme.editNameRequired': 'theme edit: se requiere un nombre.',
+      'theme.editBuiltIn': "theme edit: no se puede editar el tema integrado '{0}'.",
+      'theme.editNotExists': "theme edit: el tema '{0}' no existe.",
+      'theme.editUseCreate': "Usa <span class=\"cmd\">theme create {0}</span> para crearlo primero.",
+      'theme.editNoChanges': 'theme edit: se requiere al menos una variable o --base para editar.',
+      'theme.editBaseInvalid': "theme edit: base inv\u00e1lida '{0}'. Valores: dark, light.",
+      'theme.edited': "Tema '{0}' editado ({1}).",
+      'theme.deleteNameRequired': 'theme delete: se requiere un nombre de tema personalizado.',
+      'theme.deleteBuiltIn': "theme delete: no se puede eliminar el tema integrado '{0}'.",
+      'theme.deleteNotExists': "theme delete: el tema '{0}' no existe.",
+      'theme.deleted': "Tema '{0}' eliminado.",
+      'theme.exportTitle': 'Tema: {0}',
+      'theme.exportNotExists': "theme export: el tema '{0}' no existe.",
+      'theme.changedTo': "Tema cambiado a '{0}'.",
+      'theme.notExists': "theme: '{0}' no existe.",
+      'theme.useList': 'Usa <span class="cmd">theme list</span> para ver los temas disponibles.',
+      'theme.variable': 'variable',
+      'theme.variables': 'variables',
+
+      'alias.title': 'alias \u2014 Define atajos para comandos',
+      'alias.showAliases': 'Muestra los alias definidos',
+      'alias.showValue': 'Muestra el valor de un alias',
+      'alias.define': 'Define un nuevo alias',
+      'alias.paramName': 'nombre',
+      'alias.paramCommand': 'comando',
+      'alias.preserved': 'Los alias se conservan entre sesiones.',
+      'alias.noOverride': 'No se puede crear un alias con el nombre de un comando existente.',
+      'alias.notDefined': "alias: {0}: no definido.",
+      'alias.nameEmpty': 'alias: nombre vac\u00edo.',
+      'alias.valueEmpty': 'alias: valor vac\u00edo.',
+      'alias.existingCommand': "alias: '{0}' es un comando existente.",
+
+      'unalias.title': 'unalias \u2014 Elimina un alias definido',
+      'unalias.desc': 'Elimina el alias especificado',
+      'unalias.paramName': 'nombre',
+      'unalias.useAlias': 'Usa <span class="cmd">alias</span> para ver los alias definidos.',
+      'unalias.notDefined': "unalias: {0}: no definido.",
+
+      'permDenied': '{0}: permiso denegado.',
+      'loginAs': 'Inicia sesi\u00f3n como {0} con <span class="cmd">su {0}</span>.',
+
+      'cmdNotFound': 'comando no encontrado: {0}',
+
+      'cat.permDenied': 'cat: permiso denegado. Inicia sesi\u00f3n como airvzxf.',
+      'cat.missingFile': 'cat: falta el nombre del archivo.',
+      'cat.notFound': 'cat: {0}: No existe el archivo o directorio.',
+      'cat.isDirectory': 'cat: {0}: Es un directorio.',
+
+      'ls.permDenied': 'ls: permiso denegado. Inicia sesi\u00f3n como airvzxf.',
+      'ls.notFound': 'ls: {0}: No existe el archivo o directorio.',
+
+      'man.permDenied': 'man: permiso denegado. Inicia sesi\u00f3n como airvzxf.',
+      'man.notFound': 'man: No existe entrada de manual para {0}.',
+      'man.noEntry': 'man: No existe entrada de manual para ese tema.',
+
+      'tail.permDenied': 'tail: permiso denegado. Inicia sesi\u00f3n como airvzxf.',
+      'tail.missingFile': 'tail: falta el nombre del archivo.',
+      'tail.notFound': 'tail: {0}: No existe el archivo.',
+      'tail.isDirectory': 'tail: {0}: Es un directorio.',
+
+      'config.title': 'Almacenamiento local',
+      'config.state': 'Estado:',
+      'config.mechanism': 'Mecanismo:',
+      'config.wouldStore': 'Se almacenar\u00eda:',
+      'config.session': 'Sesi\u00f3n de usuario',
+      'config.historyStore': 'Historial de comandos',
+      'config.preferences': 'Preferencias',
+      'config.versionStore': 'Versi\u00f3n',
+      'config.accept': 'Aceptar almacenamiento persistente',
+      'config.reject': 'Rechazar (datos vol\u00e1tiles, se pierden al cerrar)',
+      'config.status': 'Detalle t\u00e9cnico del almacenamiento',
+      'config.show': 'Mostrar datos almacenados',
+      'config.acceptedShort': 'aceptado',
+      'config.rejectedShort': 'rechazado',
+      'config.undecidedShort': 'sin decidir',
+      'config.volatile': 'sessionStorage (vol\u00e1til)',
+      'config.acceptedMsg': 'Almacenamiento persistente aceptado.',
+      'config.acceptedMsg2': 'Tus datos se guardar\u00e1n entre sesiones.',
+      'config.rejectedMsg': 'Almacenamiento persistente rechazado.',
+      'config.rejectedMsg2': 'Los datos se perder\u00e1n al cerrar la pesta\u00f1a.',
+      'config.rejectedMsg3': 'Usa <span class="cmd">config accept</span> para revertir.',
+      'config.unknownSubcommand': "config: subcomando desconocido '{0}'",
+      'config.useConfig': 'Usa <span class="cmd">config</span> para ver las opciones disponibles.',
+      'config.labelMode': 'Modo:',
+      'config.labelStore': 'Almac\u00e9n:',
+      'config.labelVersion': 'Versi\u00f3n:',
+      'config.labelUptime': 'Uptime:',
+      'config.labelData': 'Datos:',
+      'config.keys': 'llaves',
+      'config.codeWord': 'c\u00f3digo',
+      'config.inWord': 'en',
+
+      'reboot.msg': 'Reiniciando terminal...',
+
+      'eventNotFound': '{0}: event not found',
+      'historyExpansion': '\u2192 {0}'
+    },
+
+    en: {
+      'welcome.main': 'Welcome to <strong>RoviSoft.net</strong> \u2014 Interactive terminal (TTY).',
+      'welcome.desc': 'This is not a traditional website: it\'s an interactive command terminal that works as a personal homepage.',
+      'welcome.help': 'Type <span class="cmd">help</span> to see available commands.',
+      'welcome.config': 'Type <span class="cmd">config</span> to manage storage preferences.',
+      'welcome.mouse': 'The mouse is not very useful here... just type.',
+      'welcome.ariaLabel': 'Command line',
+
+      'help.help': 'Show this help',
+      'help.clear': 'Clear screen',
+      'help.whoami': 'Show current user',
+      'help.users': 'List system users',
+      'help.su': 'Switch user',
+      'help.airvzxf': 'AirvZxf information',
+      'help.neofetch': 'System information',
+      'help.date': 'Current date and time',
+      'help.echo': 'Echo text',
+      'help.echoParam': 'text',
+      'help.alias': 'Manage command aliases',
+      'help.unalias': 'Remove an alias',
+      'help.theme': 'Manage color themes',
+      'help.lang': 'Change interface language',
+      'help.config': 'Manage local storage',
+      'help.reboot': 'Reboot terminal (clears data)',
+      'help.version': 'Show version',
+      'help.license': 'Show license',
+      'help.history': 'Command history',
+      'help.additional': 'Additional commands (airvzxf)',
+      'help.cat': 'Read a system file',
+      'help.ls': 'List directory contents',
+      'help.man': 'Manual page',
+      'help.tail': 'Show end of a file',
+      'help.shortcuts': 'Shortcuts: \u2191/\u2193 (history) | Tab (autocomplete) | Ctrl+L (clear) | !N / !! (history) | ; (multicommand)',
+
+      'users.airvzxfDesc': 'Administrator / Owner',
+      'users.guestDesc': 'Guest (default session)',
+
+      'su.usage': 'Usage: su &lt;user&gt;',
+      'su.paramUser': 'user',
+      'su.authSuccess': 'Authentication successful.',
+      'su.welcomeUser': 'Welcome, {0}',
+      'su.guestRestored': 'Guest session restored.',
+      'su.unknownUser': "su: user '{0}' does not exist.",
+
+      'version.label': 'Version:',
+      'version.build': 'Build:',
+      'version.upgraded': 'installed',
+
+      'airvzxf.usage': 'Usage: airvzxf &lt;subcommand&gt;',
+      'airvzxf.paramSubcommand': 'subcommand',
+      'airvzxf.about': 'Owner information',
+      'airvzxf.contact': 'Contact information',
+      'airvzxf.social': 'Social media links',
+      'airvzxf.projects': 'Portfolio projects',
+      'airvzxf.unknownSubcommand': "airvzxf: unknown subcommand '{0}'",
+      'airvzxf.useHelp': 'Use <span class="cmd">airvzxf</span> to see available subcommands.',
+
+      'about.of': 'of RoviSoft.net',
+      'about.location': 'Location:',
+      'about.role': 'Role:',
+      'about.tech': 'Tech:',
+
+      'contact.email': 'Email:',
+
+      'social.github': 'GitHub:',
+      'social.youtube': 'YouTube:',
+      'social.x': 'X:',
+      'social.linkedin': 'LinkedIn:',
+
+      'neofetch.os': 'OS:',
+      'neofetch.host': 'Host:',
+      'neofetch.kernel': 'Kernel:',
+      'neofetch.shell': 'Shell:',
+      'neofetch.user': 'User:',
+      'neofetch.theme': 'Theme:',
+      'neofetch.uptime': 'Uptime:',
+      'neofetch.config': 'Config:',
+      'neofetch.storage': 'Storage:',
+      'neofetch.session': '(session)',
+      'neofetch.accepted': 'accepted',
+      'neofetch.rejected': 'rejected',
+      'neofetch.undecided': 'undecided',
+
+      'license.title': 'RoviSoft.net \u2014 Personal Terminal',
+      'license.source': 'Source code:',
+      'license.fullLicense': 'Full license:',
+
+      'history.empty': 'No commands in history.',
+
+      'lang.title': 'Interface language',
+      'lang.current': 'Current language:',
+      'lang.available': 'Available languages:',
+      'lang.changed': "Language changed to '{0}'.",
+      'lang.unknownLang': "lang: unknown language '{0}'.",
+      'lang.hint': 'Use <span class="cmd">lang list</span> to see available languages.',
+
+      'theme.title': 'Color themes',
+      'theme.current': 'Current theme:',
+      'theme.currentMarker': 'current',
+      'theme.builtin': 'Built-in themes:',
+      'theme.custom': 'Custom themes:',
+      'theme.description': 'Switch to specified theme',
+      'theme.themeParam': 'name',
+      'theme.varParam': 'value',
+      'theme.listDesc': 'List available themes',
+      'theme.createDesc': 'Create a custom theme',
+      'theme.editDesc': 'Edit a custom theme',
+      'theme.deleteDesc': 'Delete a custom theme',
+      'theme.exportDesc': 'Export theme variables',
+      'theme.createNameRequired': 'theme create: a name is required.',
+      'theme.createNameInvalid': 'theme create: invalid name. Only lowercase letters, numbers, hyphens and underscores. Must start with a letter, max 20 characters.',
+      'theme.createBuiltIn': "theme create: '{0}' is a built-in theme and cannot be overwritten.",
+      'theme.createBaseInvalid': "theme create: invalid base '{0}'. Values: dark, light.",
+      'theme.createVarUnknown': "theme create: unknown variable '{0}'. Available variables: {1}",
+      'theme.createVarRequired': 'theme create: at least one color variable is required.',
+      'theme.createUseExport': 'Use <span class="cmd">theme export</span> to see available variables.',
+      'theme.created': "Theme '{0}' created (base: {1}, {2} variable{3}).",
+      'theme.useTheme': "Use <span class=\"cmd\">theme {0}</span> to activate it.",
+      'theme.editNameRequired': 'theme edit: a name is required.',
+      'theme.editBuiltIn': "theme edit: cannot edit built-in theme '{0}'.",
+      'theme.editNotExists': "theme edit: theme '{0}' does not exist.",
+      'theme.editUseCreate': "Use <span class=\"cmd\">theme create {0}</span> to create it first.",
+      'theme.editNoChanges': 'theme edit: at least one variable or --base is required to edit.',
+      'theme.editBaseInvalid': "theme edit: invalid base '{0}'. Values: dark, light.",
+      'theme.edited': "Theme '{0}' edited ({1}).",
+      'theme.deleteNameRequired': 'theme delete: a custom theme name is required.',
+      'theme.deleteBuiltIn': "theme delete: cannot delete built-in theme '{0}'.",
+      'theme.deleteNotExists': "theme delete: theme '{0}' does not exist.",
+      'theme.deleted': "Theme '{0}' deleted.",
+      'theme.exportTitle': 'Theme: {0}',
+      'theme.exportNotExists': "theme export: theme '{0}' does not exist.",
+      'theme.changedTo': "Theme changed to '{0}'.",
+      'theme.notExists': "theme: '{0}' does not exist.",
+      'theme.useList': 'Use <span class="cmd">theme list</span> to see available themes.',
+      'theme.variable': 'variable',
+      'theme.variables': 'variables',
+
+      'alias.title': 'alias \u2014 Define command shortcuts',
+      'alias.showAliases': 'Show defined aliases',
+      'alias.showValue': 'Show value of an alias',
+      'alias.define': 'Define a new alias',
+      'alias.paramName': 'name',
+      'alias.paramCommand': 'command',
+      'alias.preserved': 'Aliases are preserved between sessions.',
+      'alias.noOverride': 'Cannot create an alias with an existing command name.',
+      'alias.notDefined': "alias: {0}: not defined.",
+      'alias.nameEmpty': 'alias: empty name.',
+      'alias.valueEmpty': 'alias: empty value.',
+      'alias.existingCommand': "alias: '{0}' is an existing command.",
+
+      'unalias.title': 'unalias \u2014 Remove a defined alias',
+      'unalias.desc': 'Remove the specified alias',
+      'unalias.paramName': 'name',
+      'unalias.useAlias': 'Use <span class="cmd">alias</span> to see defined aliases.',
+      'unalias.notDefined': "unalias: {0}: not defined.",
+
+      'permDenied': '{0}: permission denied.',
+      'loginAs': 'Log in as {0} with <span class="cmd">su {0}</span>.',
+
+      'cmdNotFound': 'command not found: {0}',
+
+      'cat.permDenied': 'cat: permission denied. Log in as airvzxf.',
+      'cat.missingFile': 'cat: file name is required.',
+      'cat.notFound': 'cat: {0}: No such file or directory.',
+      'cat.isDirectory': 'cat: {0}: Is a directory.',
+
+      'ls.permDenied': 'ls: permission denied. Log in as airvzxf.',
+      'ls.notFound': 'ls: {0}: No such file or directory.',
+
+      'man.permDenied': 'man: permission denied. Log in as airvzxf.',
+      'man.notFound': 'man: No manual entry for {0}.',
+      'man.noEntry': 'man: No manual entry for that topic.',
+
+      'tail.permDenied': 'tail: permission denied. Log in as airvzxf.',
+      'tail.missingFile': 'tail: file name is required.',
+      'tail.notFound': 'tail: {0}: No such file.',
+      'tail.isDirectory': 'tail: {0}: Is a directory.',
+
+      'config.title': 'Local storage',
+      'config.state': 'State:',
+      'config.mechanism': 'Mechanism:',
+      'config.wouldStore': 'Would store:',
+      'config.session': 'User session',
+      'config.historyStore': 'Command history',
+      'config.preferences': 'Preferences',
+      'config.versionStore': 'Version',
+      'config.accept': 'Accept persistent storage',
+      'config.reject': 'Reject (volatile data, lost on close)',
+      'config.status': 'Technical storage details',
+      'config.show': 'Show stored data',
+      'config.acceptedShort': 'accepted',
+      'config.rejectedShort': 'rejected',
+      'config.undecidedShort': 'undecided',
+      'config.volatile': 'sessionStorage (volatile)',
+      'config.acceptedMsg': 'Persistent storage accepted.',
+      'config.acceptedMsg2': 'Your data will be saved between sessions.',
+      'config.rejectedMsg': 'Persistent storage rejected.',
+      'config.rejectedMsg2': 'Data will be lost when the tab is closed.',
+      'config.rejectedMsg3': 'Use <span class="cmd">config accept</span> to revert.',
+      'config.unknownSubcommand': "config: unknown subcommand '{0}'",
+      'config.useConfig': 'Use <span class="cmd">config</span> to see available options.',
+      'config.labelMode': 'Mode:',
+      'config.labelStore': 'Store:',
+'config.labelVersion': 'Version:',
+      'config.labelUptime': 'Uptime:',
+      'config.labelData': 'Data:',
+      'config.keys': 'keys',
+      'config.codeWord': 'code',
+      'config.inWord': 'in',
+
+      'reboot.msg': 'Rebooting terminal...',
+
+      'eventNotFound': '{0}: event not found',
+      'historyExpansion': '\u2192 {0}'
+    }
+  };
+
+  function t(key) {
+    return (I18N[state.lang] && I18N[state.lang][key]) || I18N.es[key] || key;
+  }
+
+  function tf(key) {
+    var template = t(key);
+    var args = Array.prototype.slice.call(arguments, 1);
+    return template.replace(/\{(\d+)\}/g, function (m, i) {
+      return args[parseInt(i, 10)] !== undefined ? args[parseInt(i, 10)] : m;
+    });
+  }
+
+  var AVAILABLE_LANGS = {
+    es: 'Espa\u00f1ol',
+    en: 'English'
   };
 
   // ─── Users ────────────────────────────────────────────────
@@ -273,8 +727,8 @@
 
   function permDenied(cmd, user) {
     return [
-      `<span class="text-red">${escapeHtml(cmd)}: permiso denegado.</span>`,
-      `Inicia sesión como ${escapeHtml(user)} con <span class="cmd">su ${escapeHtml(user)}</span>.`,
+      `<span class="text-red">${escapeHtml(tf('permDenied', cmd))}</span>`,
+      tf('loginAs', user),
       ''
     ].join('\n');
   }
@@ -337,40 +791,41 @@ function formatStorageSize(bytes) {
 
     help() {
       const base = [
-        '  <span class="cmd">help</span>            Muestra esta ayuda',
-        '  <span class="cmd">clear</span>           Limpia la pantalla',
-        '  <span class="cmd">whoami</span>          Muestra el usuario actual',
-        '  <span class="cmd">users</span>           Lista los usuarios del sistema',
-        '  <span class="cmd">su &lt;user&gt;</span>       Cambia de usuario',
-        '  <span class="cmd">airvzxf</span>         Información de AirvZxf',
-        '  <span class="cmd">neofetch</span>        Información del sistema',
-        '  <span class="cmd">date</span>            Fecha y hora actual',
-        '  <span class="cmd">echo &lt;texto&gt;</span>    Repite el texto',
-        '  <span class="cmd">alias</span>           Gestiona alias de comandos',
-        '  <span class="cmd">unalias</span>         Elimina un alias',
-        '  <span class="cmd">theme</span>           Gestiona temas de color',
-        '  <span class="cmd">config</span>          Gestiona el almacenamiento local',
-        '  <span class="cmd">reboot</span>          Reinicia la terminal (borra datos)',
-        '  <span class="cmd">version</span>         Muestra la versión',
-        '  <span class="cmd">license</span>         Muestra la licencia',
-        '  <span class="cmd">history</span>         Historial de comandos',
+        '  <span class="cmd">help</span>            ' + t('help.help'),
+        '  <span class="cmd">clear</span>           ' + t('help.clear'),
+        '  <span class="cmd">whoami</span>          ' + t('help.whoami'),
+        '  <span class="cmd">users</span>           ' + t('help.users'),
+        '  <span class="cmd">su &lt;user&gt;</span>       ' + t('help.su'),
+        '  <span class="cmd">airvzxf</span>         ' + t('help.airvzxf'),
+        '  <span class="cmd">neofetch</span>        ' + t('help.neofetch'),
+        '  <span class="cmd">date</span>            ' + t('help.date'),
+        '  <span class="cmd">echo &lt;' + t('help.echoParam') + '&gt;</span>    ' + t('help.echo'),
+        '  <span class="cmd">alias</span>           ' + t('help.alias'),
+        '  <span class="cmd">unalias</span>         ' + t('help.unalias'),
+        '  <span class="cmd">theme</span>           ' + t('help.theme'),
+        '  <span class="cmd">lang</span>            ' + t('help.lang'),
+        '  <span class="cmd">config</span>          ' + t('help.config'),
+        '  <span class="cmd">reboot</span>          ' + t('help.reboot'),
+        '  <span class="cmd">version</span>         ' + t('help.version'),
+        '  <span class="cmd">license</span>         ' + t('help.license'),
+        '  <span class="cmd">history</span>         ' + t('help.history'),
       ];
 
       if (state.user === 'airvzxf') {
         base.push(
           '',
-          '  <span class="text-dim">── Comandos adicionales (airvzxf) ──</span>',
+          '  <span class="text-dim">\u2500\u2500 ' + t('help.additional') + ' \u2500\u2500</span>',
           '',
-          '  <span class="cmd">cat &lt;file&gt;</span>      Lee un archivo del sistema',
-          '  <span class="cmd">ls [-l] &lt;dir&gt;</span>   Lista contenido de un directorio',
-          '  <span class="cmd">man &lt;topic&gt;</span>      Página de manual',
-          '  <span class="cmd">tail [-f] &lt;file&gt;</span> Muestra el final de un archivo',
+          '  <span class="cmd">cat &lt;file&gt;</span>      ' + t('help.cat'),
+          '  <span class="cmd">ls [-l] &lt;dir&gt;</span>   ' + t('help.ls'),
+          '  <span class="cmd">man &lt;topic&gt;</span>      ' + t('help.man'),
+          '  <span class="cmd">tail [-f] &lt;file&gt;</span> ' + t('help.tail'),
         );
       }
 
       base.push(
         '',
-        '<span class="text-dim">Atajos: ↑/↓ (historial) | Tab (autocompletar) | Ctrl+L (clear) | !N / !! (history) | ; (multicomando)</span>',
+        '<span class="text-dim">' + t('help.shortcuts') + '</span>',
         ''
       );
       return base.join('\n');
@@ -381,21 +836,63 @@ function formatStorageSize(bytes) {
       return null;
     },
 
+    lang(args) {
+      if (!args.length) {
+        var currentLangName = AVAILABLE_LANGS[state.lang] || state.lang;
+        return [
+          '<span class="text-yellow text-bold">' + t('lang.title') + '</span>',
+          '  <span class="cmd">lang &lt;lang&gt;</span>',
+          '',
+          t('lang.current') + ' <span class="text-cyan">' + escapeHtml(state.lang) + '</span> (' + escapeHtml(currentLangName) + ')',
+          '<span class="text-dim">' + t('lang.hint') + '</span>',
+          ''
+        ].join('\n');
+      }
+
+      var sub = args[0].toLowerCase();
+
+      if (sub === 'list') {
+        var lines = ['<span class="text-yellow text-bold">' + t('lang.available') + '</span>'];
+        var langKeys = Object.keys(AVAILABLE_LANGS);
+        for (var i = 0; i < langKeys.length; i++) {
+          var k = langKeys[i];
+          var marker = k === state.lang ? ' <span class="text-dim">\u2190</span>' : '';
+          lines.push('  <span class="text-green">' + escapeHtml(k) + '</span>    ' + escapeHtml(AVAILABLE_LANGS[k]) + marker);
+        }
+        lines.push('');
+        return lines.join('\n');
+      }
+
+      if (!AVAILABLE_LANGS[sub]) {
+        return '<span class="text-red">' + escapeHtml(tf('lang.unknownLang', sub)) + '</span>\n' + t('lang.hint');
+      }
+
+      state.lang = sub;
+      document.documentElement.setAttribute('lang', sub);
+      Storage.save(state);
+      Storage.saveLang(sub);
+      renderWelcome();
+      cmdInput.setAttribute('aria-label', t('welcome.ariaLabel'));
+
+      var newLangName = AVAILABLE_LANGS[sub] || sub;
+      return '<span class="text-green">' + escapeHtml(tf('lang.changed', sub + ' (' + newLangName + ')')) + '</span>';
+    },
+
     whoami() {
       return state.user;
     },
 
     users() {
       return [
-        '  <span class="text-green">airvzxf</span>    Administrador / Propietario',
-        '  <span class="text-green">guest</span>      Invitado (sesión actual por defecto)',
+        '  <span class="text-green">airvzxf</span>    ' + t('users.airvzxfDesc'),
+        '  <span class="text-green">guest</span>      ' + t('users.guestDesc'),
         ''
       ].join('\n');
     },
 
     su(args) {
       if (!args.length) {
-        return '<span class="text-red">Uso: su &lt;usuario&gt;</span>';
+        return '<span class="text-red">' + t('su.usage') + '</span>';
       }
       const target = args[0].toLowerCase();
       if (target === 'airvzxf') {
@@ -404,9 +901,9 @@ function formatStorageSize(bytes) {
         updatePrompt();
         updateCursorPos();
         return [
-          '<span class="text-green">Autenticación exitosa.</span>',
-          `Bienvenido, <span class="text-cyan text-bold">${USERS.airvzxf.name}</span>.`,
-          'Escribe <span class="cmd">airvzxf</span> para ver los subcomandos disponibles.',
+          '<span class="text-green">' + t('su.authSuccess') + '</span>',
+          tf('su.welcomeUser', '<span class="text-cyan text-bold">' + escapeHtml(USERS.airvzxf.name) + '</span>'),
+          t('airvzxf.useHelp'),
         ].join('\n');
       }
       if (target === 'guest') {
@@ -414,16 +911,16 @@ function formatStorageSize(bytes) {
         state.cwd = '~';
         updatePrompt();
         updateCursorPos();
-        return '<span class="text-green">Sesión de invitado restaurada.</span>';
+        return '<span class="text-green">' + t('su.guestRestored') + '</span>';
       }
-      return `<span class="text-red">su: usuario '${escapeHtml(target)}' no existe.</span>`;
+      return `<span class="text-red">${escapeHtml(tf('su.unknownUser', target))}</span>`;
     },
 
     version() {
       return [
-        '<span class="text-dim">Versión:</span>       v' + VERSION,
-        '<span class="text-dim">Build:</span>         AGPL v3 — vanilla HTML5/CSS3/ES6+',
-        '<span class="text-dim">Repositorio:</span>   ' + link('https://github.com/airvzxf/rovisoft-web'),
+        '<span class="text-dim">' + t('version.label') + '</span>       v' + VERSION,
+        '<span class="text-dim">' + t('version.build') + '</span>         AGPL v3 \u2014 vanilla HTML5/CSS3/ES6+',
+        '<span class="text-dim">' + t('license.source') + '</span>   ' + link('https://github.com/airvzxf/rovisoft-web'),
         ''
       ].join('\n');
     },
@@ -434,19 +931,19 @@ function formatStorageSize(bytes) {
       }
       if (!args.length) {
         return [
-          '<span class="text-yellow text-bold">Uso: airvzxf &lt;subcomando&gt;</span>',
+          '<span class="text-yellow text-bold">' + t('airvzxf.usage') + '</span>',
           '',
-          '  <span class="cmd">airvzxf about</span>     Información del propietario',
-          '  <span class="cmd">airvzxf contact</span>   Formas de contacto',
-          '  <span class="cmd">airvzxf social</span>    Enlaces a redes sociales',
-          '  <span class="cmd">airvzxf projects</span>  Proyectos del portafolio',
+          '  <span class="cmd">airvzxf about</span>     ' + t('airvzxf.about'),
+          '  <span class="cmd">airvzxf contact</span>   ' + t('airvzxf.contact'),
+          '  <span class="cmd">airvzxf social</span>    ' + t('airvzxf.social'),
+          '  <span class="cmd">airvzxf projects</span>  ' + t('airvzxf.projects'),
           ''
         ].join('\n');
       }
       const sub = args[0].toLowerCase();
       const subcommands = { about: true, contact: true, projects: true, social: true };
       if (!subcommands[sub]) {
-        return `<span class="text-red">airvzxf: subcomando desconocido '${escapeHtml(sub)}'</span>\nUsa <span class="cmd">airvzxf</span> para ver los subcomandos disponibles.`;
+        return `<span class="text-red">${escapeHtml(tf('airvzxf.unknownSubcommand', sub))}</span>\n${t('airvzxf.useHelp')}`;
       }
       return airvzxfSubcommands[sub]();
     },
@@ -461,7 +958,7 @@ function formatStorageSize(bytes) {
         uptime = formatUptime(uptimeSec);
       } else {
         const uptimeSec = Math.floor((Date.now() - sessionStartTime) / 1000);
-        uptime = formatUptime(uptimeSec) + ' (session)';
+        uptime = formatUptime(uptimeSec) + ' ' + t('neofetch.session');
       }
 
       let ram;
@@ -473,17 +970,17 @@ function formatStorageSize(bytes) {
         ram = fakeRam + ' MiB / 1024 MiB';
       }
 
-      const configLabel = status.accepted === true ? 'aceptado' : status.accepted === false ? 'rechazado' : 'sin decidir';
+      const configLabel = status.accepted === true ? t('neofetch.accepted') : status.accepted === false ? t('neofetch.rejected') : t('neofetch.undecided');
       const lines = [
-        `<span class="nf-label">OS:</span>        RoviSoft Terminal v${VERSION}`,
-        `<span class="nf-label">Host:</span>      ${escapeHtml(state.host)}`,
-        `<span class="nf-label">Kernel:</span>    HTML5/CSS3/ES6+`,
-        `<span class="nf-label">Shell:</span>     ${escapeHtml(u.shell)}`,
-        `<span class="nf-label">User:</span>      ${escapeHtml(state.user)}`,
-        `<span class="nf-label">Theme:</span>     ${escapeHtml(currentTheme)}`,
-        `<span class="nf-label">Uptime:</span>    ${uptime}`,
-        `<span class="nf-label">Config:</span>    ${configLabel}`,
-        `<span class="nf-label">Storage:</span>   ${ram}`,
+        `<span class="nf-label">${t('neofetch.os')}</span>        RoviSoft Terminal v${VERSION}`,
+        `<span class="nf-label">${t('neofetch.host')}</span>      ${escapeHtml(state.host)}`,
+        `<span class="nf-label">${t('neofetch.kernel')}</span>    HTML5/CSS3/ES6+`,
+        `<span class="nf-label">${t('neofetch.shell')}</span>     ${escapeHtml(u.shell)}`,
+        `<span class="nf-label">${t('neofetch.user')}</span>      ${escapeHtml(state.user)}`,
+        `<span class="nf-label">${t('neofetch.theme')}</span>     ${escapeHtml(currentTheme)}`,
+        `<span class="nf-label">${t('neofetch.uptime')}</span>    ${uptime}`,
+        `<span class="nf-label">${t('neofetch.config')}</span>    ${configLabel}`,
+        `<span class="nf-label">${t('neofetch.storage')}</span>   ${ram}`,
       ];
       return '<div class="neofetch-block">' + lines.join('\n') + '</div>';
     },
@@ -501,7 +998,7 @@ function formatStorageSize(bytes) {
       const year = new Date().getFullYear();
       return [
         '============================================================',
-        ' RoviSoft.net — Terminal Personal',
+        ' ' + t('license.title'),
         ` Copyright (C) ${year} Israel Alberto Roldan Vega`,
         '',
         ' This program is free software: you can redistribute it',
@@ -515,8 +1012,8 @@ function formatStorageSize(bytes) {
         ' warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR',
         ' PURPOSE.',
         '',
-        ` Source code:  ${link('https://github.com/airvzxf/rovisoft-web')}`,
-        ` Full license: ${link('https://www.gnu.org/licenses/agpl-3.0.html')}`,
+        ` ${t('license.source')}  ${link('https://github.com/airvzxf/rovisoft-web')}`,
+        ` ${t('license.fullLicense')} ${link('https://www.gnu.org/licenses/agpl-3.0.html')}`,
         '============================================================',
         ''
       ].join('\n');
@@ -524,7 +1021,7 @@ function formatStorageSize(bytes) {
 
     history() {
       if (!state.history.length) {
-        return '<span class="text-dim">No hay comandos en el historial.</span>';
+        return '<span class="text-dim">' + t('history.empty') + '</span>';
       }
       return state.history.map((cmd, i) => {
         const n = String(i + 1).padStart(4, ' ');
@@ -535,17 +1032,17 @@ function formatStorageSize(bytes) {
     theme(args) {
       if (!args.length) {
         return [
-          '<span class="text-yellow text-bold">Temas de color</span>',
-          `  Tema actual: <span class="text-cyan">${escapeHtml(currentTheme)}</span>`,
+          '<span class="text-yellow text-bold">' + t('theme.title') + '</span>',
+          `  ${t('theme.current')} <span class="text-cyan">${escapeHtml(currentTheme)}</span>`,
           '',
-          '  <span class="cmd">theme list</span>                   Lista los temas disponibles',
-          '  <span class="cmd">theme &lt;nombre&gt;</span>               Cambia al tema especificado',
-          '  <span class="cmd">theme create &lt;nombre&gt; [--base=dark|light] [--var=valor]</span>',
-          '                               Crea un tema personalizado',
-          '  <span class="cmd">theme edit &lt;nombre&gt; [--base=dark|light] [--var=valor]</span>',
-          '                               Edita un tema personalizado',
-          '  <span class="cmd">theme delete &lt;nombre&gt;</span>        Elimina un tema personalizado',
-          '  <span class="cmd">theme export [&lt;nombre&gt;]</span>      Exporta las variables del tema',
+          '  <span class="cmd">theme list</span>                   ' + t('theme.listDesc'),
+          '  <span class="cmd">theme &lt;' + t('theme.themeParam') + '&gt;</span>               ' + t('theme.description'),
+          '  <span class="cmd">theme create &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']</span>',
+          '                               ' + t('theme.createDesc'),
+          '  <span class="cmd">theme edit &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']</span>',
+          '                               ' + t('theme.editDesc'),
+          '  <span class="cmd">theme delete &lt;' + t('theme.themeParam') + '&gt;</span>        ' + t('theme.deleteDesc'),
+          '  <span class="cmd">theme export [&lt;' + t('theme.themeParam') + '&gt;]</span>      ' + t('theme.exportDesc'),
           ''
         ].join('\n');
       }
@@ -553,20 +1050,20 @@ function formatStorageSize(bytes) {
       var sub = args[0].toLowerCase();
 
       if (sub === 'list') {
-        var lines = ['<span class="text-yellow text-bold">Temas integrados:</span>'];
+        var lines = ['<span class="text-yellow text-bold">' + t('theme.builtin') + '</span>'];
         var builtinKeys = Object.keys(BUILTIN_THEMES);
         for (var i = 0; i < builtinKeys.length; i++) {
           var k = builtinKeys[i];
-          var marker = k === currentTheme ? ' <span class="text-dim">(actual)</span>' : '';
+          var marker = k === currentTheme ? ' <span class="text-dim">(' + t('theme.currentMarker') + ')</span>' : '';
           lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   ${escapeHtml(BUILTIN_THEMES[k].name)}${marker}`);
         }
         var customKeys = Object.keys(customThemes);
         if (customKeys.length) {
           lines.push('');
-          lines.push('<span class="text-yellow text-bold">Temas personalizados:</span>');
+          lines.push('<span class="text-yellow text-bold">' + t('theme.custom') + '</span>');
           for (var i = 0; i < customKeys.length; i++) {
             var k = customKeys[i];
-            var marker = k === currentTheme ? ' <span class="text-dim">(actual)</span>' : '';
+            var marker = k === currentTheme ? ' <span class="text-dim">(' + t('theme.currentMarker') + ')</span>' : '';
             lines.push(`  <span class="text-green">${escapeHtml(k)}</span>   base: ${escapeHtml(customThemes[k].base || 'dark')}${marker}`);
           }
         }
@@ -576,14 +1073,14 @@ function formatStorageSize(bytes) {
 
       if (sub === 'create') {
         if (args.length < 2) {
-          return '<span class="text-red">theme create: se requiere un nombre.</span>\nUsa <span class="cmd">theme create &lt;nombre&gt; [--base=dark|light] [--var=valor]...</span>';
+          return '<span class="text-red">' + t('theme.createNameRequired') + '</span>\n' + t('theme.createUseExport');
         }
         var name = args[1].toLowerCase();
         if (!/^[a-z][a-z0-9_-]{0,19}$/.test(name)) {
-          return '<span class="text-red">theme create: nombre inválido. Solo letras minúsculas, números, guiones y guiones bajos. Debe iniciar con letra, máx 20 caracteres.</span>';
+          return '<span class="text-red">' + t('theme.createNameInvalid') + '</span>';
         }
         if (BUILTIN_THEMES[name]) {
-          return `<span class="text-red">theme create: '${escapeHtml(name)}' es un tema integrado y no puede sobreescribirse.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('theme.createBuiltIn', name))}</span>`;
         }
         var base = 'dark';
         var vars = {};
@@ -597,38 +1094,39 @@ function formatStorageSize(bytes) {
             if (value === 'dark' || value === 'light') {
               base = value;
             } else {
-              return `<span class="text-red">theme create: base inválida '${escapeHtml(value)}'. Valores: dark, light.</span>`;
+              return `<span class="text-red">${escapeHtml(tf('theme.createBaseInvalid', value))}</span>`;
             }
           } else {
             var varName = key.startsWith('--') ? key : '--' + key;
             if (THEMEABLE_VARS.indexOf(varName) === -1) {
-              return `<span class="text-red">theme create: variable desconocida '${escapeHtml(varName)}'. Variables disponibles: ${THEMEABLE_VARS.join(', ')}</span>`;
+              return `<span class="text-red">${escapeHtml(tf('theme.createVarUnknown', varName, THEMEABLE_VARS.join(', ')))}</span>`;
             }
             vars[varName] = value;
           }
         }
         if (Object.keys(vars).length === 0) {
-          return '<span class="text-red">theme create: se requiere al menos una variable de color.</span>\nUsa <span class="cmd">theme export</span> para ver las variables disponibles.';
+          return '<span class="text-red">' + t('theme.createVarRequired') + '</span>\n' + t('theme.createUseExport');
         }
         customThemes[name] = { base: base, vars: vars };
         Storage.saveCustomThemes(customThemes);
         var varCount = Object.keys(vars).length;
+        var varWord = varCount > 1 ? t('theme.variables') : t('theme.variable');
         return [
-          `<span class="text-green">Tema '${escapeHtml(name)}' creado</span> (base: ${escapeHtml(base)}, ${varCount} variable${varCount > 1 ? 's' : ''}).`,
-          `Usa <span class="cmd">theme ${escapeHtml(name)}</span> para activarlo.`
+          `<span class="text-green">${escapeHtml(tf('theme.created', name, base, String(varCount), varWord))}</span>`,
+          tf('theme.useTheme', name)
         ].join('\n');
       }
 
       if (sub === 'edit') {
         if (args.length < 2) {
-          return '<span class="text-red">theme edit: se requiere un nombre.</span>\nUsa <span class="cmd">theme edit &lt;nombre&gt; [--base=dark|light] [--var=valor]...</span>';
+          return '<span class="text-red">' + t('theme.editNameRequired') + '</span>\n<span class="cmd">theme edit &lt;' + t('theme.themeParam') + '&gt; [--base=dark|light] [--var=' + t('theme.varParam') + ']...</span>';
         }
         var name = args[1].toLowerCase();
         if (BUILTIN_THEMES[name]) {
-          return `<span class="text-red">theme edit: no se puede editar el tema integrado '${escapeHtml(name)}'.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('theme.editBuiltIn', name))}</span>`;
         }
         if (!customThemes[name]) {
-          return `<span class="text-red">theme edit: el tema '${escapeHtml(name)}' no existe.</span>\nUsa <span class="cmd">theme create ${escapeHtml(name)}</span> para crearlo primero.`;
+          return `<span class="text-red">${escapeHtml(tf('theme.editNotExists', name))}</span>\n${tf('theme.editUseCreate', name)}`;
         }
         var changes = {};
         var newBase = null;
@@ -642,18 +1140,18 @@ function formatStorageSize(bytes) {
             if (value === 'dark' || value === 'light') {
               newBase = value;
             } else {
-              return `<span class="text-red">theme edit: base inválida '${escapeHtml(value)}'. Valores: dark, light.</span>`;
+              return `<span class="text-red">${escapeHtml(tf('theme.editBaseInvalid', value))}</span>`;
             }
           } else {
             var varName = key.startsWith('--') ? key : '--' + key;
             if (THEMEABLE_VARS.indexOf(varName) === -1) {
-              return `<span class="text-red">theme edit: variable desconocida '${escapeHtml(varName)}'. Variables disponibles: ${THEMEABLE_VARS.join(', ')}</span>`;
+              return `<span class="text-red">${escapeHtml(tf('theme.createVarUnknown', varName, THEMEABLE_VARS.join(', ')))}</span>`;
             }
             changes[varName] = value;
           }
         }
         if (Object.keys(changes).length === 0 && newBase === null) {
-          return '<span class="text-red">theme edit: se requiere al menos una variable o --base para editar.</span>';
+          return '<span class="text-red">' + t('theme.editNoChanges') + '</span>';
         }
         if (newBase !== null) {
           customThemes[name].base = newBase;
@@ -668,27 +1166,27 @@ function formatStorageSize(bytes) {
         var editInfo = [];
         if (newBase) editInfo.push('base: ' + escapeHtml(newBase));
         var changedCount = Object.keys(changes).length;
-        if (changedCount > 0) editInfo.push(changedCount + ' variable' + (changedCount > 1 ? 's' : ''));
-        return `<span class="text-green">Tema '${escapeHtml(name)}' editado</span> (${editInfo.join(', ')}).`;
+        if (changedCount > 0) editInfo.push(changedCount + ' ' + (changedCount > 1 ? t('theme.variables') : t('theme.variable')));
+        return `<span class="text-green">${escapeHtml(tf('theme.edited', name, editInfo.join(', ')))}</span>`;
       }
 
       if (sub === 'delete') {
         if (args.length < 2) {
-          return '<span class="text-red">theme delete: se requiere un nombre de tema personalizado.</span>';
+          return '<span class="text-red">' + t('theme.deleteNameRequired') + '</span>';
         }
         var name = args[1].toLowerCase();
         if (BUILTIN_THEMES[name]) {
-          return `<span class="text-red">theme delete: no se puede eliminar el tema integrado '${escapeHtml(name)}'.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('theme.deleteBuiltIn', name))}</span>`;
         }
         if (!customThemes[name]) {
-          return `<span class="text-red">theme delete: el tema '${escapeHtml(name)}' no existe.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('theme.deleteNotExists', name))}</span>`;
         }
         if (currentTheme === name) {
           applyTheme('dark');
         }
         delete customThemes[name];
         Storage.saveCustomThemes(customThemes);
-        return `<span class="text-green">Tema '${escapeHtml(name)}' eliminado.</span>`;
+        return `<span class="text-green">${escapeHtml(tf('theme.deleted', name))}</span>`;
       }
 
       if (sub === 'export') {
@@ -700,9 +1198,9 @@ function formatStorageSize(bytes) {
           var base = customThemes[themeName].base || 'dark';
           varsToExport = Object.assign({}, BUILTIN_THEMES[base].vars, customThemes[themeName].vars);
         } else {
-          return `<span class="text-red">theme export: el tema '${escapeHtml(themeName)}' no existe.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('theme.exportNotExists', themeName))}</span>`;
         }
-        var lines = ['<span class="text-yellow text-bold">Tema: ' + escapeHtml(themeName) + '</span>'];
+        var lines = ['<span class="text-yellow text-bold">' + escapeHtml(tf('theme.exportTitle', themeName)) + '</span>'];
         var keys = Object.keys(varsToExport);
         for (var i = 0; i < keys.length; i++) {
           var k = keys[i];
@@ -714,24 +1212,23 @@ function formatStorageSize(bytes) {
 
       var themeName = sub;
       if (!applyTheme(themeName)) {
-        return `<span class="text-red">theme: '${escapeHtml(themeName)}' no existe.</span>\nUsa <span class="cmd">theme list</span> para ver los temas disponibles.`;
+        return `<span class="text-red">${escapeHtml(tf('theme.notExists', themeName))}</span>\n${t('theme.useList')}`;
       }
-      return `<span class="text-green">Tema cambiado a '${escapeHtml(themeName)}'.</span>`;
+      return `<span class="text-green">${escapeHtml(tf('theme.changedTo', themeName))}</span>`;
     },
 
     alias(args) {
       if (!args.length) {
         const keys = Object.keys(state.aliases);
         return [
-          '<span class="text-yellow text-bold">alias</span> — Define atajos para comandos',
-          '  <span class="cmd">alias</span>                     Muestra los alias definidos',
-          '  <span class="cmd">alias nombre</span>              Muestra el valor de un alias',
-          '  <span class="cmd">alias nombre=&#39;comando&#39;</span>    Define un nuevo alias',
+          '<span class="text-yellow text-bold">' + t('alias.title') + '</span>',
+          '  <span class="cmd">alias</span>                     ' + t('alias.showAliases'),
+          '  <span class="cmd">alias ' + t('alias.paramName') + '</span>              ' + t('alias.showValue'),
+          '  <span class="cmd">alias ' + t('alias.paramName') + '=&#39;' + t('alias.paramCommand') + '&#39;</span>    ' + t('alias.define'),
           '',
-          '  <span class="text-dim">Los alias se conservan entre sesiones.</span>',
-          '  <span class="text-dim">No se puede crear un alias con el nombre de un comando existente.</span>',
-          keys.length ? ' ' : '',
-          keys.map(k => `<span class="cmd">alias</span> ${escapeHtml(k)}=${escapeHtml(state.aliases[k])}`)
+          '  <span class="text-dim">' + t('alias.preserved') + '</span>',
+          '  <span class="text-dim">' + t('alias.noOverride') + '</span>',
+          keys.length ? '\n' + keys.map(k => `<span class="cmd">alias</span> ${escapeHtml(k)}=${escapeHtml(state.aliases[k])}`) : []
         ].join('\n');
       }
       const rawArgs = args.join(' ');
@@ -741,16 +1238,16 @@ function formatStorageSize(bytes) {
         if (state.aliases[name]) {
           return `<span class="cmd">alias</span> ${escapeHtml(name)}=${escapeHtml(state.aliases[name])}`;
         }
-        return `<span class="text-red">alias: ${escapeHtml(name)}: no definido.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('alias.notDefined', name))}</span>`;
       }
       const name = rawArgs.slice(0, eqIdx).trim();
       let value = rawArgs.slice(eqIdx + 1).trim();
       if ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))) {
         value = value.slice(1, -1);
       }
-      if (!name) return '<span class="text-red">alias: nombre vacío.</span>';
-      if (!value) return '<span class="text-red">alias: valor vacío.</span>';
-      if (name in commands) return `<span class="text-red">alias: '${escapeHtml(name)}' es un comando existente.</span>`;
+      if (!name) return '<span class="text-red">' + t('alias.nameEmpty') + '</span>';
+      if (!value) return '<span class="text-red">' + t('alias.valueEmpty') + '</span>';
+      if (name in commands) return `<span class="text-red">${escapeHtml(tf('alias.existingCommand', name))}</span>`;
       state.aliases[name] = value;
       return '';
     },
@@ -758,16 +1255,16 @@ function formatStorageSize(bytes) {
     unalias(args) {
       if (!args.length) {
         return [
-          '<span class="text-yellow text-bold">unalias</span> — Elimina un alias definido',
+          '<span class="text-yellow text-bold">' + t('unalias.title') + '</span>',
           '',
-          '  <span class="cmd">unalias nombre</span>   Elimina el alias especificado',
+          '  <span class="cmd">unalias ' + t('unalias.paramName') + '</span>   ' + t('unalias.desc'),
           '',
-          '  <span class="text-dim">Usa</span> <span class="cmd">alias</span> <span class="text-dim">para ver los alias definidos.</span>',
+          '  <span class="text-dim">' + t('unalias.useAlias') + '</span>',
           ''
         ].join('\n');
       }
       const name = args[0];
-      if (!(name in state.aliases)) return `<span class="text-red">unalias: ${escapeHtml(name)}: no definido.</span>`;
+      if (!(name in state.aliases)) return `<span class="text-red">${escapeHtml(tf('unalias.notDefined', name))}</span>`;
       delete state.aliases[name];
       return '';
     },
@@ -776,25 +1273,25 @@ function formatStorageSize(bytes) {
 
     cat(args) {
       if (state.user !== 'airvzxf') {
-        return '<span class="perm-denied">cat: permiso denegado. Inicia sesión como airvzxf.</span>';
+        return '<span class="perm-denied">' + t('cat.permDenied') + '</span>';
       }
       if (!args.length) {
-        return '<span class="text-red">cat: falta el nombre del archivo.</span>';
+        return '<span class="text-red">' + t('cat.missingFile') + '</span>';
       }
       const absPath = resolvePath(args[0]);
       const content = fsRead(absPath);
       if (content === null) {
-        return `<span class="text-red">cat: ${escapeHtml(args[0])}: No existe el archivo o directorio.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('cat.notFound', args[0]))}</span>`;
       }
       if (typeof content === 'object') {
-        return `<span class="text-red">cat: ${escapeHtml(args[0])}: Es un directorio.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('cat.isDirectory', args[0]))}</span>`;
       }
       return textOut(content);
     },
 
     ls(args) {
       if (state.user !== 'airvzxf') {
-        return '<span class="perm-denied">ls: permiso denegado. Inicia sesión como airvzxf.</span>';
+        return '<span class="perm-denied">' + t('ls.permDenied') + '</span>';
       }
       let longFormat = false;
       let target = '.';
@@ -812,7 +1309,7 @@ function formatStorageSize(bytes) {
           }
           return escapeHtml(target.split('/').pop());
         }
-        return `<span class="text-red">ls: ${escapeHtml(target)}: No existe el archivo o directorio.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('ls.notFound', target))}</span>`;
       }
       const keys = Object.keys(entries);
       if (longFormat) {
@@ -829,14 +1326,14 @@ function formatStorageSize(bytes) {
 
     man(args) {
       if (state.user !== 'airvzxf') {
-        return '<span class="perm-denied">man: permiso denegado. Inicia sesión como airvzxf.</span>';
+        return '<span class="perm-denied">' + t('man.permDenied') + '</span>';
       }
       if (!args.length || args[0] === 'airvzxf') {
         const topic = args[0] || 'airvzxf';
         if (topic !== 'airvzxf') {
-          return `<span class="text-red">man: No existe entrada de manual para ${escapeHtml(topic)}.</span>`;
+          return `<span class="text-red">${escapeHtml(tf('man.notFound', topic))}</span>`;
         }
-        return textOut([
+        var manContent = state.lang === 'en' ? [
           'NAME',
           '  airvzxf - Senior Software Engineer, Systems Architect, Toolsmith',
           '',
@@ -854,7 +1351,7 @@ function formatStorageSize(bytes) {
           '  from assembly up through high-level abstractions.',
           '',
           '  Currently at the job, he orchestrates AI systems as development',
-          '  tools under strict architectural direction — not as end-user',
+          '  tools under strict architectural direction \u2014 not as end-user',
           '  applications, but as instruments of engineering.',
           '',
           '  Diagnosed with mild functional Asperger\'s, which provides hyperfocus,',
@@ -874,17 +1371,57 @@ function formatStorageSize(bytes) {
           '  whoami(1), cat(1), ls(1), tail(1)',
           '',
           `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
-        ]);
+        ] : [
+          'NOMBRE',
+          '  airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith',
+          '',
+          'SINOPSIS',
+          '  Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.',
+          '',
+          'DESCRIPCI\u00d3N',
+          '  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s',
+          '  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware',
+          '  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza',
+          '  arquitect\u00f3nica y la optimizaci\u00f3n extrema.',
+          '',
+          '  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.',
+          '  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,',
+          '  desde ensamblador hasta las abstracciones de alto nivel.',
+          '',
+          '  Actualmente orquesta sistemas de IA como herramientas de desarrollo',
+          '  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones',
+          '  de usuario final, sino como instrumentos de ingenier\u00eda.',
+          '',
+          '  Diagnosticado con Asperger leve funcional, lo que le otorga',
+          '  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia',
+          '  al c\u00f3digo sucio.',
+          '',
+          'ENTORNO',
+          '  OS:         Arch Linux (pacman)',
+          '  WM:         labwc (Wayland)',
+          '  Terminal:   Alacritty + Tmux',
+          '  Contenedores: Podman',
+          '  VCS:        Git',
+          '',
+          'LENGUAJES',
+          '  Rust, Bash, Python, JavaScript, Assembly, C',
+          '',
+          'VEASE TAMBIEN',
+          '  whoami(1), cat(1), ls(1), tail(1)',
+          '',
+          `RoviSoft.net                        ${new Date().getFullYear()}                       airvzxf(1)`,
+        ];
+        return textOut(manContent);
       }
-      return '<span class="text-red">man: No existe entrada de manual para ese tema.</span>';
+      return '<span class="text-red">' + t('man.noEntry') + '</span>';
     },
 
     tail(args) {
       if (state.user !== 'airvzxf') {
-        return '<span class="perm-denied">tail: permiso denegado. Inicia sesión como airvzxf.</span>';
+        return '<span class="perm-denied">' + t('tail.permDenied') + '</span>';
       }
       if (!args.length) {
-        return '<span class="text-red">tail: falta el nombre del archivo.</span>';
+        return '<span class="text-red">' + t('tail.missingFile') + '</span>';
       }
       let fileArg = args[args.length - 1];
       for (const a of args) {
@@ -893,10 +1430,10 @@ function formatStorageSize(bytes) {
       const absPath = resolvePath(fileArg);
       const content = fsRead(absPath);
       if (content === null) {
-        return `<span class="text-red">tail: ${escapeHtml(fileArg)}: No existe el archivo.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('tail.notFound', fileArg))}</span>`;
       }
       if (typeof content === 'object') {
-        return `<span class="text-red">tail: ${escapeHtml(fileArg)}: Es un directorio.</span>`;
+        return `<span class="text-red">${escapeHtml(tf('tail.isDirectory', fileArg))}</span>`;
       }
       const lines = content.split('\n');
       const tailLines = lines.slice(-10);
@@ -906,23 +1443,23 @@ function formatStorageSize(bytes) {
     config(args) {
       if (!args.length) {
         const status = Storage.getStatus();
-        const acceptedLabel = status.accepted === true ? '<span class="text-green">aceptado</span>' : status.accepted === false ? '<span class="text-red">rechazado</span>' : '<span class="text-yellow">sin decidir</span>';
-        const storeLabel = status.accepted === true ? 'localStorage' : 'sessionStorage (volátil)';
+        const acceptedLabel = status.accepted === true ? '<span class="text-green">' + t('config.acceptedShort') + '</span>' : status.accepted === false ? '<span class="text-red">' + t('config.rejectedShort') + '</span>' : '<span class="text-yellow">' + t('config.undecidedShort') + '</span>';
+        const storeLabel = status.accepted === true ? 'localStorage' : t('config.volatile');
         return [
-          '<span class="text-yellow text-bold">Almacenamiento local</span>',
-          `  Estado:     ${acceptedLabel}`,
-          `  Mecanismo:  ${storeLabel}`,
+          '<span class="text-yellow text-bold">' + t('config.title') + '</span>',
+          `  ${t('config.state')}     ${acceptedLabel}`,
+          `  ${t('config.mechanism')}  ${storeLabel}`,
           '',
-          '  <span class="text-dim">Se almacenarían:</span>',
-          '  <span class="text-dim">  — Sesión de usuario</span>',
-          '  <span class="text-dim">  — Historial de comandos</span>',
-          '  <span class="text-dim">  — Preferencias</span>',
-          '  <span class="text-dim">  — Versión</span>',
+          '  <span class="text-dim">' + t('config.wouldStore') + '</span>',
+          '  <span class="text-dim">  \u2014 ' + t('config.session') + '</span>',
+          '  <span class="text-dim">  \u2014 ' + t('config.historyStore') + '</span>',
+          '  <span class="text-dim">  \u2014 ' + t('config.preferences') + '</span>',
+          '  <span class="text-dim">  \u2014 ' + t('config.versionStore') + '</span>',
           '',
-          '  <span class="cmd">config accept</span>   Aceptar almacenamiento persistente',
-          '  <span class="cmd">config reject</span>   Rechazar (datos volátiles, se pierden al cerrar)',
-          '  <span class="cmd">config status</span>   Detalle técnico del almacenamiento',
-          '  <span class="cmd">config show</span>     Mostrar datos almacenados',
+          '  <span class="cmd">config accept</span>   ' + t('config.accept'),
+          '  <span class="cmd">config reject</span>   ' + t('config.reject'),
+          '  <span class="cmd">config status</span>   ' + t('config.status'),
+          '  <span class="cmd">config show</span>     ' + t('config.show'),
           ''
         ].join('\n');
       }
@@ -932,27 +1469,27 @@ function formatStorageSize(bytes) {
       if (sub === 'accept') {
         Storage.accept();
         Storage.save(state);
-        return '<span class="text-green">Almacenamiento persistente aceptado.</span>\nTus datos se guardarán entre sesiones.';
+        return '<span class="text-green">' + t('config.acceptedMsg') + '</span>\n' + t('config.acceptedMsg2');
       }
 
       if (sub === 'reject') {
         Storage.reject();
-        return '<span class="text-yellow">Almacenamiento persistente rechazado.</span>\nLos datos se perderán al cerrar la pestaña.\nUsa <span class="cmd">config accept</span> para revertir.';
+        return '<span class="text-yellow">' + t('config.rejectedMsg') + '</span>\n' + t('config.rejectedMsg2') + '\n' + t('config.rejectedMsg3');
       }
 
       if (sub === 'status') {
         const s = Storage.getStatus();
-        const acceptedLabel = s.accepted === true ? '<span class="text-green">aceptado</span>' : s.accepted === false ? '<span class="text-red">rechazado</span>' : '<span class="text-yellow">sin decidir</span>';
+        const acceptedLabel = s.accepted === true ? '<span class="text-green">' + t('config.acceptedShort') + '</span>' : s.accepted === false ? '<span class="text-red">' + t('config.rejectedShort') + '</span>' : '<span class="text-yellow">' + t('config.undecidedShort') + '</span>';
         const uptimeStr = s.firstVisit ? formatUptime(Math.floor((Date.now() - s.firstVisit) / 1000)) : 'N/A';
         const versionStr = s.versionStored ? 'v' + s.versionStored : 'N/A';
         const info = Storage.getStorageInfo();
         const sizeStr = formatStorageSize(info.totalBytes);
         return [
-          `  <span class="nf-label">Modo:</span>        ${acceptedLabel}`,
-          `  <span class="nf-label">Almacén:</span>     ${s.storeName}`,
-          `  <span class="nf-label">Versión:</span>     ${versionStr} (código: v${VERSION})`,
-          `  <span class="nf-label">Uptime:</span>      ${uptimeStr}`,
-          `  <span class="nf-label">Datos:</span>       ${sizeStr} en ${info.keysCount} llaves`,
+          `  <span class="nf-label">${t('config.labelMode')}</span>        ${acceptedLabel}`,
+          `  <span class="nf-label">${t('config.labelStore')}</span>     ${s.storeName}`,
+          `  <span class="nf-label">${t('config.labelVersion')}</span>     ${versionStr} (${t('config.codeWord')}: v${VERSION})`,
+          `  <span class="nf-label">${t('config.labelUptime')}</span>      ${uptimeStr}`,
+          `  <span class="nf-label">${t('config.labelData')}</span>       ${sizeStr} en ${info.keysCount} ${t('config.keys')}`,
           ''
         ].join('\n');
       }
@@ -969,7 +1506,7 @@ function formatStorageSize(bytes) {
           if (key === 'rs_state' && rawVal) {
             try {
               const parsed = JSON.parse(rawVal);
-              const displayParsed = { ...parsed, history: ['…'] };
+              const displayParsed = { ...parsed, history: ['\u2026'] };
               const formatted = JSON.stringify(displayParsed, null, 2);
               const escaped = escapeHtml(formatted);
               const indented = escaped.split('\n').map(function (line, idx) {
@@ -985,19 +1522,19 @@ function formatStorageSize(bytes) {
         }
 
         lines.push('');
-        lines.push('  <span class="text-dim">' + info.keysCount + ' llaves, ' + formatStorageSize(info.totalBytes) + ' en ' + (Storage.isAccepted() ? 'localStorage' : 'sessionStorage') + '</span>');
+        lines.push('  <span class="text-dim">' + info.keysCount + ' ' + t('config.keys') + ', ' + formatStorageSize(info.totalBytes) + ' ' + t('config.inWord') + ' ' + (Storage.isAccepted() ? 'localStorage' : 'sessionStorage') + '</span>');
         lines.push('');
         return lines.join('\n');
       }
 
-      return `<span class="text-red">config: subcomando desconocido '${escapeHtml(sub)}'</span>\nUsa <span class="cmd">config</span> para ver las opciones disponibles.`;
+      return `<span class="text-red">${escapeHtml(tf('config.unknownSubcommand', sub))}</span>\n${t('config.useConfig')}`;
     },
 
     reboot() {
       cmdInput.disabled = true;
       cmdInput.blur();
       terminal.classList.add('terminal-rebooting');
-      appendOutput('<span class="text-yellow">Reiniciando terminal...</span>');
+      appendOutput('<span class="text-yellow">' + t('reboot.msg') + '</span>');
       setTimeout(function () {
         Storage.reset();
         location.reload();
@@ -1012,13 +1549,13 @@ function formatStorageSize(bytes) {
     about() {
       const u = USERS.airvzxf;
       return [
-        `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">— ${escapeHtml(u.role)} de RoviSoft.net</span>`,
+        `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">\u2014 ${escapeHtml(u.role)} ${t('about.of')}</span>`,
         '',
         escapeHtml(u.bio),
         '',
-        `<span class="text-dim">Ubicación:</span> ${escapeHtml(u.location)}`,
-        `<span class="text-dim">Rol:</span>       Senior Software Engineer & Software Architect`,
-        `<span class="text-dim">Tech:</span>      ${escapeHtml(u.tech.join(', '))}`,
+        `<span class="text-dim">${t('about.location')}</span> ${escapeHtml(u.location)}`,
+        `<span class="text-dim">${t('about.role')}</span>       Senior Software Engineer & Software Architect`,
+        `<span class="text-dim">${t('about.tech')}</span>      ${escapeHtml(u.tech.join(', '))}`,
         ''
       ].join('\n');
     },
@@ -1026,7 +1563,7 @@ function formatStorageSize(bytes) {
     contact() {
       const u = USERS.airvzxf;
       return [
-        `<span class="text-dim">Email:</span>     ${escapeHtml(u.email)}`,
+        `<span class="text-dim">${t('contact.email')}</span>     ${escapeHtml(u.email)}`,
         ''
       ].join('\n');
     },
@@ -1035,7 +1572,7 @@ function formatStorageSize(bytes) {
       const u = USERS.airvzxf;
       const projectLines = [];
       u.projects.forEach((p) => {
-        projectLines.push(`<span class="text-cyan text-bold">${escapeHtml(p.name)}</span> — ${escapeHtml(p.desc)}`);
+        projectLines.push(`<span class="text-cyan text-bold">${escapeHtml(p.name)}</span> \u2014 ${escapeHtml(p.desc)}`);
         projectLines.push(`<span class="text-dim">${link(p.url)}</span>`);
         projectLines.push('');
       });
@@ -1045,10 +1582,10 @@ function formatStorageSize(bytes) {
     social() {
       const u = USERS.airvzxf;
       return [
-        `<span class="text-dim">GitHub:</span>    ${link(u.github)}`,
-        `<span class="text-dim">YouTube:</span>   ${link(u.youtube)}`,
-        `<span class="text-dim">X:</span>         ${link(u.x)}`,
-        `<span class="text-dim">LinkedIn:</span>  ${link(u.linkedin)}`,
+        `<span class="text-dim">${t('social.github')}</span>    ${link(u.github)}`,
+        `<span class="text-dim">${t('social.youtube')}</span>   ${link(u.youtube)}`,
+        `<span class="text-dim">${t('social.x')}</span>         ${link(u.x)}`,
+        `<span class="text-dim">${t('social.linkedin')}</span>  ${link(u.linkedin)}`,
         ''
       ].join('\n');
     }
@@ -1116,7 +1653,7 @@ function formatStorageSize(bytes) {
         appendOutput(result);
       }
     } else {
-      appendOutput(`<span class="text-red">comando no encontrado: ${escapeHtml(cmdName)}</span>`);
+      appendOutput(`<span class="text-red">${escapeHtml(tf('cmdNotFound', cmdName))}</span>`);
     }
   }
 
@@ -1242,6 +1779,19 @@ function formatStorageSize(bytes) {
     }
   });
 
+  // ─── Welcome Message ─────────────────────────────────────────
+
+  var ASCII_BANNER = '8888888b.                   d8b  .d8888b.            .d888 888    \n888   Y88b                  Y8P d88P  Y88b          d88P"  888    \n888    888                      Y88b.               888    888    \n888   d88P .d88b.  888  888 888  "Y888b.    .d88b.  888888 888888 \n8888888P" d88""88b 888  888 888     "Y88b. d88""88b 888    888    \n888 T88b  888  888 Y88  88P 888       "888 888  888 888    888    \n888  T88b Y88..88P  Y8bd8P  888 Y88b  d88P Y88..88P 888    Y88b.  \n888   T88b "Y88P"    Y88P   888  "Y8888P"   "Y88P"  888     "Y888';
+
+  function renderWelcome() {
+    var welcomeEl = document.getElementById('welcome-message');
+    if (!welcomeEl) return;
+    welcomeEl.innerHTML = '<pre class="ascii-banner">' + escapeHtml(ASCII_BANNER) + '</pre>' +
+      '<p>' + t('welcome.main') + '\n' + t('welcome.desc') + '\n\n' +
+      t('welcome.help') + '\n' + t('welcome.config') + '\n' + t('welcome.mouse') + '</p>';
+    cmdInput.setAttribute('aria-label', t('welcome.ariaLabel'));
+  }
+
   // ─── Init ─────────────────────────────────────────────────
 
   const savedState = Storage.load();
@@ -1262,12 +1812,22 @@ function formatStorageSize(bytes) {
     if (savedState.aliases && typeof savedState.aliases === 'object') {
       state.aliases = savedState.aliases;
     }
+    if (savedState.lang && I18N[savedState.lang]) {
+      state.lang = savedState.lang;
+    }
   }
+
+  var savedLang = Storage.loadLang();
+  if (savedLang && I18N[savedLang]) {
+    state.lang = savedLang;
+  }
+  document.documentElement.setAttribute('lang', state.lang);
 
   const previousVersion = Storage.loadVersion();
   Storage.saveVersion(VERSION);
   if (previousVersion && previousVersion !== VERSION) {
-    appendOutput('<span class="text-green">v' + previousVersion + ' → v' + VERSION + ' instalada.</span>');
+    var versMsg = 'v' + previousVersion + ' \u2192 v' + VERSION + ' ' + t('version.upgraded') + '.';
+    appendOutput('<span class="text-green">' + versMsg + '</span>');
   }
 
   customThemes = Storage.loadCustomThemes();
@@ -1280,6 +1840,7 @@ function formatStorageSize(bytes) {
     Storage.saveFirstVisit(Date.now());
   }
 
+  renderWelcome();
   updatePrompt();
   updateCursorPos();
   scrollToBottom();

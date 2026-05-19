@@ -15,7 +15,8 @@
     VERSION: 'rs_version',
     FIRST_VISIT: 'rs_first_visit',
     THEME: 'rs_theme',
-    CUSTOM_THEMES: 'rs_custom_themes'
+    CUSTOM_THEMES: 'rs_custom_themes',
+    LANG: 'rs_lang'
   };
 
   function isAccepted() {
@@ -31,7 +32,7 @@
   function accept() {
     localStorage.setItem(KEYS.ACCEPTED, 'true');
 
-    var keysToMigrate = [KEYS.STATE, KEYS.VERSION, KEYS.FIRST_VISIT, KEYS.THEME, KEYS.CUSTOM_THEMES];
+    var keysToMigrate = [KEYS.STATE, KEYS.VERSION, KEYS.FIRST_VISIT, KEYS.THEME, KEYS.CUSTOM_THEMES, KEYS.LANG];
     for (var i = 0; i < keysToMigrate.length; i++) {
       var key = keysToMigrate[i];
       var val = sessionStorage.getItem(key);
@@ -47,6 +48,7 @@
 
     var storedVersion = localStorage.getItem(KEYS.VERSION);
     var storedFirstVisit = localStorage.getItem(KEYS.FIRST_VISIT);
+    var storedLang = localStorage.getItem(KEYS.LANG);
 
     localStorage.removeItem(KEYS.STATE);
     localStorage.removeItem(KEYS.THEME);
@@ -58,6 +60,9 @@
     if (storedFirstVisit !== null) {
       localStorage.setItem(KEYS.FIRST_VISIT, storedFirstVisit);
     }
+    if (storedLang !== null) {
+      localStorage.setItem(KEYS.LANG, storedLang);
+    }
 
     sessionStorage.removeItem(KEYS.STATE);
   }
@@ -68,7 +73,8 @@
       user: state.user,
       cwd: state.cwd,
       history: state.history,
-      aliases: state.aliases
+      aliases: state.aliases,
+      lang: state.lang
     };
     try {
       store.setItem(KEYS.STATE, JSON.stringify(data));
@@ -132,11 +138,13 @@
     localStorage.removeItem(KEYS.VERSION);
     localStorage.removeItem(KEYS.THEME);
     localStorage.removeItem(KEYS.CUSTOM_THEMES);
+    localStorage.removeItem(KEYS.LANG);
     sessionStorage.removeItem(KEYS.STATE);
     sessionStorage.removeItem(KEYS.FIRST_VISIT);
     sessionStorage.removeItem(KEYS.VERSION);
     sessionStorage.removeItem(KEYS.THEME);
     sessionStorage.removeItem(KEYS.CUSTOM_THEMES);
+    sessionStorage.removeItem(KEYS.LANG);
   }
 
   function getStatus() {
@@ -213,6 +221,20 @@
     }
   }
 
+  function saveLang(lang) {
+    var store = getStore();
+    store.setItem(KEYS.LANG, lang);
+  }
+
+  function loadLang() {
+    var store = getStore();
+    var val = store.getItem(KEYS.LANG);
+    if (!val) {
+      val = localStorage.getItem(KEYS.LANG);
+    }
+    return val;
+  }
+
   window.Storage = {
     isAccepted: isAccepted,
     accept: accept,
@@ -229,7 +251,9 @@
     saveTheme: saveTheme,
     loadTheme: loadTheme,
     saveCustomThemes: saveCustomThemes,
-    loadCustomThemes: loadCustomThemes
+    loadCustomThemes: loadCustomThemes,
+    saveLang: saveLang,
+    loadLang: loadLang
   };
 
 })();

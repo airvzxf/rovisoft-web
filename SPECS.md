@@ -63,6 +63,7 @@ Lista completa de comandos disponibles:
 | `echo`    | Repite el texto ingresado              |
 | `banner`   | Muestra el banner ASCII de RoviSoft         |
 | `license`  | Muestra la licencia (AGPL) y enlace al repositorio |
+| `lang es/en` | Cambia el idioma de la interfaz            |
 | `history`  | Muestra el historial de comandos de la sesión    |
 
 ### 2.5. Comando `license`
@@ -183,11 +184,12 @@ El parser soporta:
 
 ```javascript
 const state = {
- user: 'guest',     // usuario activo
- host: 'rovisoft.net', // hostname
- cwd: '~',       // directorio actual simulado
- history: [],      // historial de comandos
- historyIndex: -1    // posición actual en el historial
+  user: 'guest',     // usuario activo
+  host: 'rovisoft.net', // hostname
+  cwd: '~',       // directorio actual simulado
+  history: [],      // historial de comandos
+  historyIndex: -1,    // posición actual en el historial
+  lang: 'es'       // idioma de la interfaz ('es' o 'en')
 };
 ```
 
@@ -214,10 +216,11 @@ Ninguno por el momento.
 
 ## 9. Roadmap / Ideas futuras
 
-- Soporte multilenguaje (`lang es`, `lang en`).
+- Hay que mejorar el sistema de espacios de la información del comando entre estas palabras claves y la descripción. Ya que en español y en inglés el número de letras suele ser diferentes, esto genera que se desaline la descripción.
 - Sistema de archivos virtual: `ls`, `cd`, `cat archivo.txt`, `mkdir`, `rm`, `rm -R`, `pwd`, entre otos comandos para usar el sistema de archivos.
-- Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo.  A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
-- Una buena implementación es que si pones en la URL argumentos o parámetros los puede ejecutar. Un ejemplo, quiero hacerlo de Google SEO para el posicionamiento y quiero hacer un mapa. Entonces quiero mostrar el texto y enlace de acerca de nosotros; podría poner en la URL parámetros como: `/?cmd=clear;su%20airvzxf;airvzxf%20about;airvzxf%20contact;airvzxf%20social;` o `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about&cmd=airvzxf%20contact&cmd=airvzxf%20social`.
+- Una buena implementación es que si pones en la URL argumentos o parámetros los puede ejecutar. Un ejemplo, quiero hacer lo de Google SEO para el posicionamiento y quiero hacer un mapa. Entonces quiero mostrar el texto y enlace de acerca de nosotros; podría poner en la URL parámetros como: `/?cmd=clear;su%20airvzxf;airvzxf%20about;airvzxf%20contact;airvzxf%20social;` o `/?cmd=clear&cmd=su%20airvzxf&cmd=airvzxf%20about&cmd=airvzxf%20contact&cmd=airvzxf%20social`. Esto no solamente se limita a SEO, esto es también como un tipo juguete herramienta en el cual yo puedo abrir mi página como la quiero visualizar al ejecutar los comandos básicamente se va a visualizar como yo quiero, podría cambiarle el tema y así, el potencial aplicable para jugar es mucho.
+- Crear el usuario `root` y al loguearse poner el hashtag en vez del signo de pesos. Aquí todavía no defino qué se podría hacer. Sin embargo, te va a pedir contraseña y no hay ninguna contraseña correcta, así que nunca te podrás loguear. Suena ilogico, pero así lo quiero. Si alguien logra hackear el root que es fácil, solo tendría que cambiar en el JavaScript el state a root. Entonces se va a poder loguear y va a tener acceso a todos los comandos, va a poder editar y borrar todo. A nivel obviamente JavaScript y datos en las cookies de su dispositivo.
+- Mejorar el rendimiento dividiendo el archivo main.js en más pequeños sobre todo los que se necesitan para el inicio del DOOM para que no de pena descargar los 50 kilobytes y luego cargue el DOM. Hay que evitar los flash.
 - Easter eggs ocultos (comandos secretos).
 
 ## 10. Informacion personal
