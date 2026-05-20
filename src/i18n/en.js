@@ -214,7 +214,6 @@
     "config.labelUptime": "Uptime:",
     "config.labelData": "Data:",
     "config.keys": "keys",
-    "config.codeWord": "code",
     "config.inWord": "in",
 
     "reset.msg": "Restoring factory defaults...",
@@ -566,6 +565,9 @@
     "easter.konami.on": "HACKER MODE ACTIVATED",
     "easter.konami.off": "HACKER MODE DEACTIVATED",
     "easter.konami.hint": "Some secrets require more than typing.",
+
+    "easter.matrix.active": "A Matrix animation is already running.",
+    "easter.matrix.exitMsg": "Waking up from the Matrix...",
   };
 
   if (typeof window._registerI18N === "function") {

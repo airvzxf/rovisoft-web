@@ -24,7 +24,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.11.0";
+  const VERSION = "1.12.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -106,6 +106,8 @@
     cowsayMode: false,
     hackerMode: false,
   };
+
+  var matrixActive = false;
 
   // ─── Internationalization ──────────────────────────────────
 
@@ -324,7 +326,6 @@
       "config.labelUptime": "Uptime:",
       "config.labelData": "Datos:",
       "config.keys": "llaves",
-      "config.codeWord": "c\u00f3digo",
       "config.inWord": "en",
 
       "reset.msg": "Restableciendo a valores de f\u00e1brica...",
@@ -682,6 +683,10 @@
       "easter.konami.on": "MODO HACKER ACTIVADO",
       "easter.konami.off": "MODO HACKER DESACTIVADO",
       "easter.konami.hint": "Algunos secretos requieren m\u00e1s que escribir.",
+
+      "easter.matrix.active":
+        "Ya hay una animaci\u00f3n Matrix en ejecuci\u00f3n.",
+      "easter.matrix.exitMsg": "Despertando de la Matrix...",
     },
   };
 
@@ -1165,6 +1170,124 @@
       return (
         '<span class="text-magenta">' + t("easter.konami.hint") + "</span>"
       );
+    },
+
+    matrix: function () {
+      if (matrixActive)
+        return (
+          '<span class="text-red">' + t("easter.matrix.active") + "</span>"
+        );
+      matrixActive = true;
+
+      var CHARS =
+        "\u30a2\u30a4\u30a6\u30a8\u30aa\u30ab\u30ad\u30af\u30b1\u30b3\u30b5\u30b7\u30b9\u30bb\u30bd\u30bf\u30c1\u30c4\u30c6\u30c8\u30ca\u30cb\u30cc\u30cd\u30ce\u30cf\u30d2\u30d5\u30d8\u30db\u30de\u30df\u30e0\u30e1\u30e2\u30e4\u30e6\u30e8\u30e9\u30ea\u30eb\u30ec\u30ed\u30ef\u30f30123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      var FONT_SIZE = 16;
+      var canExit = false;
+      var exited = false;
+      var animFrame;
+
+      setTimeout(function () {
+        canExit = true;
+      }, 300);
+
+      var canvas = document.createElement("canvas");
+      canvas.style.cssText =
+        "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;cursor:none;touch-action:none;background:#0d1117;";
+      document.body.appendChild(canvas);
+
+      var ctx = canvas.getContext("2d");
+
+      function onResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        var newCols = Math.min(Math.floor(canvas.width / FONT_SIZE), 120);
+        var newDrops = [];
+        for (var i = 0; i < newCols; i++) {
+          newDrops[i] = i < columns ? drops[i] : (Math.random() * -25) | 0;
+        }
+        columns = newCols;
+        drops = newDrops;
+        ctx.fillStyle = "#0d1117";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      var columns = Math.min(Math.floor(canvas.width / FONT_SIZE), 120);
+      var drops = [];
+      for (var i = 0; i < columns; i++) {
+        drops[i] = (Math.random() * -25) | 0;
+      }
+
+      function draw() {
+        if (exited) return;
+        ctx.fillStyle = "rgba(13, 17, 23, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = FONT_SIZE + "px monospace";
+
+        for (var i = 0; i < columns; i++) {
+          if (drops[i] < 0) {
+            drops[i]++;
+            continue;
+          }
+          var x = i * FONT_SIZE;
+          var y = drops[i] * FONT_SIZE;
+
+          ctx.fillStyle = "#56d364";
+          ctx.fillText(CHARS[(Math.random() * CHARS.length) | 0], x, y);
+
+          if (drops[i] > 0) {
+            ctx.fillStyle = "#3fb950";
+            ctx.fillText(
+              CHARS[(Math.random() * CHARS.length) | 0],
+              x,
+              y - FONT_SIZE,
+            );
+          }
+
+          drops[i]++;
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+        }
+        animFrame = requestAnimationFrame(draw);
+      }
+
+      function cleanup() {
+        if (exited) return;
+        exited = true;
+        matrixActive = false;
+        cancelAnimationFrame(animFrame);
+        canvas.remove();
+        window.removeEventListener("resize", onResize);
+        document.removeEventListener("keydown", onExit);
+        document.removeEventListener("click", onExit);
+        cmdInput.disabled = false;
+        cmdInput.focus();
+        appendOutput(
+          '<span class="text-green">' + t("easter.matrix.exitMsg") + "</span>",
+        );
+      }
+
+      function onExit() {
+        if (!canExit || exited) return;
+        cleanup();
+      }
+
+      window.addEventListener("resize", onResize);
+      cmdInput.disabled = true;
+      cmdInput.blur();
+
+      ctx.fillStyle = "#0d1117";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      animFrame = requestAnimationFrame(draw);
+
+      document.addEventListener("keydown", onExit);
+      document.addEventListener("click", onExit);
+
+      return null;
     },
   };
 
@@ -2036,7 +2159,7 @@
           ],
           [
             '<span class="nf-label">' + t("config.labelVersion") + "</span>",
-            versionStr + " (" + t("config.codeWord") + ": v" + VERSION + ")",
+            versionStr,
           ],
           [
             '<span class="nf-label">' + t("config.labelUptime") + "</span>",
