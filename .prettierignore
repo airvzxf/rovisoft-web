@@ -1,0 +1,7 @@
+package-lock.json
+LICENSE
+src/fonts/
+*.png
+test-results/
+playwright-report/
+.wrangler/

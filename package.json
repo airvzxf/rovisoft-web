@@ -1,0 +1,27 @@
+{
+  "name": "rovisoft-web",
+  "version": "1.14.0",
+  "private": true,
+  "description": "Development tooling for RoviSoft.net. The site itself has no dependencies.",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airvzxf/rovisoft-web.git"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "serve": "wrangler pages dev src --ip 127.0.0.1 --port 8788",
+    "test": "playwright test",
+    "check": "python3 scripts/check-version.py && python3 csp-hashes.py --check && prettier --check .",
+    "format": "prettier --write .",
+    "og-image": "node scripts/og-image.mjs",
+    "og-preview": "node scripts/og-preview.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "prettier": "3.10.1",
+    "wrangler": "4.167.0"
+  }
+}
