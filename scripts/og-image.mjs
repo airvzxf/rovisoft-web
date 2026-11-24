@@ -21,6 +21,7 @@ try {
     viewport: { width: 1200, height: 630 },
     deviceScaleFactor: 1,
     colorScheme: "dark",
+    bypassCSP: true,
   });
   await page.goto(`${BASE_URL}/`);
   await page.locator("#cmd-input").waitFor({ state: "attached" });
@@ -28,12 +29,22 @@ try {
     () => !document.getElementById("cmd-input").disabled,
   );
   await page.evaluate(() => document.fonts.ready);
-  // Zoom in so the banner fills the preview, and use a solid cursor: the
-  // blink animation would make the image random.
+  // Keep only the banner and the `help` hint, large enough to read in a
+  // small card, and use a solid cursor: the blink animation would make the
+  // image random.
+  await page.evaluate(() => {
+    const p = document.querySelector("#welcome-message p");
+    const help = p && p.querySelector(".cmd");
+    if (help) {
+      p.innerHTML = "";
+      p.append("Escribe ", help, " para ver los comandos.");
+    }
+  });
   await page.addStyleTag({
     content: `
-      :root { --font-size: 21px; }
-      .ascii-banner { font-size: 24px; line-height: 1.05; margin: 12px 0 30px; }
+      :root { --font-size: 34px; }
+      .ascii-banner { font-size: 29px; line-height: 1.1; margin: 86px 0 64px; }
+      #welcome-message p { font-size: 40px; }
       .output-line { word-break: normal; }
       .cursor { animation: none; }
     `,

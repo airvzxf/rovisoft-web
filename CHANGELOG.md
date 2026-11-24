@@ -8,6 +8,15 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 
 ## [Unreleased]
 
+## [1.14.1] - 2026-11-24
+
+### Changed
+
+- Link preview: a shorter title and a description that says whose site it
+  is and what it holds, so no network cuts the important part.
+- `og-image.png` shows only the banner and the `help` hint, large enough to
+  read in a small card.
+
 ## [1.14.0] - 2026-11-24
 
 ### Added
@@ -68,5 +77,6 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 First version recorded in this changelog. See the git history for the
 earlier development of the terminal.
 
-[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.0...HEAD
+[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.1...HEAD
+[1.14.1]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.0...v1.14.1
 [1.14.0]: https://github.com/airvzxf/rovisoft-web/releases/tag/v1.14.0

@@ -1,6 +1,6 @@
 {
   "name": "rovisoft-web",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "private": true,
   "description": "Development tooling for RoviSoft.net. The site itself has no dependencies.",
   "license": "AGPL-3.0-or-later",
