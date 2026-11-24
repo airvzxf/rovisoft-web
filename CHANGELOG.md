@@ -8,6 +8,24 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 
 ## [Unreleased]
 
+## [1.14.2] - 2026-11-24
+
+### Changed
+
+- Link preview: the title (78 characters) and description (162 characters)
+  fit the 60-90 and 155-200 character ranges that preview checkers expect,
+  and the title names the owner and role.
+
+### Fixed
+
+- Link previews kept the old `og-image.png`, because networks cache the
+  image by URL. `og:image` now carries `?v=` with the version, and
+  `scripts/check-version.py` checks it.
+- `airvzxf projects`: the Assembly book repository was renamed to
+  `assembly-from-the-ground-up-x86-32`; link and description updated.
+- The weekly link check retries a link that fails with a network error
+  before reporting it as broken.
+
 ## [1.14.1] - 2026-11-24
 
 ### Changed
@@ -77,6 +95,7 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 First version recorded in this changelog. See the git history for the
 earlier development of the terminal.
 
-[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.1...HEAD
+[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.2...HEAD
+[1.14.2]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.1...v1.14.2
 [1.14.1]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.0...v1.14.1
 [1.14.0]: https://github.com/airvzxf/rovisoft-web/releases/tag/v1.14.0

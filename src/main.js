@@ -25,7 +25,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.14.1";
+  const VERSION = "1.14.2";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -359,7 +359,7 @@
       "projects.cache_anything_new_action.desc":
         "GitHub Action que cachea todo lo que crea o cambia un paso de instalaci\u00f3n (apt, SDKs, toolchains) y lo restaura en la siguiente ejecuci\u00f3n",
       "projects.assembly_from_the_ground_up.desc":
-        "Actualizaci\u00f3n del libro \u00abProgramming from the Ground Up\u00bb (GNU Assembler, x86): conversi\u00f3n a Markdown, ePUB y PDF",
+        "Edici\u00f3n x86 de 32 bits, actualizada para Linux, del libro \u00abProgramming from the Ground Up\u00bb (GNU Assembler, i386), con soluciones probadas de cada ejercicio",
       "projects.fibonacci_benchmark.desc":
         "Algoritmo de Fibonacci en ensamblador que super\u00f3 en rendimiento a la versi\u00f3n compilada en C",
       "projects.aur_packages.desc":
@@ -842,7 +842,7 @@
         },
         {
           name: "assembly_from_the_ground_up",
-          url: "https://github.com/airvzxf/assembly-from-the-ground-up",
+          url: "https://github.com/airvzxf/assembly-from-the-ground-up-x86-32",
         },
         {
           name: "fibonacci_benchmark",

@@ -245,7 +245,7 @@
     "projects.cache_anything_new_action.desc":
       "GitHub Action that caches everything an install step creates or changes (apt, SDKs, toolchains) and restores it on the next run",
     "projects.assembly_from_the_ground_up.desc":
-      "Update of the book \u201cProgramming from the Ground Up\u201d (GNU Assembler, x86): converted to Markdown, ePUB and PDF",
+      "x86 32-bit edition of \u201cProgramming from the Ground Up\u201d, updated for Linux (GNU Assembler, i386), with tested solutions to every exercise",
     "projects.fibonacci_benchmark.desc":
       "Fibonacci algorithm in assembly that outperformed the C-compiled version",
     "projects.aur_packages.desc":

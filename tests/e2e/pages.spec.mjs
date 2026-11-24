@@ -70,9 +70,17 @@ test("link preview metadata", async ({ page, request }) => {
   await page.goto("/");
   const meta = (selector) =>
     page.locator(selector).first().getAttribute("content");
-  expect(await meta('meta[property="og:image"]')).toBe(
-    "https://rovisoft.net/og-image.png",
+  // ?v= changes with every release so previews fetch the new image;
+  // scripts/check-version.py checks its value.
+  expect(await meta('meta[property="og:image"]')).toMatch(
+    /^https:\/\/rovisoft\.net\/og-image\.png\?v=\d+\.\d+\.\d+$/,
   );
+  const title = await meta('meta[property="og:title"]');
+  const description = await meta('meta[property="og:description"]');
+  expect(title.length).toBeGreaterThanOrEqual(60);
+  expect(title.length).toBeLessThanOrEqual(90);
+  expect(description.length).toBeGreaterThanOrEqual(155);
+  expect(description.length).toBeLessThanOrEqual(200);
   expect(await meta('meta[property="og:image:width"]')).toBe("1200");
   expect(await meta('meta[property="og:image:height"]')).toBe("630");
   expect(await meta('meta[name="twitter:card"]')).toBe("summary_large_image");

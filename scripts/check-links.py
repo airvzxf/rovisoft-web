@@ -16,6 +16,7 @@ Sites that refuse automated clients only produce warnings.
 
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -37,17 +38,24 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def status(url):
-    """Returns (status, location) without following redirects."""
+def status(url, attempts=3):
+    """Returns (status, location) without following redirects.
+
+    A network error (no HTTP answer at all) is retried, since CI runners
+    sometimes fail to reach a host for a few seconds; an HTTP error is not.
+    """
     opener = urllib.request.build_opener(NoRedirect)
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with opener.open(request, timeout=20) as response:
-            return response.status, None
-    except urllib.error.HTTPError as err:
-        return err.code, err.headers.get("Location")
-    except (urllib.error.URLError, TimeoutError) as err:
-        return None, str(err)
+    for attempt in range(1, attempts + 1):
+        try:
+            with opener.open(request, timeout=20) as response:
+                return response.status, None
+        except urllib.error.HTTPError as err:
+            return err.code, err.headers.get("Location")
+        except (urllib.error.URLError, TimeoutError) as err:
+            if attempt == attempts:
+                return None, str(err)
+            time.sleep(5 * attempt)
 
 
 def main():
