@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same pull request cancels the run in progress;
+# runs on main always finish.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# The three jobs are independent (no `needs:`), so they run in parallel
+# and a failure in one does not hide the result of the others. Every job
+# sets timeout-minutes: GitHub's default is 360.
+#
+# Deployment is not part of CI: Cloudflare Pages publishes src/ on every
+# push to main and builds a preview for every other branch.
+
+jobs:
+  static:
+    name: Static checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dev dependencies
+        run: npm ci --no-audit --no-fund
+      # VERSION, the main.js constant, the ?v= cache busters in
+      # index.html, package.json, README and CHANGELOG must agree: a stale
+      # ?v= keeps visitors on a cached main.js for a year.
+      - name: Version is consistent
+        run: python3 scripts/check-version.py
+      # The CSP in src/_headers allows inline scripts by hash; a stale hash
+      # blocks the script in production.
+      - name: CSP script hashes are up to date
+        run: python3 csp-hashes.py --check
+      - name: Formatting (Prettier)
+        run: npx prettier --check .
+
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # rhysd/actionlint is a Go binary, installed from the upstream
+      # release instead of through a wrapper action.
+      - name: Install actionlint
+        run: |
+          set -eu
+          # A version bump must update both lines: sha= is the
+          # actionlint_<ver>_linux_amd64.tar.gz entry of the upstream
+          # actionlint_<ver>_checksums.txt release asset.
+          ver=1.7.7
+          sha=023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757
+          curl -fsSL -o /tmp/actionlint.tar.gz \
+            "https://github.com/rhysd/actionlint/releases/download/v${ver}/actionlint_${ver}_linux_amd64.tar.gz"
+          echo "${sha}  /tmp/actionlint.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
+          sudo mv /tmp/actionlint /usr/local/bin/actionlint
+          actionlint --version
+      - name: Run actionlint
+        run: actionlint -color
+
+  e2e:
+    name: End-to-end tests (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dev dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      # playwright.config.mjs starts `wrangler pages dev src`, which applies
+      # src/_headers and src/404.html like production, so CSP violations
+      # fail the tests.
+      - name: Run the end-to-end tests
+        run: npx playwright test
+        env:
+          WRANGLER_SEND_METRICS: "false"
+      - name: Upload the report and traces
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
