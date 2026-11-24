@@ -10,7 +10,7 @@ const PROJECTS = {
   cache_anything_new_action:
     "https://github.com/airvzxf/cache-anything-new-action",
   assembly_from_the_ground_up:
-    "https://github.com/airvzxf/assembly-from-the-ground-up",
+    "https://github.com/airvzxf/assembly-from-the-ground-up-x86-32",
   fibonacci_benchmark:
     "https://github.com/airvzxf/assembly/tree/main/linux/benchmark/fibonacci",
   aur_packages: "https://aur.archlinux.org/packages/duc",

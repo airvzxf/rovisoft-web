@@ -21,6 +21,10 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 - Link previews kept the old `og-image.png`, because networks cache the
   image by URL. `og:image` now carries `?v=` with the version, and
   `scripts/check-version.py` checks it.
+- `airvzxf projects`: the Assembly book repository was renamed to
+  `assembly-from-the-ground-up-x86-32`; link and description updated.
+- The weekly link check retries a link that fails with a network error
+  before reporting it as broken.
 
 ## [1.14.1] - 2026-11-24
 
