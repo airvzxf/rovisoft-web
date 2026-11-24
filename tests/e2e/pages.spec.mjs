@@ -78,7 +78,7 @@ test("link preview metadata", async ({ page, request }) => {
   const title = await meta('meta[property="og:title"]');
   const description = await meta('meta[property="og:description"]');
   expect(title.length).toBeGreaterThanOrEqual(60);
-  expect(title.length).toBeLessThanOrEqual(90);
+  expect(title.length).toBeLessThanOrEqual(64);
   expect(description.length).toBeGreaterThanOrEqual(155);
   expect(description.length).toBeLessThanOrEqual(200);
   expect(await meta('meta[property="og:image:width"]')).toBe("1200");

@@ -8,6 +8,14 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 
 ## [Unreleased]
 
+## [1.14.3] - 2026-11-24
+
+### Changed
+
+- Link preview title: 63 characters with the owner's name first, inside
+  the ranges of every network (Facebook asks for 60 or more, WhatsApp and
+  iMessage for fewer than 65).
+
 ## [1.14.2] - 2026-11-24
 
 ### Changed
@@ -95,7 +103,8 @@ The `## [X.Y.Z]` section of a version is the body of its GitHub Release.
 First version recorded in this changelog. See the git history for the
 earlier development of the terminal.
 
-[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.2...HEAD
+[Unreleased]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.3...HEAD
+[1.14.3]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.2...v1.14.3
 [1.14.2]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.1...v1.14.2
 [1.14.1]: https://github.com/airvzxf/rovisoft-web/compare/v1.14.0...v1.14.1
 [1.14.0]: https://github.com/airvzxf/rovisoft-web/releases/tag/v1.14.0
