@@ -14,6 +14,7 @@
   const cmdBefore = document.getElementById("prompt-cmd-before");
   const cmdAfter = document.getElementById("prompt-cmd-after");
   const cursorEl = document.getElementById("cursor");
+  const promptInput = document.getElementById("prompt-input-wrapper");
   const promptUser = document.getElementById("prompt-user");
   const promptHost = document.getElementById("prompt-host");
   const promptPath = document.getElementById("prompt-path");
@@ -24,7 +25,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.12.0";
+  const VERSION = "1.14.0";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();
@@ -160,6 +161,11 @@
       "su.welcomeUser": "Bienvenido, {0}",
       "su.guestRestored": "Sesi\u00f3n de invitado restaurada.",
       "su.unknownUser": "su: usuario '{0}' no existe.",
+      "su.rootHint":
+        'Pista: la contraseña de root no es pública. Prueba con <span class="cmd">su airvzxf</span>.',
+
+      urlBlocked:
+        "{0}: no se ejecuta desde un enlace por seguridad. Escríbelo en la terminal.",
 
       "version.label": "Versi\u00f3n:",
       "version.build": "Build:",
@@ -214,6 +220,9 @@
       "lang.available": "Idiomas disponibles:",
       "lang.changed": "Idioma cambiado a '{0}'.",
       "lang.unknownLang": "lang: idioma desconocido '{0}'.",
+      "lang.loading": "Cargando {0}...",
+      "lang.alreadyLoading": "{0} ya se está cargando...",
+      "lang.loadError": "Error: no se pudo cargar el idioma '{0}'.",
       "lang.hint":
         'Usa <span class="cmd">lang list</span> para ver los idiomas disponibles.',
 
@@ -280,6 +289,8 @@
       "alias.notDefined": "alias: {0}: no definido.",
       "alias.nameEmpty": "alias: nombre vac\u00edo.",
       "alias.valueEmpty": "alias: valor vac\u00edo.",
+      "alias.nameInvalid":
+        "alias: nombre inv\u00e1lido '{0}'. Usa letras, n\u00fameros, '.', '_' o '-' (m\u00e1x. 32).",
       "alias.existingCommand": "alias: '{0}' es un comando existente.",
 
       "unalias.title": "unalias \u2014 Elimina un alias definido",
@@ -332,18 +343,23 @@
       "reboot.msg": "Reiniciando terminal...",
 
       "about.bio":
-        "Senior Software Engineer & Software Architect con m\u00e1s de 19 a\u00f1os de experiencia. Programador de sistemas y arquitecto de bajo nivel. Busco la perfecci\u00f3n t\u00e9cnica, la optimizaci\u00f3n extrema y la comprensi\u00f3n profunda de la m\u00e1quina \u2014 desde el hardware y ensamblador hasta el alto nivel.",
+        "Senior Software Engineer con m\u00e1s de {0} a\u00f1os de experiencia. Programador de sistemas y arquitecto de bajo nivel. Busco la perfecci\u00f3n t\u00e9cnica, la optimizaci\u00f3n extrema y la comprensi\u00f3n profunda de la m\u00e1quina \u2014 desde el hardware y ensamblador hasta el alto nivel. En inteligencia artificial he recorrido el camino completo: de los fundamentos de Machine Learning y Deep Learning a RAG, la experimentaci\u00f3n con modelos locales y la comparaci\u00f3n de laboratorios y modelos.",
       "about.roleAdmin": "Administrador / Propietario",
-      "about.roleTitle": "Senior Software Engineer & Software Architect",
+      "about.roleTitle":
+        "Senior Software Engineer \u00b7 Software Architect \u00b7 Applied AI Engineer",
 
       "projects.c2flowch.desc":
-        "Sistema de mapeo y visualizaci\u00f3n de flujo de control para c\u00f3digo fuente C, analizando el AST",
+        "Librer\u00eda y CLI en Rust que convierte c\u00f3digo fuente C en diagramas de flujo (ANSI / ISO 5807), analizando el AST",
       "projects.telora.desc":
         "Asistente de Speech-to-Text para Linux: demonio en Rust con Whisper (CUDA) y cliente GTK4",
       "projects.bose_connect_linux.desc":
-        "Aplicaci\u00f3n Bose\u00ae Connect para Linux: ingenier\u00eda inversa de protocolos Bluetooth (46\u2605)",
+        "Aplicaci\u00f3n Bose\u00ae Connect para Linux: ingenier\u00eda inversa de protocolos Bluetooth",
       "projects.ftp_deployment_action.desc":
-        "GitHub Action para despliegue v\u00eda FTP: copia archivos del repositorio al servidor (36\u2605, 9 forks)",
+        "GitHub Action para despliegue v\u00eda FTP: copia archivos del repositorio al servidor",
+      "projects.cache_anything_new_action.desc":
+        "GitHub Action que cachea todo lo que crea o cambia un paso de instalaci\u00f3n (apt, SDKs, toolchains) y lo restaura en la siguiente ejecuci\u00f3n",
+      "projects.assembly_from_the_ground_up.desc":
+        "Actualizaci\u00f3n del libro \u00abProgramming from the Ground Up\u00bb (GNU Assembler, x86): conversi\u00f3n a Markdown, ePUB y PDF",
       "projects.fibonacci_benchmark.desc":
         "Algoritmo de Fibonacci en ensamblador que super\u00f3 en rendimiento a la versi\u00f3n compilada en C",
       "projects.aur_packages.desc":
@@ -359,90 +375,89 @@
       "skills.lang.assembly": "x86/x64, optimizaci\u00f3n de bajo nivel",
       "skills.lang.c": "Reverse engineering, sistemas embebidos",
       "skills.header.env": "ENTORNO & HERRAMIENTAS:",
+      "skills.header.ai": "INTELIGENCIA ARTIFICIAL:",
+      "skills.ai.foundationsLabel": "Fundamentos:",
+      "skills.ai.foundations":
+        "Machine Learning y Deep Learning con Python (TensorFlow, Keras)",
+      "skills.ai.localLabel": "Modelos locales:",
+      "skills.ai.rag":
+        "Embeddings, b\u00fasqueda vectorial, recuperaci\u00f3n sobre documentaci\u00f3n",
+      "skills.ai.agentsLabel": "Agentes:",
+      "skills.ai.evalLabel": "Evaluaci\u00f3n:",
+      "skills.ai.eval":
+        "Comparaci\u00f3n de laboratorios y modelos en tareas reales de ingenier\u00eda",
       "skills.header.domains": "DOMINIOS:",
-      "skills.domain.1": "  Arquitectura de sistemas",
-      "skills.domain.2": "  Optimizaci\u00f3n de bajo nivel",
-      "skills.domain.3": "  Machine Learning / Deep Learning",
-      "skills.domain.4": "  MCP / IA Ag\u00e9ntica",
-      "skills.domain.5": "  Ingenier\u00eda inversa",
-      "skills.domain.6": "  Empaquetado AUR",
-      "skills.domain.7":
-        "  Orquestaci\u00f3n de IA bajo direcci\u00f3n arquitect\u00f3nica",
-      "skills.domain.8": "  Speech-to-Text (Whisper/CUDA)",
-      "skills.domain.9": "  CI/CD (GitHub Actions)",
+      "skills.domains": [
+        "Arquitectura de sistemas",
+        "Optimizaci\u00f3n de bajo nivel",
+        "IA aplicada: RAG, agentes y evaluaci\u00f3n de modelos",
+        "Orquestaci\u00f3n de IA bajo direcci\u00f3n arquitect\u00f3nica",
+        "Ingenier\u00eda inversa",
+        "Speech-to-Text (Whisper/CUDA)",
+        "Empaquetado AUR",
+        "CI/CD (GitHub Actions)",
+      ],
 
-      "research.log1":
-        "[2024-01-15 09:23:11] ML Specialization completada (Udemy)",
-      "research.log2":
-        "[2024-03-02 14:55:42] Deep Learning Specialization completada (Udemy)",
-      "research.log3":
-        "[2024-06-10 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
-      "research.log4":
-        "[2024-06-10 11:30:05] Modelos cargados: Gemma 4, DeepSeek, Qwen",
-      "research.log5":
-        "[2024-06-10 11:30:07] Investigaci\u00f3n MCP (Model Context Protocol) iniciada",
-      "research.log6":
+      "research.logs": [
+        "[2024-01-15 09:23:11] Curso \u00abMachine Learning y Data Science con Python\u00bb completado (Udemy)",
+        "[2024-03-02 14:55:42] Curso \u00abInteligencia Artificial y Deep Learning con Python, TensorFlow y Keras\u00bb completado (Udemy)",
+        "[2024-07-02 11:30:00] Infraestructura de inferencia local con Ollama desplegada",
+        "[2024-07-02 11:30:05] Modelos cargados: Gemma 2, DeepSeek-Coder-V2, Qwen2",
         "[2024-08-22 16:45:33] Pipeline de orquestaci\u00f3n de IA ag\u00e9ntica: fase 1",
-      "research.log7":
         "[2024-11-05 08:12:00] Automatizaci\u00f3n de an\u00e1lisis de c\u00f3digo con LLMs locales",
-      "research.log8":
-        "[2025-01-20 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
-      "research.log9":
-        "[2025-03-15 10:00:00] Evaluaci\u00f3n DeepSeek V4 para tareas de bajo nivel",
-      "research.log10":
-        "[2025-05-01 10:00:00] ai-llm-rust-expert: fine-tuning con SFT + DPO para Rust idiom\u00e1tico",
-      "research.log11":
-        "[2025-09-01 09:00:00] formic-ai-framework: orquestaci\u00f3n multi-agente declarativa con YAML",
-      "research.log12":
+        "[2024-12-02 10:15:00] Investigaci\u00f3n MCP (Model Context Protocol) iniciada",
+        "[2025-02-17 16:40:00] RAG: embeddings y b\u00fasqueda vectorial sobre documentaci\u00f3n t\u00e9cnica",
+        "[2025-03-15 10:00:00] Evaluaci\u00f3n de DeepSeek-V3 y DeepSeek-R1 para tareas de bajo nivel",
+        "[2025-07-14 13:00:00] OpenCode: entorno de desarrollo impulsado por IA",
+        "[2025-09-08 09:00:00] Comparativa de laboratorios y modelos de IA en tareas de ingenier\u00eda de software",
         "[2025-11-10 14:30:00] Experimentos de Deep Learning: backpropagation, CNNs y RNNs desde cero",
-      "research.log13":
         "[2026-02-09 18:10:00] Telora: demonio Rust + Whisper (CUDA) para Speech-to-Text en Linux",
-      "research.log14":
         "[2026-05-05 03:42:00] Candle: framework minimalista de ML en Rust",
+      ],
 
       "man.header.name": "NOMBRE",
       "man.nameText":
-        "airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Toolsmith",
+        "airvzxf - Senior Software Engineer, Arquitecto de Sistemas, Ingeniero de IA aplicada, Toolsmith",
       "man.header.synopsis": "SINOPSIS",
       "man.synopsisText":
-        "Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, orquestaci\u00f3n de IA.",
+        "Arquitectura de sistemas, optimizaci\u00f3n de bajo nivel, IA aplicada y orquestaci\u00f3n de IA.",
       "man.header.description": "DESCRIPCI\u00d3N",
       "man.desc.p1":
-        "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s\n  de 19 a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware\n  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza\n  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
+        "  airvzxf es un programador de sistemas y arquitecto de software con m\u00e1s\n  de {0} a\u00f1os de experiencia. Opera en la intersecci\u00f3n del hardware\n  y los sistemas de alto nivel, con un enfoque obsesivo en la pureza\n  arquitect\u00f3nica y la optimizaci\u00f3n extrema.",
       "man.desc.p2":
         "  Desprecia el c\u00f3digo ineficiente, los atajos MVP y la deuda t\u00e9cnica.\n  Su enfoque se basa en la comprensi\u00f3n profunda de la m\u00e1quina,\n  desde ensamblador hasta las abstracciones de alto nivel.",
       "man.desc.p3":
-        "  Actualmente orquesta sistemas de IA como herramientas de desarrollo\n  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones\n  de usuario final, sino como instrumentos de ingenier\u00eda.",
+        "  Actualmente orquesta sistemas de IA como herramientas de desarrollo\n  bajo direcci\u00f3n arquitect\u00f3nica estricta \u2014 no como aplicaciones\n  de usuario final, sino como instrumentos de ingenier\u00eda. Ha recorrido\n  la IA desde los fundamentos de ML y Deep Learning hasta RAG,\n  experimentos con modelos locales y la comparaci\u00f3n de laboratorios\n  y modelos.",
       "man.desc.p4":
         "  Diagnosticado con Asperger leve funcional, lo que le otorga\n  hiperfoco, an\u00e1lisis profundo de sistemas y cero tolerancia\n  al c\u00f3digo sucio.",
       "man.header.environment": "ENTORNO",
       "man.header.languages": "LENGUAJES",
       "man.langList": "Rust, Bash, Python, JavaScript, Assembly, C",
-      "man.header.seeAlso": "VEASE TAMBIEN",
+      "man.header.seeAlso": "VÉASE TAMBIÉN",
       "man.header.options": "OPCIONES",
       "man.header.subcommands": "SUBCOMANDOS",
-      "man.header.historyExpansion": "EXPANSION DE HISTORIAL",
-      "man.available": "Paginas de manual disponibles:",
+      "man.header.historyExpansion": "EXPANSIÓN DE HISTORIAL",
+      "man.available": "Páginas de manual disponibles:",
       "man.notFound": "No hay entrada de manual para '{0}'.",
       "man.hint":
-        'Usa <span class="cmd">man</span> para ver las paginas disponibles.',
+        'Usa <span class="cmd">man</span> para ver las páginas disponibles.',
 
       "man.help.name": "help - Muestra los comandos disponibles",
       "man.help.synopsis": "help",
       "man.help.description":
-        "Muestra una lista de todos los comandos disponibles en la terminal, junto con una breve descripcion de cada uno. Tambien muestra atajos de teclado y parametros de URL.",
+        "Muestra una lista de todos los comandos disponibles en la terminal, junto con una breve descripción de cada uno. También muestra atajos de teclado y parámetros de URL.",
       "man.help.seeAlso": "man(1)",
 
       "man.clear.name": "clear - Limpia la pantalla",
       "man.clear.synopsis": "clear",
       "man.clear.description":
-        "Limpia toda la salida visible de la terminal, proporcionando un espacio de trabajo limpio. El historial de comandos se preserva. Tambien se puede activar con Ctrl+L.",
+        "Limpia toda la salida visible de la terminal, proporcionando un espacio de trabajo limpio. El historial de comandos se preserva. También se puede activar con Ctrl+L.",
       "man.clear.seeAlso": "reboot(1), reset(1)",
 
       "man.whoami.name": "whoami - Muestra el usuario actual",
       "man.whoami.synopsis": "whoami",
       "man.whoami.description":
-        "Muestra el nombre del usuario de la sesion actual. Los usuarios disponibles son: guest (invitado), airvzxf (administrador) y root (superusuario).",
+        "Muestra el nombre del usuario de la sesión actual. Los usuarios disponibles son: guest (invitado), airvzxf (administrador) y root (superusuario).",
       "man.whoami.seeAlso": "users(1), su(1), man(1)",
 
       "man.users.name": "users - Lista los usuarios del sistema",
@@ -454,39 +469,39 @@
       "man.su.name": "su - Cambia de usuario",
       "man.su.synopsis": "su <usuario>",
       "man.su.description":
-        "Cambia la sesion al usuario especificado. Los usuarios disponibles son: guest (sin contrasena), airvzxf (sin contrasena) y root (requiere contrasena). Use su sin argumentos para ver el uso.",
+        "Cambia la sesión al usuario especificado. Los usuarios disponibles son: guest (sin contraseña), airvzxf (sin contraseña) y root (requiere una contraseña que no es pública). Usa su sin argumentos para ver el uso.",
       "man.su.seeAlso": "whoami(1), users(1)",
 
-      "man.airvzxf.name": "airvzxf - Informacion del propietario",
+      "man.airvzxf.name": "airvzxf - Información del propietario",
       "man.airvzxf.synopsis": "airvzxf <subcomando>",
       "man.airvzxf.description":
-        "Muestra informacion sobre el propietario y administrador de RoviSoft.net. Requiere iniciar sesion como airvzxf o root. Los subcomandos disponibles son: about, contact, social, projects, skills y research.",
+        "Muestra información sobre el propietario y administrador de RoviSoft.net. Requiere iniciar sesión como airvzxf o root. Los subcomandos disponibles son: about, contact, social, projects, skills y research.",
       "man.airvzxf.seeAlso": "whoami(1), neofetch(1)",
 
-      "man.neofetch.name": "neofetch - Informacion del sistema",
+      "man.neofetch.name": "neofetch - Información del sistema",
       "man.neofetch.synopsis": "neofetch",
       "man.neofetch.description":
-        "Muestra informacion del sistema en formato neofetch, incluyendo: sistema operativo, host, kernel, shell, usuario, tema, tiempo de actividad, estado de configuracion y almacenamiento.",
+        "Muestra información del sistema en formato neofetch, incluyendo: sistema operativo, host, kernel, shell, usuario, tema, tiempo de actividad, estado de configuración y almacenamiento.",
       "man.neofetch.seeAlso": "version(1), config(1)",
 
       "man.date.name": "date - Fecha y hora actual",
       "man.date.synopsis": "date",
       "man.date.description":
-        "Muestra la fecha y hora actuales segun el reloj del navegador.",
+        "Muestra la fecha y hora actuales según el reloj del navegador.",
       "man.date.seeAlso": "neofetch(1)",
 
       "man.echo.name": "echo - Repite texto",
       "man.echo.synopsis": "echo <texto>",
       "man.echo.description":
-        "Muestra el texto proporcionado en la terminal. Si no se proporciona texto, muestra una linea vacia.",
+        "Muestra el texto proporcionado en la terminal. Si no se proporciona texto, muestra una línea vacía.",
       "man.echo.seeAlso": "alias(1)",
 
       "man.alias.name": "alias - Define atajos para comandos",
       "man.alias.synopsis": "alias | alias <nombre> | alias <nombre>='comando'",
       "man.alias.description":
-        "Gestiona alias de comandos. Sin argumentos, muestra los alias definidos y el uso. Los alias no pueden sobreescribir comandos existentes. Se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
+        "Gestiona alias de comandos. Sin argumentos, muestra los alias definidos y el uso. Los alias no pueden sobreescribir comandos existentes. Se conservan entre sesiones si el almacenamiento persistente está habilitado.",
       "man.alias.opt.show": "Muestra los alias definidos",
-      "man.alias.opt.showValue": "Muestra el valor de un alias especifico",
+      "man.alias.opt.showValue": "Muestra el valor de un alias específico",
       "man.alias.opt.define": "Define un nuevo alias con el valor especificado",
       "man.alias.seeAlso": "unalias(1), config(1)",
 
@@ -500,7 +515,7 @@
       "man.theme.synopsis":
         "theme | theme <nombre> | theme list | theme create | theme edit | theme delete | theme export",
       "man.theme.description":
-        "Gestiona los temas de color y tipografia de la terminal. Los temas integrados son 'dark' y 'light'. Se pueden crear temas personalizados con variables de color y tipografia especificas. Los temas personalizados se conservan entre sesiones si el almacenamiento persistente esta habilitado.",
+        "Gestiona los temas de color y tipografía de la terminal. Los temas integrados son 'dark' y 'light'. Se pueden crear temas personalizados con variables de color y tipografía específicas. Los temas personalizados se conservan entre sesiones si el almacenamiento persistente está habilitado.",
       "man.theme.sub.list": "Lista los temas disponibles",
       "man.theme.sub.set": "Cambia al tema especificado",
       "man.theme.sub.create": "Crea un tema personalizado",
@@ -510,62 +525,81 @@
       "man.theme.seeAlso": "config(1), neofetch(1)",
 
       "man.lang.name": "lang - Cambia el idioma de la interfaz",
-      "man.lang.synopsis": "lang | lang <codigo> | lang list",
+      "man.lang.synopsis": "lang | lang <código> | lang list",
       "man.lang.description":
-        "Cambia o muestra el idioma de la interfaz de la terminal. Los idiomas disponibles se listan con 'lang list'. El cambio se guarda entre sesiones si el almacenamiento persistente esta habilitado.",
+        "Cambia o muestra el idioma de la interfaz de la terminal. Los idiomas disponibles se listan con 'lang list'. El cambio se guarda entre sesiones si el almacenamiento persistente está habilitado.",
       "man.lang.seeAlso": "config(1)",
 
       "man.config.name": "config - Gestiona el almacenamiento local",
       "man.config.synopsis":
         "config | config accept | config reject | config status | config show",
       "man.config.description":
-        "Gestiona las preferencias de almacenamiento local. Controla si los datos persisten entre sesiones (localStorage) o son volatiles (sessionStorage). Acepta tres estados: aceptado, rechazado o sin decidir.",
+        "Gestiona las preferencias de almacenamiento local. Controla si los datos persisten entre sesiones (localStorage) o son volátiles (sessionStorage). Acepta tres estados: aceptado, rechazado o sin decidir.",
       "man.config.sub.accept": "Acepta el almacenamiento persistente",
       "man.config.sub.reject":
-        "Rechaza (datos volatiles, se pierden al cerrar)",
-      "man.config.sub.status": "Muestra detalles tecnicos del almacenamiento",
+        "Rechaza (datos volátiles, se pierden al cerrar)",
+      "man.config.sub.status": "Muestra detalles técnicos del almacenamiento",
       "man.config.sub.show": "Muestra los datos almacenados",
       "man.config.seeAlso": "theme(1), reboot(1)",
 
       "man.reboot.name": "reboot - Reinicia la terminal",
       "man.reboot.synopsis": "reboot",
       "man.reboot.description":
-        "Reinicia la terminal, recargando la pagina y reinicializando la sesion. Los datos se preservan si el almacenamiento persistente esta habilitado.",
+        "Reinicia la terminal, recargando la página y reinicializando la sesión. Los datos se preservan si el almacenamiento persistente está habilitado.",
       "man.reboot.seeAlso": "reset(1), clear(1)",
 
-      "man.reset.name": "reset - Restablece a valores de fabrica",
+      "man.reset.name": "reset - Restablece a valores de fábrica",
       "man.reset.synopsis": "reset",
       "man.reset.description":
-        "Restablece la terminal a sus valores de fabrica, eliminando todos los datos almacenados incluyendo historial, alias, temas personalizados y preferencias. Esta accion es irreversible.",
+        "Restablece la terminal a sus valores de fábrica, eliminando todos los datos almacenados incluyendo historial, alias, temas personalizados, easter eggs descubiertos y preferencias. Esta acción es irreversible.",
       "man.reset.seeAlso": "reboot(1), config(1)",
 
-      "man.version.name": "version - Muestra la version",
+      "man.version.name": "version - Muestra la versión",
       "man.version.synopsis": "version",
       "man.version.description":
-        "Muestra la version actual de la terminal, informacion del build y enlaces al codigo fuente.",
+        "Muestra la versión actual de la terminal, información del build y enlaces al código fuente.",
       "man.version.seeAlso": "neofetch(1), license(1)",
 
       "man.license.name": "license - Muestra la licencia",
       "man.license.synopsis": "license",
       "man.license.description":
-        "Muestra la informacion de licencia GNU Affero General Public License v3 (AGPL v3), junto con enlaces al codigo fuente y al texto completo de la licencia.",
+        "Muestra la información de licencia GNU Affero General Public License v3 (AGPL v3), junto con enlaces al código fuente y al texto completo de la licencia.",
       "man.license.seeAlso": "version(1)",
 
       "man.history.name": "history - Historial de comandos",
       "man.history.synopsis": "history",
       "man.history.description":
-        "Muestra la lista de comandos ejecutados previamente con sus numeros de indice.",
+        "Muestra la lista de comandos ejecutados previamente con sus números de índice.",
       "man.history.expansionText":
-        "Se puede re-ejecutar un comando usando su numero: !N ejecuta el comando numero N, y !! ejecuta el ultimo comando.",
+        "Se puede re-ejecutar un comando usando su número: !N ejecuta el comando número N, y !! ejecuta el último comando.",
       "man.history.seeAlso": "alias(1)",
 
-      "man.man.name": "man - Muestra paginas de manual",
+      "man.man.name": "man - Muestra páginas de manual",
       "man.man.synopsis": "man <comando>",
       "man.man.description":
-        "Muestra la pagina de manual para el comando especificado. Las paginas de manual contienen informacion detallada sobre cada comando, incluyendo sinopsis, descripciones, opciones y comandos relacionados. Sin argumentos, lista todos los comandos con paginas de manual disponibles.",
+        "Muestra la página de manual para el comando especificado. Las páginas de manual contienen información detallada sobre cada comando, incluyendo sinopsis, descripciones, opciones y comandos relacionados. Sin argumentos, lista todos los comandos con páginas de manual disponibles.",
       "man.man.seeAlso": "help(1)",
 
-      eventNotFound: "{0}: event not found",
+      "man.eggs.name": "eggs - Progreso de easter eggs",
+      "man.eggs.synopsis": "eggs",
+      "man.eggs.description":
+        "Muestra cuántos easter eggs has descubierto en total y por nivel (Novato, Hacker, Leyenda). Los secretos sin descubrir aparecen como ???. Algunos se escriben y otros se teclean. Los que se ejecutan desde un enlace (?cmd=) no cuentan. El progreso se conserva entre sesiones si el almacenamiento persistente está habilitado.",
+      "man.eggs.seeAlso": "help(1), config(1), reset(1)",
+
+      "help.eggs": "Progreso de easter eggs descubiertos",
+      "eggs.title": "Easter eggs descubiertos: {0}/{1}",
+      "eggs.level1": "Nivel 1 · Novato:",
+      "eggs.level2": "Nivel 2 · Hacker:",
+      "eggs.level3": "Nivel 3 · Leyenda:",
+      "eggs.found": "[+] ¡Easter egg descubierto! ({0}/{1})",
+      "eggs.hint":
+        'Escribe <span class="cmd">eggs</span> para ver tu progreso.',
+      "eggs.keepLooking":
+        "Sigue explorando: algunos secretos se escriben y otros se teclean.",
+      "eggs.allFound":
+        "¡Los encontraste todos! Eres una leyenda de la terminal.",
+
+      eventNotFound: "{0}: evento no encontrado",
       historyExpansion: "\u2192 {0}",
 
       "easter.sudo":
@@ -693,11 +727,11 @@
   var i18nLoadPending = {};
 
   function loadI18N(lang, callback) {
-    if (I18N[lang]) {
+    if (own(I18N, lang)) {
       if (callback) callback(true);
       return;
     }
-    if (i18nLoadPending[lang]) {
+    if (own(i18nLoadPending, lang)) {
       if (callback) i18nLoadPending[lang].push(callback);
       return;
     }
@@ -728,7 +762,8 @@
   };
 
   function t(key) {
-    return (I18N[state.lang] && I18N[state.lang][key]) || I18N.es[key] || key;
+    var dict = own(I18N, state.lang);
+    return (dict && own(dict, key)) || own(I18N.es, key) || key;
   }
 
   function tf(key) {
@@ -775,11 +810,14 @@
         "Podman",
         "Linux (Arch)",
         "Git",
+        "Ollama",
+        "RAG",
+        "MCP",
       ],
       github: "https://github.com/airvzxf",
       youtube: "https://www.youtube.com/@israel.roldan",
       x: "https://x.com/IsraelAlbert_RV",
-      linkedin: "https://www.linkedin.com/in/israel-roldan-airvzxf/",
+      linkedin: "https://www.linkedin.com/in/israel-roldan-airvzxf",
       website: "https://rovisoft.net",
       projects: [
         {
@@ -799,8 +837,16 @@
           url: "https://github.com/airvzxf/ftp-deployment-action",
         },
         {
+          name: "cache_anything_new_action",
+          url: "https://github.com/airvzxf/cache-anything-new-action",
+        },
+        {
+          name: "assembly_from_the_ground_up",
+          url: "https://github.com/airvzxf/assembly-from-the-ground-up",
+        },
+        {
           name: "fibonacci_benchmark",
-          url: "https://github.com/airvzxf/assembly/tree/master/linux/benchmark/fibonacci",
+          url: "https://github.com/airvzxf/assembly/tree/main/linux/benchmark/fibonacci",
         },
         {
           name: "aur_packages",
@@ -818,9 +864,25 @@
     return d.innerHTML;
   }
 
+  // Looks up a key that the object itself defines. User input such as
+  // "constructor" or "__proto__" must never reach Object.prototype members.
+  function own(obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key)
+      ? obj[key]
+      : undefined;
+  }
+
   function textOut(lines) {
     const text = Array.isArray(lines) ? lines.join("\n") : lines;
     return escapeHtml(text);
+  }
+
+  // First job: August 2005. Computed so the bio never goes stale.
+  function yearsOfExperience() {
+    const now = new Date();
+    let years = now.getFullYear() - 2005;
+    if (now.getMonth() < 7) years--;
+    return years;
   }
 
   function link(url) {
@@ -864,6 +926,19 @@
     } else {
       cmdBefore.textContent = val.slice(0, pos);
       cmdAfter.textContent = val.slice(pos);
+    }
+    keepCursorVisible();
+  }
+
+  // The prompt is a single line: when the command is wider than the screen,
+  // scroll it horizontally so the cursor stays visible (mostly on mobile).
+  function keepCursorVisible() {
+    const left = cursorEl.offsetLeft;
+    const right = left + cursorEl.offsetWidth;
+    if (left < promptInput.scrollLeft) {
+      promptInput.scrollLeft = left;
+    } else if (right > promptInput.scrollLeft + promptInput.clientWidth) {
+      promptInput.scrollLeft = right - promptInput.clientWidth;
     }
   }
 
@@ -909,6 +984,7 @@
     cmdInput.value = "";
     cmdBefore.textContent = "";
     cmdAfter.textContent = "";
+    promptInput.scrollLeft = 0;
   }
 
   function scrollToBottom() {
@@ -1010,7 +1086,7 @@
   }
 
   function applyTheme(themeName) {
-    if (BUILTIN_THEMES[themeName]) {
+    if (own(BUILTIN_THEMES, themeName)) {
       for (var i = 0; i < THEMEABLE_VARS.length; i++) {
         document.documentElement.style.removeProperty(THEMEABLE_VARS[i]);
       }
@@ -1022,15 +1098,16 @@
       Storage.saveTheme(themeName);
       return true;
     }
-    if (customThemes[themeName]) {
-      var custom = customThemes[themeName];
-      var baseName = custom.base || "dark";
+    var custom = own(customThemes, themeName);
+    if (custom) {
+      var baseName = custom.base === "light" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", baseName);
-      var baseVars = BUILTIN_THEMES[baseName].vars;
       for (var i = 0; i < THEMEABLE_VARS.length; i++) {
         document.documentElement.style.removeProperty(THEMEABLE_VARS[i]);
       }
-      var varKeys = Object.keys(custom.vars);
+      var varKeys = Object.keys(custom.vars || {}).filter(function (k) {
+        return THEMEABLE_VARS.indexOf(k) !== -1;
+      });
       for (var i = 0; i < varKeys.length; i++) {
         document.documentElement.style.setProperty(
           varKeys[i],
@@ -1071,7 +1148,7 @@
     return false;
   }
 
-  function executeRmrf() {
+  function executeRmrf(countsAsEgg) {
     cmdInput.disabled = true;
     cmdInput.blur();
 
@@ -1099,6 +1176,7 @@
         if (state.cowsayMode) {
           appendCowQuip();
         }
+        if (countsAsEgg) discoverEgg("rm-rf");
         cmdInput.disabled = false;
         cmdInput.focus();
       }
@@ -1134,6 +1212,7 @@
       appendOutput(
         '<span class="text-green">' + t("easter.konami.on") + "</span>",
       );
+      discoverEgg("konami");
     } else {
       terminal.classList.remove("hacker-mode");
       appendCommandLine("\u2191\u2191\u2193\u2193\u2190\u2192\u2190\u2192BA");
@@ -1141,6 +1220,64 @@
         '<span class="text-yellow">' + t("easter.konami.off") + "</span>",
       );
     }
+  }
+
+  // ─── Easter egg progress ────────────────────────────────────
+  // Level 1: classic shell jokes. Level 2: needs some curiosity.
+  // Level 3: needs knowledge beyond the terminal. The label of an egg is
+  // only shown once it has been discovered.
+
+  const EGG_CATALOG = [
+    { id: "sudo", level: 1, label: "sudo" },
+    { id: "exit", level: 1, label: "exit" },
+    { id: "su-root", level: 1, label: "su root" },
+    { id: "42", level: 2, label: "42" },
+    { id: "cowsay", level: 2, label: "cowsay" },
+    { id: "rm-rf", level: 2, label: "rm -rf /" },
+    { id: "matrix", level: 3, label: "matrix" },
+    {
+      id: "konami",
+      level: 3,
+      label: "↑↑↓↓←→←→BA",
+    },
+  ];
+
+  // Commands of the easterEggs object that count as a discovery.
+  const EGG_BY_COMMAND = {
+    42: "42",
+    exit: "exit",
+    cowsay: "cowsay",
+    matrix: "matrix",
+  };
+
+  let discoveredEggs = Storage.loadEggs().filter(function (id) {
+    return EGG_CATALOG.some(function (egg) {
+      return egg.id === id;
+    });
+  });
+
+  function isEggDiscovered(id) {
+    return discoveredEggs.indexOf(id) !== -1;
+  }
+
+  // Records an egg the visitor found by typing (links do not count).
+  function discoverEgg(id) {
+    if (isEggDiscovered(id)) return;
+    if (!EGG_CATALOG.some((egg) => egg.id === id)) return;
+    discoveredEggs.push(id);
+    Storage.saveEggs(discoveredEggs);
+    appendOutput(
+      '<span class="text-magenta">' +
+        escapeHtml(
+          tf(
+            "eggs.found",
+            String(discoveredEggs.length),
+            String(EGG_CATALOG.length),
+          ),
+        ) +
+        "</span> " +
+        t("eggs.hint"),
+    );
   }
 
   var easterEggs = {
@@ -1345,6 +1482,7 @@
         ['<span class="cmd">license</span>', t("help.license")],
         ['<span class="cmd">history</span>', t("help.history")],
         ['<span class="cmd">man &lt;cmd&gt;</span>', t("help.man")],
+        ['<span class="cmd">eggs</span>', t("help.eggs")],
       ]);
 
       base.push(
@@ -1401,7 +1539,7 @@
         return lines.join("\n");
       }
 
-      if (!AVAILABLE_LANGS[sub]) {
+      if (!own(AVAILABLE_LANGS, sub)) {
         return (
           '<span class="text-red">' +
           escapeHtml(tf("lang.unknownLang", sub)) +
@@ -1410,7 +1548,7 @@
         );
       }
 
-      if (I18N[sub]) {
+      if (own(I18N, sub)) {
         state.lang = sub;
         document.documentElement.setAttribute("lang", sub);
         Storage.save(state);
@@ -1425,18 +1563,18 @@
         );
       }
 
-      if (i18nLoadPending[sub]) {
+      if (own(i18nLoadPending, sub)) {
         return (
           '<span class="text-dim">\u23f3 ' +
-          escapeHtml(AVAILABLE_LANGS[sub] || sub) +
-          " is already loading...</span>"
+          escapeHtml(tf("lang.alreadyLoading", AVAILABLE_LANGS[sub])) +
+          "</span>"
         );
       }
 
       appendOutput(
-        '<span class="text-dim">\u23f3 Loading ' +
-          escapeHtml(AVAILABLE_LANGS[sub] || sub) +
-          "...</span>",
+        '<span class="text-dim">\u23f3 ' +
+          escapeHtml(tf("lang.loading", AVAILABLE_LANGS[sub])) +
+          "</span>",
       );
       loadI18N(sub, function (success) {
         if (success) {
@@ -1454,9 +1592,9 @@
           );
         } else {
           appendOutput(
-            '<span class="text-red">Error: Could not load language "' +
-              escapeHtml(sub) +
-              '".</span>',
+            '<span class="text-red">' +
+              escapeHtml(tf("lang.loadError", sub)) +
+              "</span>",
           );
         }
         scrollToBottom();
@@ -1568,22 +1706,15 @@
         return manPages.airvzxf();
       }
       const sub = args[0].toLowerCase();
-      const subcommands = {
-        about: true,
-        contact: true,
-        projects: true,
-        social: true,
-        skills: true,
-        research: true,
-      };
-      if (!subcommands[sub]) {
+      const subFn = own(airvzxfSubcommands, sub);
+      if (!subFn || sub === "man") {
         return `<span class="text-red">${escapeHtml(tf("airvzxf.unknownSubcommand", sub))}</span>\n${t("airvzxf.useHelp")}`;
       }
-      return airvzxfSubcommands[sub]();
+      return subFn();
     },
 
     neofetch() {
-      const u = USERS[state.user];
+      const u = own(USERS, state.user) || USERS.guest;
       const status = Storage.getStatus();
 
       let uptime;
@@ -1595,13 +1726,11 @@
         uptime = formatUptime(uptimeSec) + " " + t("neofetch.session");
       }
 
-      let ram;
-      if (status.accepted) {
-        const usedBytes = Storage.getStorageInfo().totalBytes;
-        ram = formatStorageSize(usedBytes) + " / 5.0 MiB";
-      } else {
-        const fakeRam = (Math.random() * 200 + 100).toFixed(0);
-        ram = fakeRam + " MiB / 1024 MiB";
+      // Real usage of whichever store is active (localStorage or sessionStorage).
+      let ram =
+        formatStorageSize(Storage.getStorageInfo().totalBytes) + " / 5.0 MiB";
+      if (!status.accepted) {
+        ram += " " + t("neofetch.session");
       }
 
       const configLabel =
@@ -1790,7 +1919,7 @@
             '<span class="text-red">' + t("theme.createNameInvalid") + "</span>"
           );
         }
-        if (BUILTIN_THEMES[name]) {
+        if (own(BUILTIN_THEMES, name)) {
           return `<span class="text-red">${escapeHtml(tf("theme.createBuiltIn", name))}</span>`;
         }
         var base = "dark";
@@ -1842,11 +1971,11 @@
           );
         }
         var name = args[1].toLowerCase();
-        if (BUILTIN_THEMES[name]) {
+        if (own(BUILTIN_THEMES, name)) {
           return `<span class="text-red">${escapeHtml(tf("theme.editBuiltIn", name))}</span>`;
         }
-        if (!customThemes[name]) {
-          return `<span class="text-red">${escapeHtml(tf("theme.editNotExists", name))}</span>\n${tf("theme.editUseCreate", name)}`;
+        if (!own(customThemes, name)) {
+          return `<span class="text-red">${escapeHtml(tf("theme.editNotExists", name))}</span>\n${tf("theme.editUseCreate", escapeHtml(name))}`;
         }
         var changes = {};
         var newBase = null;
@@ -1906,10 +2035,10 @@
           );
         }
         var name = args[1].toLowerCase();
-        if (BUILTIN_THEMES[name]) {
+        if (own(BUILTIN_THEMES, name)) {
           return `<span class="text-red">${escapeHtml(tf("theme.deleteBuiltIn", name))}</span>`;
         }
-        if (!customThemes[name]) {
+        if (!own(customThemes, name)) {
           return `<span class="text-red">${escapeHtml(tf("theme.deleteNotExists", name))}</span>`;
         }
         if (currentTheme === name) {
@@ -1923,10 +2052,11 @@
       if (sub === "export") {
         var themeName = args[1] ? args[1].toLowerCase() : currentTheme;
         var varsToExport;
-        if (BUILTIN_THEMES[themeName]) {
+        if (own(BUILTIN_THEMES, themeName)) {
           varsToExport = BUILTIN_THEMES[themeName].vars;
-        } else if (customThemes[themeName]) {
-          var base = customThemes[themeName].base || "dark";
+        } else if (own(customThemes, themeName)) {
+          var base =
+            customThemes[themeName].base === "light" ? "light" : "dark";
           varsToExport = Object.assign(
             {},
             BUILTIN_THEMES[base].vars,
@@ -1996,13 +2126,14 @@
       const rawArgs = args.join(" ");
       const eqIdx = rawArgs.indexOf("=");
       if (eqIdx === -1) {
-        const name = args[0];
-        if (state.aliases[name]) {
+        const name = args[0].toLowerCase();
+        if (own(state.aliases, name)) {
           return `<span class="cmd">alias</span> ${escapeHtml(name)}=${escapeHtml(state.aliases[name])}`;
         }
         return `<span class="text-red">${escapeHtml(tf("alias.notDefined", name))}</span>`;
       }
-      const name = rawArgs.slice(0, eqIdx).trim();
+      // Commands are matched in lowercase, so alias names are stored that way.
+      const name = rawArgs.slice(0, eqIdx).trim().toLowerCase();
       let value = rawArgs.slice(eqIdx + 1).trim();
       if (
         (value.startsWith("'") && value.endsWith("'")) ||
@@ -2014,7 +2145,14 @@
         return '<span class="text-red">' + t("alias.nameEmpty") + "</span>";
       if (!value)
         return '<span class="text-red">' + t("alias.valueEmpty") + "</span>";
-      if (name in commands)
+      if (!/^[a-z0-9_.-]{1,32}$/.test(name))
+        return `<span class="text-red">${escapeHtml(tf("alias.nameInvalid", name))}</span>`;
+      if (
+        own(commands, name) ||
+        own(easterEggs, name) ||
+        name === "sudo" ||
+        name === "rm"
+      )
         return `<span class="text-red">${escapeHtml(tf("alias.existingCommand", name))}</span>`;
       state.aliases[name] = value;
       return "";
@@ -2041,8 +2179,8 @@
         );
         return lines.join("\n");
       }
-      const name = args[0];
-      if (!(name in state.aliases))
+      const name = args[0].toLowerCase();
+      if (own(state.aliases, name) === undefined)
         return `<span class="text-red">${escapeHtml(tf("unalias.notDefined", name))}</span>`;
       delete state.aliases[name];
       return "";
@@ -2268,7 +2406,7 @@
       }
 
       var cmd = args[0].toLowerCase();
-      if (!manPages[cmd]) {
+      if (!own(manPages, cmd)) {
         return (
           '<span class="text-red">' +
           escapeHtml(tf("man.notFound", cmd)) +
@@ -2278,6 +2416,41 @@
       }
 
       return manPages[cmd]();
+    },
+
+    eggs() {
+      const total = EGG_CATALOG.length;
+      const rows = [];
+      for (let level = 1; level <= 3; level++) {
+        const eggs = EGG_CATALOG.filter((egg) => egg.level === level);
+        const found = eggs.filter((egg) => isEggDiscovered(egg.id)).length;
+        const bar =
+          "[" + "#".repeat(found) + ".".repeat(eggs.length - found) + "]";
+        const names = eggs
+          .map((egg) =>
+            isEggDiscovered(egg.id)
+              ? '<span class="text-green">' + escapeHtml(egg.label) + "</span>"
+              : '<span class="text-dim">???</span>',
+          )
+          .join("  ");
+        rows.push([
+          escapeHtml(t("eggs.level" + level)),
+          `${bar} ${found}/${eggs.length}  ${names}`,
+        ]);
+      }
+      const done = discoveredEggs.length === total;
+      return [
+        '<span class="text-yellow">' +
+          escapeHtml(
+            tf("eggs.title", String(discoveredEggs.length), String(total)),
+          ) +
+          "</span>",
+        "",
+        ...formatHtmlList(rows),
+        "",
+        `<span class="${done ? "text-green" : "text-dim"}">${escapeHtml(t(done ? "eggs.allFound" : "eggs.keepLooking"))}</span>`,
+        "",
+      ].join("\n");
     },
 
     reboot() {
@@ -2336,7 +2509,7 @@
       return [
         `<span class="text-green text-bold">${escapeHtml(u.name)}</span>  <span class="text-dim">\u2014 ${escapeHtml(t("about.roleAdmin"))} ${t("about.of")}</span>`,
         "",
-        escapeHtml(t("about.bio")),
+        escapeHtml(tf("about.bio", String(yearsOfExperience()))),
         "",
         ...infoLines,
         "",
@@ -2415,38 +2588,23 @@
           ["VCS:", "Git"],
         ]),
         "",
+        t("skills.header.ai"),
+        ...formatTextList([
+          [t("skills.ai.foundationsLabel"), t("skills.ai.foundations")],
+          [t("skills.ai.localLabel"), "Ollama, Whisper (CUDA), Candle (Rust)"],
+          ["RAG:", t("skills.ai.rag")],
+          [t("skills.ai.agentsLabel"), "MCP, Claude Code, OpenCode"],
+          [t("skills.ai.evalLabel"), t("skills.ai.eval")],
+        ]),
+        "",
         t("skills.header.domains"),
-        t("skills.domain.1"),
-        t("skills.domain.2"),
-        t("skills.domain.3"),
-        t("skills.domain.4"),
-        t("skills.domain.5"),
-        t("skills.domain.6"),
-        t("skills.domain.7"),
-        t("skills.domain.8"),
-        t("skills.domain.9"),
+        ...t("skills.domains").map((d) => "  " + d),
         "",
       ].join("\n");
     },
 
     research() {
-      return [
-        t("research.log1"),
-        t("research.log2"),
-        t("research.log3"),
-        t("research.log4"),
-        t("research.log5"),
-        t("research.log6"),
-        t("research.log7"),
-        t("research.log8"),
-        t("research.log9"),
-        t("research.log10"),
-        t("research.log11"),
-        t("research.log12"),
-        t("research.log13"),
-        t("research.log14"),
-        "",
-      ].join("\n");
+      return t("research.logs").concat([""]).join("\n");
     },
 
     man() {
@@ -2458,7 +2616,7 @@
         "  " + t("man.synopsisText"),
         "",
         t("man.header.description"),
-        ...t("man.desc.p1").split("\n"),
+        ...tf("man.desc.p1", String(yearsOfExperience())).split("\n"),
         "",
         ...t("man.desc.p2").split("\n"),
         "",
@@ -2997,6 +3155,30 @@
       ]);
     },
 
+    eggs: function () {
+      return buildManPage("eggs", [
+        {
+          header: t("man.header.name"),
+          body:
+            '  <span class="man-name">' +
+            escapeHtml(t("man.eggs.name")) +
+            "</span>",
+        },
+        {
+          header: t("man.header.synopsis"),
+          body: "  " + escapeHtml(t("man.eggs.synopsis")),
+        },
+        {
+          header: t("man.header.description"),
+          body: "  " + escapeHtml(t("man.eggs.description")),
+        },
+        {
+          header: t("man.header.seeAlso"),
+          body: "  " + escapeHtml(t("man.eggs.seeAlso")),
+        },
+      ]);
+    },
+
     man: function () {
       return buildManPage("man", [
         {
@@ -3026,14 +3208,15 @@
 
   function expandHistory(input) {
     if (input === "!!") {
-      if (state.history.length === 0) return { error: "!!: event not found" };
+      if (state.history.length === 0)
+        return { error: tf("eventNotFound", "!!") };
       return { cmd: state.history[state.history.length - 1] };
     }
     const m = input.match(/^!(\d+)$/);
     if (m) {
       const n = parseInt(m[1], 10);
       if (n < 1 || n > state.history.length)
-        return { error: `!${n}: event not found` };
+        return { error: tf("eventNotFound", "!" + n) };
       return { cmd: state.history[n - 1] };
     }
     return null;
@@ -3041,7 +3224,27 @@
 
   // ─── Execute Command ──────────────────────────────────────
 
-  function runSingle(cmdStr) {
+  // Commands that a link (?cmd=) may run. Anything that changes stored data
+  // (config, alias, theme, reset, ...) has to be typed by the visitor.
+  const URL_SAFE_COMMANDS = [
+    "help",
+    "clear",
+    "whoami",
+    "users",
+    "su",
+    "airvzxf",
+    "neofetch",
+    "date",
+    "echo",
+    "version",
+    "license",
+    "history",
+    "man",
+    "lang",
+    "eggs",
+  ];
+
+  function runSingle(cmdStr, fromUrl) {
     let trimmed = cmdStr.trim();
     let isExpansion = false;
 
@@ -3075,34 +3278,46 @@
     if (cmdName === "sudo") {
       appendOutput('<span class="text-red">' + t("easter.sudo") + "</span>");
       maybeAppendCowQuip(cmdName);
+      if (!fromUrl) discoverEgg("sudo");
       return;
     }
 
     if (cmdName === "rm" && isRmrfPattern(args)) {
-      executeRmrf();
+      executeRmrf(!fromUrl);
       return;
     }
 
-    var easterFn = easterEggs[cmdName];
+    var easterFn = own(easterEggs, cmdName);
     if (easterFn) {
       var easterResult = easterFn(args, trimmed);
       if (easterResult !== undefined && easterResult !== null) {
         appendOutput(easterResult);
       }
       maybeAppendCowQuip(cmdName);
+      // "konami" and "konami-code" only give a hint; that egg is the key sequence.
+      const eggId = own(EGG_BY_COMMAND, cmdName);
+      if (eggId && !fromUrl) discoverEgg(eggId);
       return;
     }
 
-    if (state.aliases[cmdName]) {
-      const expanded =
-        state.aliases[cmdName] + (args.length ? " " + args.join(" ") : "");
-      appendOutput(`<span class="text-dim">→ ${escapeHtml(expanded)}</span>`);
-      const expandedParts = expanded.split(/\s+/);
+    const aliasValue = own(state.aliases, cmdName);
+    if (typeof aliasValue === "string") {
+      const expanded = aliasValue + (args.length ? " " + args.join(" ") : "");
+      appendOutput(
+        `<span class="text-dim">${escapeHtml(tf("historyExpansion", expanded))}</span>`,
+      );
+      const expandedParts = expanded.trim().split(/\s+/);
       cmdName = expandedParts[0].toLowerCase();
       args = expandedParts.slice(1);
     }
 
-    const cmdFn = commands[cmdName];
+    const cmdFn = own(commands, cmdName);
+    if (cmdFn && fromUrl && URL_SAFE_COMMANDS.indexOf(cmdName) === -1) {
+      appendOutput(
+        `<span class="text-red">${escapeHtml(tf("urlBlocked", cmdName))}</span>`,
+      );
+      return;
+    }
     if (cmdFn) {
       const result = cmdFn(args, trimmed);
       if (result !== undefined && result !== null) {
@@ -3117,7 +3332,7 @@
     }
   }
 
-  function execute(cmdStr) {
+  function execute(cmdStr, fromUrl) {
     const trimmed = cmdStr.trim();
 
     if (!trimmed) {
@@ -3141,7 +3356,7 @@
       .map((s) => s.trim())
       .filter((s) => s);
     for (const seg of segments) {
-      runSingle(seg);
+      runSingle(seg, fromUrl);
       if (state.suTarget) break;
     }
 
@@ -3155,10 +3370,15 @@
     var cmds = params.getAll("cmd");
     if (!cmds.length) return;
     for (var i = 0; i < cmds.length; i++) {
-      execute(cmds[i]);
+      execute(cmds[i], true);
       if (state.suTarget) {
         appendOutput(
-          '<span class="text-red">' + t("su.authFailed") + "</span>",
+          '<span class="text-red">' +
+            t("su.authFailed") +
+            "</span>\n" +
+            '<span class="text-dim">' +
+            t("su.rootHint") +
+            "</span>",
         );
         state.suTarget = null;
         updatePrompt();
@@ -3246,13 +3466,20 @@
     if (key === "Enter") {
       e.preventDefault();
       if (state.suTarget) {
+        // root is an easter egg: its password is not public, so it always fails.
         var failMsg =
-          '<span class="text-red">' + t("su.authFailed") + "</span>";
+          '<span class="text-red">' +
+          t("su.authFailed") +
+          "</span>\n" +
+          '<span class="text-dim">' +
+          t("su.rootHint") +
+          "</span>";
         state.suTarget = null;
         clearInput();
         updatePrompt();
         updateCursorPos();
         appendOutput(failMsg);
+        discoverEgg("su-root");
         Storage.save(state);
         return;
       }
@@ -3379,7 +3606,7 @@
 
   const savedState = Storage.load();
   if (savedState) {
-    if (savedState.user && USERS[savedState.user]) {
+    if (savedState.user && own(USERS, savedState.user)) {
       state.user = savedState.user;
     }
     if (savedState.cwd) {
@@ -3395,13 +3622,13 @@
     if (savedState.aliases && typeof savedState.aliases === "object") {
       state.aliases = savedState.aliases;
     }
-    if (savedState.lang && AVAILABLE_LANGS[savedState.lang]) {
+    if (savedState.lang && own(AVAILABLE_LANGS, savedState.lang)) {
       state.lang = savedState.lang;
     }
   }
 
   var savedLang = Storage.loadLang();
-  if (savedLang && AVAILABLE_LANGS[savedLang]) {
+  if (savedLang && own(AVAILABLE_LANGS, savedLang)) {
     state.lang = savedLang;
   }
 
@@ -3452,7 +3679,7 @@
     });
   }
 
-  if (state.lang !== "es" && !I18N[state.lang]) {
+  if (state.lang !== "es" && !own(I18N, state.lang)) {
     loadI18N(state.lang, function (success) {
       if (!success) {
         state.lang = "es";

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="color-scheme" content="dark light" />
+    <title>404 — RoviSoft.net</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='2' fill='%230d1117'/><text y='13' x='1' font-size='12' font-weight='bold' font-family='monospace' fill='%233fb950'>RS</text></svg>"
+    />
+    <style>
+      /* =====================================================
+      RoviSoft.net — Not found page (served by Cloudflare Pages)
+      GNU AGPL v3 — https://github.com/airvzxf/rovisoft-web
+      ===================================================== */
+
+      @font-face {
+        font-family: "Martian Mono";
+        font-style: normal;
+        font-weight: 100 800;
+        font-display: swap;
+        src: url("/fonts/martian-mono-latin.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #0d1117;
+        --text: #c9d1d9;
+        --text-dim: #8b949e;
+        --green: #3fb950;
+        --red: #f85149;
+        --cyan: #58a6ff;
+        --yellow: #d2991d;
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f6f8fa;
+          --text: #1f2328;
+          --text-dim: #656d76;
+          --green: #1a7f37;
+          --red: #cf222e;
+          --cyan: #0969da;
+          --yellow: #9a6700;
+        }
+      }
+
+      body {
+        margin: 0;
+        padding: 16px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Martian Mono", monospace;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: inherit;
+      }
+
+      .user {
+        color: var(--green);
+        font-weight: bold;
+      }
+      .host {
+        color: var(--cyan);
+        font-weight: bold;
+      }
+      .path {
+        color: var(--yellow);
+      }
+      .dim {
+        color: var(--text-dim);
+      }
+      .err {
+        color: var(--red);
+      }
+      a {
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <pre><span class="user">guest</span><span class="dim">@</span><span class="host">rovisoft.net</span><span class="dim">:</span><span class="path">~</span>$ cd …
+<span class="err">bash: cd: No such file or directory (404)</span>
+<span class="dim">Esta página no existe. / This page does not exist.</span>
+
+<a href="/">cd ~</a>  <span class="dim">→ https://rovisoft.net/</span></pre>
+  </body>
+</html>

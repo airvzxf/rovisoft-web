@@ -1,0 +1,13 @@
+# Trusted tag signers, used by the verify-tag-signature job of
+# .github/workflows/release.yml through
+# `git config gpg.ssh.allowedsignersfile`.
+#
+# Format: one line per signer, `<principal> <key-type> <key-body>`.
+# Matching is by key body: the principal is only a label, so every
+# line is an unconditional grant of release authority.
+#
+# The workflow reads this file from origin/main, not from the tagged
+# commit, so removing a key here revokes it for every later release.
+#
+# airvzxf: the maintainer's SSH signing key (git config user.signingkey).
+airvzxf ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPq6Zvvu+eTZQ0hUb/vHC5EfPEGvy1hTc0Psq9W2TMdz

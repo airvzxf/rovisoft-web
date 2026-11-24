@@ -17,6 +17,7 @@
     THEME: "rs_theme",
     CUSTOM_THEMES: "rs_custom_themes",
     LANG: "rs_lang",
+    EGGS: "rs_eggs",
   };
 
   function isAccepted() {
@@ -39,6 +40,7 @@
       KEYS.THEME,
       KEYS.CUSTOM_THEMES,
       KEYS.LANG,
+      KEYS.EGGS,
     ];
     for (var i = 0; i < keysToMigrate.length; i++) {
       var key = keysToMigrate[i];
@@ -60,6 +62,7 @@
     localStorage.removeItem(KEYS.STATE);
     localStorage.removeItem(KEYS.THEME);
     localStorage.removeItem(KEYS.CUSTOM_THEMES);
+    localStorage.removeItem(KEYS.EGGS);
 
     if (storedVersion !== null) {
       localStorage.setItem(KEYS.VERSION, storedVersion);
@@ -146,12 +149,14 @@
     localStorage.removeItem(KEYS.THEME);
     localStorage.removeItem(KEYS.CUSTOM_THEMES);
     localStorage.removeItem(KEYS.LANG);
+    localStorage.removeItem(KEYS.EGGS);
     sessionStorage.removeItem(KEYS.STATE);
     sessionStorage.removeItem(KEYS.FIRST_VISIT);
     sessionStorage.removeItem(KEYS.VERSION);
     sessionStorage.removeItem(KEYS.THEME);
     sessionStorage.removeItem(KEYS.CUSTOM_THEMES);
     sessionStorage.removeItem(KEYS.LANG);
+    sessionStorage.removeItem(KEYS.EGGS);
   }
 
   function getStatus() {
@@ -247,6 +252,28 @@
     return val;
   }
 
+  function saveEggs(ids) {
+    try {
+      getStore().setItem(KEYS.EGGS, JSON.stringify(ids));
+    } catch (e) {
+      // silent fail
+    }
+  }
+
+  function loadEggs() {
+    var raw = getStore().getItem(KEYS.EGGS);
+    if (!raw) {
+      raw = localStorage.getItem(KEYS.EGGS);
+    }
+    if (!raw) return [];
+    try {
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
   window.Storage = {
     isAccepted: isAccepted,
     accept: accept,
@@ -266,5 +293,7 @@
     loadCustomThemes: loadCustomThemes,
     saveLang: saveLang,
     loadLang: loadLang,
+    saveEggs: saveEggs,
+    loadEggs: loadEggs,
   };
 })();

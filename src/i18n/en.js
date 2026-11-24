@@ -32,7 +32,7 @@
     "help.theme": "Manage color and typography themes",
     "help.lang": "Change interface language",
     "help.config": "Manage local storage",
-    "help.reboot": "Reboots the terminal",
+    "help.reboot": "Reboot the terminal",
     "help.reset": "Factory reset (clears all data)",
     "help.version": "Show version",
     "help.license": "Show license",
@@ -54,6 +54,10 @@
     "su.welcomeUser": "Welcome, {0}",
     "su.guestRestored": "Guest session restored.",
     "su.unknownUser": "su: user '{0}' does not exist.",
+    "su.rootHint":
+      'Hint: the root password is not public. Try <span class="cmd">su airvzxf</span>.',
+
+    urlBlocked: "{0}: not run from a link for safety. Type it in the terminal.",
 
     "version.label": "Version:",
     "version.build": "Build:",
@@ -108,6 +112,9 @@
     "lang.available": "Available languages:",
     "lang.changed": "Language changed to '{0}'.",
     "lang.unknownLang": "lang: unknown language '{0}'.",
+    "lang.loading": "Loading {0}...",
+    "lang.alreadyLoading": "{0} is already loading...",
+    "lang.loadError": "Error: could not load language '{0}'.",
     "lang.hint":
       'Use <span class="cmd">lang list</span> to see available languages.',
 
@@ -170,6 +177,8 @@
     "alias.notDefined": "alias: {0}: not defined.",
     "alias.nameEmpty": "alias: empty name.",
     "alias.valueEmpty": "alias: empty value.",
+    "alias.nameInvalid":
+      "alias: invalid name '{0}'. Use letters, digits, '.', '_' or '-' (max 32).",
     "alias.existingCommand": "alias: '{0}' is an existing command.",
 
     "unalias.title": "unalias \u2014 Remove a defined alias",
@@ -220,18 +229,23 @@
     "reboot.msg": "Rebooting terminal...",
 
     "about.bio":
-      "Senior Software Engineer & Software Architect with over 19 years of experience. Systems programmer and low-level architect. Seeking technical perfection, extreme optimization, and deep understanding of the machine \u2014 from hardware and assembly to high level.",
+      "Senior Software Engineer with over {0} years of experience. Systems programmer and low-level architect. Seeking technical perfection, extreme optimization, and deep understanding of the machine \u2014 from hardware and assembly to high level. In artificial intelligence I have walked the whole path: from Machine Learning and Deep Learning fundamentals to RAG, experiments with local models, and comparing AI labs and models.",
     "about.roleAdmin": "Administrator / Owner",
-    "about.roleTitle": "Senior Software Engineer & Software Architect",
+    "about.roleTitle":
+      "Senior Software Engineer \u00b7 Software Architect \u00b7 Applied AI Engineer",
 
     "projects.c2flowch.desc":
-      "Control flow mapping and visualization system for C source code, analyzing the AST",
+      "Rust library and CLI that turns C source code into flowcharts (ANSI / ISO 5807) by analyzing the AST",
     "projects.telora.desc":
       "Speech-to-Text Assistant for Linux: Rust daemon with Whisper (CUDA) and GTK4 client",
     "projects.bose_connect_linux.desc":
-      "Bose\u00ae Connect App for Linux: reverse-engineered Bluetooth protocols (46\u2605)",
+      "Bose\u00ae Connect App for Linux: reverse-engineered Bluetooth protocols",
     "projects.ftp_deployment_action.desc":
-      "GitHub Action for FTP deployment: copies repo files to a server path (36\u2605, 9 forks)",
+      "GitHub Action for FTP deployment: copies repo files to a server path",
+    "projects.cache_anything_new_action.desc":
+      "GitHub Action that caches everything an install step creates or changes (apt, SDKs, toolchains) and restores it on the next run",
+    "projects.assembly_from_the_ground_up.desc":
+      "Update of the book \u201cProgramming from the Ground Up\u201d (GNU Assembler, x86): converted to Markdown, ePUB and PDF",
     "projects.fibonacci_benchmark.desc":
       "Fibonacci algorithm in assembly that outperformed the C-compiled version",
     "projects.aur_packages.desc":
@@ -247,59 +261,57 @@
     "skills.lang.assembly": "x86/x64, low-level optimization",
     "skills.lang.c": "Reverse engineering, embedded systems",
     "skills.header.env": "ENVIRONMENT & TOOLS:",
+    "skills.header.ai": "ARTIFICIAL INTELLIGENCE:",
+    "skills.ai.foundationsLabel": "Foundations:",
+    "skills.ai.foundations":
+      "Machine Learning and Deep Learning with Python (TensorFlow, Keras)",
+    "skills.ai.localLabel": "Local models:",
+    "skills.ai.rag": "Embeddings, vector search, retrieval over documentation",
+    "skills.ai.agentsLabel": "Agents:",
+    "skills.ai.evalLabel": "Evaluation:",
+    "skills.ai.eval": "Comparing AI labs and models on real engineering tasks",
     "skills.header.domains": "DOMAINS:",
-    "skills.domain.1": "  Systems architecture",
-    "skills.domain.2": "  Low-level optimization",
-    "skills.domain.3": "  Machine Learning / Deep Learning",
-    "skills.domain.4": "  MCP / Agentic AI",
-    "skills.domain.5": "  Reverse engineering",
-    "skills.domain.6": "  AUR packaging",
-    "skills.domain.7": "  AI orchestration under architectural direction",
-    "skills.domain.8": "  Speech-to-Text (Whisper/CUDA)",
-    "skills.domain.9": "  CI/CD (GitHub Actions)",
+    "skills.domains": [
+      "Systems architecture",
+      "Low-level optimization",
+      "Applied AI: RAG, agents and model evaluation",
+      "AI orchestration under architectural direction",
+      "Reverse engineering",
+      "Speech-to-Text (Whisper/CUDA)",
+      "AUR packaging",
+      "CI/CD (GitHub Actions)",
+    ],
 
-    "research.log1":
-      "[2024-01-15 09:23:11] ML Specialization completed (Udemy)",
-    "research.log2":
-      "[2024-03-02 14:55:42] Deep Learning Specialization completed (Udemy)",
-    "research.log3":
-      "[2024-06-10 11:30:00] Local inference infrastructure deployed with Ollama",
-    "research.log4":
-      "[2024-06-10 11:30:05] Models loaded: Gemma 4, DeepSeek, Qwen",
-    "research.log5":
-      "[2024-06-10 11:30:07] MCP (Model Context Protocol) research started",
-    "research.log6":
+    "research.logs": [
+      "[2024-01-15 09:23:11] Course \u201cMachine Learning and Data Science with Python\u201d completed (Udemy)",
+      "[2024-03-02 14:55:42] Course \u201cArtificial Intelligence and Deep Learning with Python, TensorFlow and Keras\u201d completed (Udemy)",
+      "[2024-07-02 11:30:00] Local inference infrastructure deployed with Ollama",
+      "[2024-07-02 11:30:05] Models loaded: Gemma 2, DeepSeek-Coder-V2, Qwen2",
       "[2024-08-22 16:45:33] Agentic AI orchestration pipeline: phase 1",
-    "research.log7":
       "[2024-11-05 08:12:00] Code analysis automation with local LLMs",
-    "research.log8":
-      "[2025-01-20 13:00:00] OpenCode: AI-driven development environment",
-    "research.log9":
-      "[2025-03-15 10:00:00] DeepSeek V4 evaluation for low-level tasks",
-    "research.log10":
-      "[2025-05-01 10:00:00] ai-llm-rust-expert: fine-tuning with SFT + DPO for idiomatic Rust",
-    "research.log11":
-      "[2025-09-01 09:00:00] formic-ai-framework: declarative multi-agent orchestration with YAML",
-    "research.log12":
+      "[2024-12-02 10:15:00] MCP (Model Context Protocol) research started",
+      "[2025-02-17 16:40:00] RAG: embeddings and vector search over technical documentation",
+      "[2025-03-15 10:00:00] DeepSeek-V3 and DeepSeek-R1 evaluation for low-level tasks",
+      "[2025-07-14 13:00:00] OpenCode: AI-driven development environment",
+      "[2025-09-08 09:00:00] Comparison of AI labs and models on software engineering tasks",
       "[2025-11-10 14:30:00] Deep Learning experiments: backpropagation, CNNs and RNNs from scratch",
-    "research.log13":
       "[2026-02-09 18:10:00] Telora: Rust daemon + Whisper (CUDA) for Speech-to-Text on Linux",
-    "research.log14":
       "[2026-05-05 03:42:00] Candle: minimalist ML framework in Rust",
+    ],
 
     "man.header.name": "NAME",
     "man.nameText":
-      "airvzxf - Senior Software Engineer, Systems Architect, Toolsmith",
+      "airvzxf - Senior Software Engineer, Systems Architect, Applied AI Engineer, Toolsmith",
     "man.header.synopsis": "SYNOPSIS",
     "man.synopsisText":
-      "Systems architecture, low-level optimization, AI orchestration.",
+      "Systems architecture, low-level optimization, applied AI and AI orchestration.",
     "man.header.description": "DESCRIPTION",
     "man.desc.p1":
-      "  airvzxf is a systems programmer and software architect with over 19\n  years of experience. He operates at the intersection of hardware\n  and high-level systems, with an obsessive focus on architectural\n  purity and extreme optimization.",
+      "  airvzxf is a systems programmer and software architect with over {0}\n  years of experience. He operates at the intersection of hardware\n  and high-level systems, with an obsessive focus on architectural\n  purity and extreme optimization.",
     "man.desc.p2":
       "  He despises inefficient code, MVP-driven shortcuts, and technical\n  debt. His approach is rooted in deep understanding of the machine\n  from assembly up through high-level abstractions.",
     "man.desc.p3":
-      "  Currently at the job, he orchestrates AI systems as development\n  tools under strict architectural direction \u2014 not as end-user\n  applications, but as instruments of engineering.",
+      "  He currently orchestrates AI systems as development\n  tools under strict architectural direction \u2014 not as end-user\n  applications, but as instruments of engineering. He has walked AI\n  from ML and Deep Learning fundamentals to RAG, experiments with\n  local models, and comparing AI labs and models.",
     "man.desc.p4":
       "  Diagnosed with mild functional Asperger's, which provides hyperfocus,\n  deep system analysis, and zero tolerance for dirty code.",
     "man.header.environment": "ENVIRONMENT",
@@ -340,7 +352,7 @@
     "man.su.name": "su - Switch user",
     "man.su.synopsis": "su <user>",
     "man.su.description":
-      "Switches the current user session to the specified user. Available users are: guest (no password), airvzxf (no password), and root (password required).",
+      "Switches the current user session to the specified user. Available users are: guest (no password), airvzxf (no password), and root (requires a password that is not public). Use su without arguments to see the usage.",
     "man.su.seeAlso": "whoami(1), users(1)",
 
     "man.airvzxf.name": "airvzxf - Owner information",
@@ -421,7 +433,7 @@
     "man.reset.name": "reset - Factory reset",
     "man.reset.synopsis": "reset",
     "man.reset.description":
-      "Restores the terminal to factory defaults, clearing all stored data including history, aliases, custom themes, and preferences. This action is irreversible.",
+      "Restores the terminal to factory defaults, clearing all stored data including history, aliases, custom themes, discovered Easter eggs, and preferences. This action is irreversible.",
     "man.reset.seeAlso": "reboot(1), config(1)",
 
     "man.version.name": "version - Show version",
@@ -449,6 +461,23 @@
     "man.man.description":
       "Displays the manual page for the specified command. Manual pages contain detailed information about each command, including synopsis, descriptions, options, and related commands. Without arguments, lists all commands with available manual pages.",
     "man.man.seeAlso": "help(1)",
+
+    "man.eggs.name": "eggs - Easter egg progress",
+    "man.eggs.synopsis": "eggs",
+    "man.eggs.description":
+      "Shows how many Easter eggs you have discovered in total and per level (Rookie, Hacker, Legend). Undiscovered secrets appear as ???. Some are typed as commands, others with the keyboard. Eggs run from a link (?cmd=) do not count. Progress is kept between sessions if persistent storage is enabled.",
+    "man.eggs.seeAlso": "help(1), config(1), reset(1)",
+
+    "help.eggs": "Discovered Easter egg progress",
+    "eggs.title": "Easter eggs discovered: {0}/{1}",
+    "eggs.level1": "Level 1 \u00b7 Rookie:",
+    "eggs.level2": "Level 2 \u00b7 Hacker:",
+    "eggs.level3": "Level 3 \u00b7 Legend:",
+    "eggs.found": "[+] Easter egg discovered! ({0}/{1})",
+    "eggs.hint": 'Type <span class="cmd">eggs</span> to see your progress.',
+    "eggs.keepLooking":
+      "Keep exploring: some secrets are typed, others are keyed in.",
+    "eggs.allFound": "You found them all! You are a terminal legend.",
 
     eventNotFound: "{0}: event not found",
     historyExpansion: "\u2192 {0}",
