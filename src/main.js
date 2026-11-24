@@ -25,7 +25,7 @@
 
   // ─── State ────────────────────────────────────────────────
 
-  const VERSION = "1.14.1";
+  const VERSION = "1.14.2";
   const MAX_HISTORY = 1000;
 
   let sessionStartTime = Date.now();

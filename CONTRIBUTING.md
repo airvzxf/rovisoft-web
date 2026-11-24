@@ -146,7 +146,7 @@ npm run format      # apply Prettier
 
 The site is deployed by Cloudflare Pages on every push to `main`. A release records a version as a GitHub Release (`.github/workflows/release.yml`):
 
-1. In the release pull request, set the new version in `VERSION`, the `VERSION` constant of `src/main.js`, both `?v=` in `src/index.html`, `package.json` and the README, and move the `## [Unreleased]` notes to a `## [X.Y.Z] - YYYY-MM-DD` section of `CHANGELOG.md`. `npm run check` fails if any of them disagrees.
+1. In the release pull request, set the new version in `VERSION`, the `VERSION` constant of `src/main.js`, the three `?v=` in `src/index.html` (`main.js`, `storage.js` and `og:image`), `package.json` and the README, and move the `## [Unreleased]` notes to a `## [X.Y.Z] - YYYY-MM-DD` section of `CHANGELOG.md`. `npm run check` fails if any of them disagrees.
 2. Merge it into `main`.
 3. Sign the tag on the merge commit and push it:
 

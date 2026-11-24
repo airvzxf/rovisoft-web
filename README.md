@@ -136,7 +136,7 @@ The site is hosted on **Cloudflare Pages**. Every push to `main` publishes the `
 
 ## Version
 
-**1.14.1** — Type `version` in the terminal for the current version.
+**1.14.2** — Type `version` in the terminal for the current version.
 
 ## License
 

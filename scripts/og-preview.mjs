@@ -86,13 +86,13 @@ if (!meta["twitter:card"]) warnings.push("missing twitter:card");
 
 const title = meta["og:title"] || meta["<title>"];
 const description = meta["og:description"] || meta.description || "";
-if (title.length > 60) {
-  warnings.push(`og:title is ${title.length} chars; cards cut it near 60`);
+// The ranges ogpreview.app scores Facebook cards with; the other networks
+// accept them too. Longer texts are cut, but the start is what they show.
+if (title.length < 60 || title.length > 90) {
+  warnings.push(`og:title is ${title.length} chars; use 60-90`);
 }
-if (description.length > 160) {
-  warnings.push(
-    `og:description is ${description.length} chars; cards cut it near 160`,
-  );
+if (description.length < 155 || description.length > 200) {
+  warnings.push(`og:description is ${description.length} chars; use 155-200`);
 }
 
 let imageData = "";

@@ -2,7 +2,8 @@
 """Check that every copy of the version number agrees with VERSION.
 
 The version appears in several places and a forgotten one breaks things:
-an old `?v=` in index.html keeps visitors on a cached main.js for a year.
+an old `?v=` in index.html keeps visitors on a cached main.js for a year,
+and link previews on an old og-image.png.
 
   python3 scripts/check-version.py                # files agree with VERSION
   python3 scripts/check-version.py --tag v1.14.0  # ...and with a release tag
@@ -48,6 +49,11 @@ def main():
     for name, value in assets:
         if value != version:
             errors.append(f"src/index.html: {name}.js?v={value}")
+    # Link previews (WhatsApp, Facebook, ...) cache og:image by URL, so a
+    # new image is only fetched when the URL changes.
+    images = re.findall(r'content="https://rovisoft\.net/og-image\.png\?v=([^"]+)"', html)
+    if images != [version]:
+        errors.append(f"src/index.html: og:image ?v= is {images or 'missing'}")
 
     package = json.loads(read("package.json"))["version"]
     if package != version:
